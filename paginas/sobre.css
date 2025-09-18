@@ -1,0 +1,104 @@
+body {
+  background-color: #f7f3ed; 
+}
+
+.sobre {
+  max-width: 900px; 
+  margin: 50px auto; 
+  padding: 40px 60px; 
+  background-color: #efe8da; 
+  border-radius: 15px; 
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
+  text-align: center;
+  border: 1px solid #e0d5c4; 
+}
+
+.sobre h2 {
+  font-family: "Playfair Display", serif; 
+  color: #990053;
+  font-size: 3.5em; 
+  font-weight: 700; 
+  margin-bottom: 30px; 
+  position: relative; 
+  padding-bottom: 20px; 
+  letter-spacing: 0.05em; 
+}
+
+/* linha */
+.sobre h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background-color: #5a0022; 
+  margin: 20px auto 0 auto; 
+  border-radius: 2px; 
+}
+
+.sobre p {
+  font-family: "Zen Maru Gothic", sans-serif; 
+  color: #5a0022; 
+  font-size: 1.15em; 
+  line-height: 1.8; 
+  margin-bottom: 25px; 
+  max-width: 750px; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+@media (max-width: 992px) {
+  .sobre {
+    margin: 40px 20px;
+    padding: 30px 40px;
+  }
+  .sobre h2 {
+    font-size: 3em;
+  }
+  .sobre p {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 768px) {
+  .sobre {
+    margin: 30px 15px;
+    padding: 25px 30px;
+    border-radius: 10px;
+  }
+  .sobre h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+  }
+  .sobre p {
+    font-size: 1em;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .sobre h2::after {
+    margin: 15px auto 0 auto;
+    width: 60px;
+    height: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sobre {
+    margin: 20px 10px;
+    padding: 20px;
+  }
+  .sobre h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+  }
+  .sobre p {
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  .sobre h2::after {
+    margin: 10px auto 0 auto;
+    width: 50px;
+    height: 2px;
+  }
+}

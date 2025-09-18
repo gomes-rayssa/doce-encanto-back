@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bolos - Doce Encanto</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="loja.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar Modernizada -->
+    <header class="modern-header">
+      <nav class="modern-nav">
+        <div class="nav-container">
+          <!-- Logo -->
+          <div class="nav-logo">
+            <a href="../index.html" class="logo-link">
+              <i class="fas fa-birthday-cake"></i>
+              <span class="logo-text">Doce Encanto</span>
+            </a>
+          </div>
+
+          <!-- Menu Principal -->
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="../index.html" class="nav-link">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle active">
+                <i class="fas fa-store"></i>
+                <span>Produtos</span>
+                <i class="fas fa-chevron-down"></i>
+              </a>
+              <div class="dropdown-menu">
+                <a href="bolos.html" class="dropdown-item active">
+                  <i class="fas fa-birthday-cake"></i>
+                  <span>Bolos</span>
+                </a>
+                <a href="doces.html" class="dropdown-item">
+                  <i class="fas fa-candy-cane"></i>
+                  <span>Doces</span>
+                </a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="sobre.html" class="nav-link">
+                <i class="fas fa-info-circle"></i>
+                <span>Sobre</span>
+              </a>
+            </li>
+          </ul>
+
+          <!-- Ações do Usuário -->
+          <div class="nav-actions">
+            <a
+              href="login.html"
+              class="nav-action user-action"
+              title="Minha Conta"
+            >
+              <i class="fas fa-user"></i>
+            </a>
+            <a
+              href="carrinho.html"
+              class="nav-action cart-action"
+              title="Carrinho"
+            >
+              <i class="fas fa-shopping-bag"></i>
+              <span class="cart-count">0</span>
+            </a>
+            <button class="mobile-menu-toggle">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Página Principal -->
+    <main class="shop-page">
+      <div class="container">
+        <!-- Header da Página -->
+        <div class="page-header">
+          <div class="breadcrumb">
+            <a href="../index.html">Início</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Bolos</span>
+          </div>
+          <h1 class="page-title">
+            <i class="fas fa-birthday-cake"></i>
+            Nossos Bolos Artesanais
+          </h1>
+          <p class="page-subtitle">
+            Bolos únicos feitos com amor e ingredientes selecionados para tornar
+            seus momentos ainda mais especiais
+          </p>
+        </div>
+
+        <div class="shop-layout">
+          <!-- Menu Lateral -->
+          <aside class="sidebar">
+            <div class="sidebar-header">
+              <h3>
+                <i class="fas fa-filter"></i>
+                Categorias
+              </h3>
+            </div>
+
+            <nav class="sidebar-nav">
+              <ul class="category-menu">
+                <li class="category-item">
+                  <a
+                    href="#todos"
+                    class="category-link active"
+                    data-category="todos"
+                  >
+                    <i class="fas fa-th-large"></i>
+                    <span>Todos os Bolos</span>
+                    <span class="count">12</span>
+                  </a>
+                </li>
+                <li class="category-item">
+                  <a
+                    href="#tradicionais"
+                    class="category-link"
+                    data-category="tradicionais"
+                  >
+                    <i class="fas fa-birthday-cake"></i>
+                    <span>Bolos Tradicionais</span>
+                    <span class="count">6</span>
+                  </a>
+                </li>
+                <li class="category-item">
+                  <a
+                    href="#caseiros"
+                    class="category-link"
+                    data-category="caseiros"
+                  >
+                    <i class="fas fa-home"></i>
+                    <span>Bolos Caseiros</span>
+                    <span class="count">4</span>
+                  </a>
+                </li>
+                <li class="category-item">
+                  <a
+                    href="#especiais"
+                    class="category-link"
+                    data-category="especiais"
+                  >
+                    <i class="fas fa-star"></i>
+                    <span>Bolos Especiais</span>
+                    <span class="count">2</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
+            <!-- Filtros Adicionais -->
+            <div class="sidebar-section">
+              <h4>Preço</h4>
+              <div class="price-filter">
+                <div class="price-range">
+                  <input
+                    type="range"
+                    id="priceRange"
+                    min="50"
+                    max="200"
+                    value="200"
+                    class="range-slider"
+                  />
+                  <div class="price-display">
+                    <span>R$ 50</span>
+                    <span id="maxPrice">R$ 200</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <h4>Ordenar por</h4>
+              <select class="sort-select" id="sortSelect">
+                <option value="name">Nome A-Z</option>
+                <option value="price-low">Menor Preço</option>
+                <option value="price-high">Maior Preço</option>
+                <option value="popular">Mais Popular</option>
+              </select>
+            </div>
+          </aside>
+
+          <!-- Área de Produtos -->
+          <section class="products-area">
+            <div class="products-header">
+              <div class="results-info">
+                <span id="resultsCount">Mostrando 12 produtos</span>
+              </div>
+              <div class="view-toggle">
+                <button
+                  class="view-btn active"
+                  data-view="grid"
+                  title="Visualização em Grade"
+                >
+                  <i class="fas fa-th"></i>
+                </button>
+                <button
+                  class="view-btn"
+                  data-view="list"
+                  title="Visualização em Lista"
+                >
+                  <i class="fas fa-list"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Grid de Produtos -->
+            <div class="products-grid" id="productsGrid">
+              <!-- Bolos Tradicionais -->
+              <div
+                class="product-card"
+                data-category="tradicionais"
+                data-price="100"
+                data-name="Bolo de Chocolate"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-chocolate.png"
+                    alt="Bolo de Chocolate"
+                  />
+                  <div class="product-badge bestseller">Bestseller</div>
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo de Chocolate', 100, '../assets/bolos/bolo-chocolate.png', 'bolo tradicional')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo de Chocolate</h3>
+                  <p class="product-description">
+                    Chocolate belga com cobertura cremosa e decoração artesanal
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.9)</span>
+                  </div>
+                  <div class="product-price">R$ 100,00</div>
+                </div>
+              </div>
+
+              <div
+                class="product-card"
+                data-category="tradicionais"
+                data-price="100"
+                data-name="Bolo de Chocolate Branco"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-chocolate branco.png"
+                    alt="Bolo de Chocolate Branco"
+                  />
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo de Chocolate Branco', 100, '../assets/bolos/bolo-chocolate branco.png', 'bolo tradicional')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo de Chocolate Branco</h3>
+                  <p class="product-description">
+                    Delicioso chocolate branco com frutas vermelhas
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.8)</span>
+                  </div>
+                  <div class="product-price">R$ 100,00</div>
+                </div>
+              </div>
+
+              <div
+                class="product-card"
+                data-category="tradicionais"
+                data-price="120"
+                data-name="Bolo Red Velvet"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-red velvet.png"
+                    alt="Bolo Red Velvet"
+                  />
+                  <div class="product-badge new">Novo</div>
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo Red Velvet', 120, '../assets/bolos/bolo-red velvet.png', 'bolo tradicional')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo Red Velvet</h3>
+                  <p class="product-description">
+                    Clássico americano com cream cheese e toque especial
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.8)</span>
+                  </div>
+                  <div class="product-price">R$ 120,00</div>
+                </div>
+              </div>
+
+              <div
+                class="product-card"
+                data-category="especiais"
+                data-price="150"
+                data-name="Bolo de Pistache"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-pistache.png"
+                    alt="Bolo de Pistache"
+                  />
+                  <div class="product-badge premium">Premium</div>
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo de Pistache', 150, '../assets/bolos/bolo-pistache.png', 'bolo especial')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo de Pistache</h3>
+                  <p class="product-description">
+                    Sabor exclusivo com pistaches importados da Sicília
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(5.0)</span>
+                  </div>
+                  <div class="product-price">R$ 150,00</div>
+                </div>
+              </div>
+
+              <div
+                class="product-card"
+                data-category="tradicionais"
+                data-price="100"
+                data-name="Bolo de Morango"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-morango.png"
+                    alt="Bolo de Morango"
+                  />
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo de Morango', 100, '../assets/bolos/bolo-morango.png', 'bolo tradicional')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo de Morango</h3>
+                  <p class="product-description">
+                    Massa fofa com morangos frescos e chantilly
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.7)</span>
+                  </div>
+                  <div class="product-price">R$ 100,00</div>
+                </div>
+              </div>
+
+              <!-- Bolos Caseiros -->
+              <div
+                class="product-card"
+                data-category="caseiros"
+                data-price="80"
+                data-name="Bolo dois amores"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-dois amores.png"
+                    alt="Bolo dois amores"
+                  />
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo dois amores', 80, '../assets/bolos/bolo-dois amores.png', 'bolo caseiro')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo dois amores</h3>
+                  <p class="product-description">
+                    Sabor deferenciado com chocolate branco e chocolate amargo
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.6)</span>
+                  </div>
+                  <div class="product-price">R$ 80,00</div>
+                </div>
+              </div>
+
+              <div
+                class="product-card"
+                data-category="caseiros"
+                data-price="75"
+                data-name="Romeu e Julieta"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-romeu e julieta.png"
+                    alt="Romeu e Julieta"
+                  />
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Romeu e Julieta', 75, '../assets/bolos/bolo-romeu e julieta.png', 'bolo caseiro')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Romeu e Julieta</h3>
+                  <p class="product-description">
+                    Sabor da Refrescante com goiabada e queijo
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.5)</span>
+                  </div>
+                  <div class="product-price">R$ 75,00</div>
+                </div>
+              </div>
+
+              <div
+                class="product-card"
+                data-category="caseiros"
+                data-price="70"
+                data-name="Bolo de Amendoim"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-amendoim.png"
+                    alt="Bolo de amendoim"
+                  />
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo de amendoim', 70, '../assets/bolos/bolo-amendoim.png', 'bolo caseiro')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo de amendoim</h3>
+                  <p class="product-description">
+                    Feito com amendoim fresco e cerejas
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.4)</span>
+                  </div>
+                  <div class="product-price">R$ 70,00</div>
+                </div>
+              </div>
+
+              <div
+                class="product-card"
+                data-category="caseiros"
+                data-price="85"
+                data-name="Bolo de Banana"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-bannofe.png"
+                    alt="Bolo de Banana"
+                  />
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo de Banana', 85, '../assets/bolos/bolo-bannofe.png', 'bolo caseiro')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo de Banana</h3>
+                  <p class="product-description">
+                    Banana nanica com canela e açúcar cristal
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.3)</span>
+                  </div>
+                  <div class="product-price">R$ 85,00</div>
+                </div>
+              </div>
+
+              <!-- Bolos Especiais -->
+              <div
+                class="product-card"
+                data-category="especiais"
+                data-price="180"
+                data-name="Bolo de Casamento"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo- chocolate morango.png"
+                    alt="Bolo de Casamento"
+                  />
+                  <div class="product-badge premium">Premium</div>
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo de Casamento', 180, '../assets/bolos/bolo- chocolate morango.png', 'bolo especial')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo de Casamento</h3>
+                  <p class="product-description">
+                    Elegante bolo de 3 andares para ocasiões especiais
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(5.0)</span>
+                  </div>
+                  <div class="product-price">R$ 180,00</div>
+                </div>
+              </div>
+
+              <!-- Mais bolos tradicionais -->
+              <div
+                class="product-card"
+                data-category="tradicionais"
+                data-price="110"
+                data-name="Bolo de Limão"
+              >
+                <div class="product-image">
+                  <img
+                    src="../assets/bolos/bolo-limao.png"
+                    alt="Bolo de Limão"
+                  />
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo de Limão', 110, '../assets/bolos/bolo-limao.png', 'bolo tradicional')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo de Limão</h3>
+                  <p class="product-description">
+                    Refrescante bolo com limão siciliano e cobertura cítrica
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.6)</span>
+                  </div>
+                  <div class="product-price">R$ 110,00</div>
+                </div>
+              </div>
+
+              <div
+                class="product-card"
+                data-category="tradicionais"
+                data-price="95"
+                data-name="Bolo de Coco"
+              >
+                <div class="product-image">
+                  <img src="../assets/bolos/bolo-coco.png" alt="Bolo de Coco" />
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="add-to-cart"
+                      onclick="adicionarAoCarrinho('Bolo de Coco', 95, '../assets/bolos/bolo-coco.png', 'bolo tradicional')"
+                      title="Adicionar ao Carrinho"
+                    >
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button
+                      class="add-to-wishlist"
+                      title="Adicionar aos Favoritos"
+                    >
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">Bolo de Coco</h3>
+                  <p class="product-description">
+                    Massa aerada com coco fresco e leite condensado
+                  </p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.5)</span>
+                  </div>
+                  <div class="product-price">R$ 95,00</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo">
+              <i class="fas fa-birthday-cake"></i>
+              <span>Doce Encanto</span>
+            </div>
+            <p class="footer-description">
+              Criando momentos doces e inesquecíveis desde 2020.
+            </p>
+            <div class="footer-social">
+              <a
+                href="https://facebook.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="https://instagram.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://twitter.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a
+                href="https://youtube.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <h4>Links Rápidos</h4>
+            <ul class="footer-links">
+              <li><a href="../index.html">Página Inicial</a></li>
+              <li><a href="bolos.html">Nossos Bolos</a></li>
+              <li><a href="doces.html">Nossos Doces</a></li>
+              <li><a href="sobre.html">Sobre Nós</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Atendimento</h4>
+            <ul class="footer-links">
+              <li><a href="#">Central de Ajuda</a></li>
+              <li><a href="#">Política de Privacidade</a></li>
+              <li><a href="#">Termos de Uso</a></li>
+              <li><a href="#">Trocas e Devoluções</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Contato</h4>
+            <div class="contact-info">
+              <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>(21) 99999-9999</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>contato@doceencanto.com</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Rio de Janeiro, RJ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <p>&copy; 2025 Doce Encanto. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../auth.js"></script>
+    <script src="../cart.js"></script>
+    <script src="../script.js"></script>
+    <script src="shop.js"></script>
+  </body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minha Conta - Doce Encanto</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="usuario.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
+    </style>
+  </head>
+  <body>
+    <!-- Navbar Modernizada -->
+    <header class="modern-header">
+      <nav class="modern-nav">
+        <div class="nav-container">
+          <!-- Logo -->
+          <div class="nav-logo">
+            <a href="../index.html" class="logo-link">
+              <i class="fas fa-birthday-cake"></i>
+              <span class="logo-text">Doce Encanto</span>
+            </a>
+          </div>
+
+          <!-- Menu Principal -->
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="../index.html" class="nav-link">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle">
+                <i class="fas fa-store"></i>
+                <span>Produtos</span>
+                <i class="fas fa-chevron-down"></i>
+              </a>
+              <div class="dropdown-menu">
+                <a href="bolos.html" class="dropdown-item">
+                  <i class="fas fa-birthday-cake"></i>
+                  <span>Bolos</span>
+                </a>
+                <a href="doces.html" class="dropdown-item">
+                  <i class="fas fa-candy-cane"></i>
+                  <span>Doces</span>
+                </a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="sobre.html" class="nav-link">
+                <i class="fas fa-info-circle"></i>
+                <span>Sobre</span>
+              </a>
+            </li>
+          </ul>
+
+          <!-- Ações do Usuário -->
+          <div class="nav-actions">
+            <a
+              href="usuario.html"
+              class="nav-action user-action active"
+              title="Minha Conta"
+            >
+              <i class="fas fa-user"></i>
+            </a>
+            <a
+              href="carrinho.html"
+              class="nav-action cart-action"
+              title="Carrinho"
+            >
+              <i class="fas fa-shopping-bag"></i>
+              <span class="cart-count">0</span>
+            </a>
+            <button class="mobile-menu-toggle">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="user-page">
+      <div class="container">
+        <!-- Header da Página -->
+        <div class="page-header">
+          <div class="breadcrumb">
+            <a href="../index.html">Início</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Minha Conta</span>
+          </div>
+          <div class="user-welcome">
+            <div class="welcome-content">
+              <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>
+              </div>
+              <div class="welcome-text">
+                <h1>Bem-vindo(a), <span id="welcomeName">Usuário</span>!</h1>
+                <p>
+                  Gerencie suas informações pessoais e acompanhe seu histórico
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conteúdo da Página -->
+        <div class="user-content">
+          <!-- Informações Pessoais -->
+          <div class="info-section">
+            <div class="section-header">
+              <h2>
+                <i class="fas fa-user"></i>
+                Informações Pessoais
+              </h2>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-card">
+                <div class="info-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div class="info-content">
+                  <label>Nome Completo</label>
+                  <span id="userName">Carregando...</span>
+                </div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="info-content">
+                  <label>Email</label>
+                  <span id="userEmail">Carregando...</span>
+                </div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-icon">
+                  <i class="fas fa-calendar"></i>
+                </div>
+                <div class="info-content">
+                  <label>Data de Nascimento</label>
+                  <span id="userDob">Não informado</span>
+                </div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="info-content">
+                  <label>CEP</label>
+                  <span id="userCep">Não informado</span>
+                </div>
+              </div>
+
+              <div class="info-card full-width">
+                <div class="info-icon">
+                  <i class="fas fa-home"></i>
+                </div>
+                <div class="info-content">
+                  <label>Endereço</label>
+                  <span id="userAddress">Não informado</span>
+                </div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-icon">
+                  <i class="fas fa-city"></i>
+                </div>
+                <div class="info-content">
+                  <label>Cidade</label>
+                  <span id="userCity">Não informado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estatísticas do Usuário -->
+          <div class="stats-section">
+            <div class="section-header">
+              <h2>
+                <i class="fas fa-chart-bar"></i>
+                Suas Estatísticas
+              </h2>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-number" id="totalOrders">0</span>
+                  <span class="stat-label">Pedidos Realizados</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-heart"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-number" id="favoriteItems">0</span>
+                  <span class="stat-label">Itens Favoritos</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-number" id="memberSince">-</span>
+                  <span class="stat-label">Membro há</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-content">
+                  <span class="stat-number">VIP</span>
+                  <span class="stat-label">Status da Conta</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo">
+              <i class="fas fa-birthday-cake"></i>
+              <span>Doce Encanto</span>
+            </div>
+            <p class="footer-description">
+              Criando momentos doces e inesquecíveis desde 2020.
+            </p>
+            <div class="footer-social">
+              <a
+                href="https://facebook.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="https://instagram.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://twitter.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a
+                href="https://youtube.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <h4>Links Rápidos</h4>
+            <ul class="footer-links">
+              <li><a href="../index.html">Página Inicial</a></li>
+              <li><a href="bolos.html">Nossos Bolos</a></li>
+              <li><a href="doces.html">Nossos Doces</a></li>
+              <li><a href="sobre.html">Sobre Nós</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Atendimento</h4>
+            <ul class="footer-links">
+              <li><a href="#">Central de Ajuda</a></li>
+              <li><a href="#">Política de Privacidade</a></li>
+              <li><a href="#">Termos de Uso</a></li>
+              <li><a href="#">Trocas e Devoluções</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Contato</h4>
+            <div class="contact-info">
+              <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>(21) 99999-9999</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>contato@doceencanto.com</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Rio de Janeiro, RJ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <p>&copy; 2025 Doce Encanto. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../auth.js"></script>
+    <script src="../cart.js"></script>
+    <script src="../script.js"></script>
+    <script src="../paginas/usuario.js"></script>
+  </body>
+</html>
