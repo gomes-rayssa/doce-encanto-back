@@ -1,198 +1,402 @@
-// validações
-document.addEventListener("DOMContentLoaded", function () {
-  const senha = document.getElementById("senha");
-  const erroForca = document.getElementById("erroForca");
-  const form = document.querySelector("form");
-  const confirmarSenha = document.getElementById("confirmarSenha");
-  const mensagemErro = document.getElementById("mensagemErro");
-  const email = document.getElementById("email");
-  const erroEmail = document.getElementById("erroEmail");
+document.addEventListener('DOMContentLoaded', function () {
+  // Elementos do DOM
+  const form = document.getElementById('registration-form');
+  const step1 = document.getElementById('step1');
+  const step2 = document.getElementById('step2');
+  const step1Indicator = document.getElementById('step1-indicator');
+  const step2Indicator = document.getElementById('step2-indicator');
+  const nextBtn = document.getElementById('next-step1');
+  const prevBtn = document.getElementById('prev-step2');
+  const submitBtn = document.getElementById('submit-form');
 
-  const notificationArea = document.createElement('div');
-  notificationArea.id = 'notification-area'; 
-  document.body.appendChild(notificationArea);
+  // Campos do formulário
+  const campos = {
+    nome: document.getElementById('nome'),
+    email: document.getElementById('email'),
+    dataNascimento: document.getElementById('data-nascimento'),
+    senha: document.getElementById('senha'),
+    confirmarSenha: document.getElementById('confirmar-senha'),
+    cep: document.getElementById('cep'),
+    rua: document.getElementById('rua'),
+    bairro: document.getElementById('bairro'),
+    cidade: document.getElementById('cidade'),
+    estado: document.getElementById('estado')
+  };
 
-  
-  function showNotification(message, type = 'info') {
-    notificationArea.textContent = message;
-    notificationArea.className = 'notification ' + type;
-    notificationArea.style.display = 'block';
+  // Variável para controlar a etapa atual
+  let etapaAtual = 1;
 
-    setTimeout(() => {
-      notificationArea.style.display = 'none';
-      notificationArea.textContent = '';
-      notificationArea.className = '';
-    }, 3000);
+  // Funções de validação
+  function validarEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
   }
 
-  const regexSenhaForte =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.,;:_])[A-Za-z\d@$!%*?&#.,;:_]{8,}$/;
+  function validarSenha(senha) {
+    // Senha forte: mínimo 8 caracteres, pelo menos 1 maiúscula, 1 minúscula e 1 símbolo
+    const temTamanhoMinimo = senha.length >= 8;
+    const temMaiuscula = /[A-Z]/.test(senha);
+    const temMinuscula = /[a-z]/.test(senha);
+    const temSimbolo = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(senha);
 
-  function validarForcaSenha() {
-    if (!regexSenhaForte.test(senha.value)) {
-      erroForca.textContent =
-        "Senha fraca: use no mínimo 8 caracteres, com maiúsculas, minúsculas, número e símbolo.";
-      erroForca.style.display = "block";
-      return false;
-    } else {
-      erroForca.textContent = "";
-      erroForca.style.display = "none";
-      return true;
+    return temTamanhoMinimo && temMaiuscula && temMinuscula && temSimbolo;
+  }
+
+  function validarCEP(cep) {
+    const regex = /^\d{5}-?\d{3}$/;
+    return regex.test(cep);
+  }
+
+  function validarIdade(dataNascimento) {
+    const hoje = new Date();
+    const nascimento = new Date(dataNascimento);
+    const idade = hoje.getFullYear() - nascimento.getFullYear();
+    const mesAtual = hoje.getMonth();
+    const mesNascimento = nascimento.getMonth();
+
+    if (mesAtual < mesNascimento || (mesAtual === mesNascimento && hoje.getDate() < nascimento.getDate())) {
+      idade--;
+    }
+
+    return idade >= 18;
+  }
+
+  // Função para mostrar erro
+  function mostrarErro(campo, mensagem) {
+    const formGroup = campo.closest('.form-group');
+    const errorElement = formGroup.querySelector('.error-message');
+
+    formGroup.classList.add('error');
+    formGroup.classList.remove('success');
+    errorElement.textContent = mensagem;
+  }
+
+  // Função para mostrar sucesso
+  function mostrarSucesso(campo) {
+    const formGroup = campo.closest('.form-group');
+    const errorElement = formGroup.querySelector('.error-message');
+
+    formGroup.classList.add('success');
+    formGroup.classList.remove('error');
+    errorElement.textContent = '';
+  }
+
+  // Função para limpar validação
+  function limparValidacao(campo) {
+    const formGroup = campo.closest('.form-group');
+    const errorElement = formGroup.querySelector('.error-message');
+
+    formGroup.classList.remove('error', 'success');
+    errorElement.textContent = '';
+  }
+
+  // Validação em tempo real
+  Object.keys(campos).forEach(key => {
+    const campo = campos[key];
+
+    campo.addEventListener('blur', function () {
+      validarCampo(key, campo.value);
+    });
+
+    campo.addEventListener('input', function () {
+      if (campo.closest('.form-group').classList.contains('error')) {
+        validarCampo(key, campo.value);
+      }
+    });
+  });
+
+  // Função para validar campo individual
+  function validarCampo(nomeCampo, valor) {
+    const campo = campos[nomeCampo];
+
+    switch (nomeCampo) {
+      case 'nome':
+        if (!valor.trim()) {
+          mostrarErro(campo, 'Nome é obrigatório');
+          return false;
+        } else if (valor.trim().length < 2) {
+          mostrarErro(campo, 'Nome deve ter pelo menos 2 caracteres');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
+      case 'email':
+        if (!valor.trim()) {
+          mostrarErro(campo, 'E-mail é obrigatório');
+          return false;
+        } else if (!validarEmail(valor)) {
+          mostrarErro(campo, 'E-mail inválido');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
+      case 'dataNascimento':
+        if (!valor) {
+          mostrarErro(campo, 'Data de nascimento é obrigatória');
+          return false;
+        } else if (!validarIdade(valor)) {
+          mostrarErro(campo, 'Você deve ter pelo menos 18 anos');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
+      case 'senha':
+        if (!valor) {
+          mostrarErro(campo, 'Senha é obrigatória');
+          return false;
+        } else if (!validarSenha(valor)) {
+          mostrarErro(campo, 'Senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e símbolo');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          // Revalidar confirmação de senha se já foi preenchida
+          if (campos.confirmarSenha.value) {
+            validarCampo('confirmarSenha', campos.confirmarSenha.value);
+          }
+          return true;
+        }
+
+      case 'confirmarSenha':
+        if (!valor) {
+          mostrarErro(campo, 'Confirmação de senha é obrigatória');
+          return false;
+        } else if (valor !== campos.senha.value) {
+          mostrarErro(campo, 'Senhas não coincidem');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
+      case 'cep':
+        if (!valor.trim()) {
+          mostrarErro(campo, 'CEP é obrigatório');
+          return false;
+        } else if (!validarCEP(valor)) {
+          mostrarErro(campo, 'CEP inválido');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
+      case 'rua':
+        if (!valor.trim()) {
+          mostrarErro(campo, 'Rua é obrigatória');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
+      case 'bairro':
+        if (!valor.trim()) {
+          mostrarErro(campo, 'Bairro é obrigatório');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
+      case 'cidade':
+        if (!valor.trim()) {
+          mostrarErro(campo, 'Cidade é obrigatória');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
+      case 'estado':
+        if (!valor) {
+          mostrarErro(campo, 'Estado é obrigatório');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
+      default:
+        return true;
     }
   }
 
-  function validarSenhasIguais() {
-    if (senha.value !== confirmarSenha.value) {
-      mensagemErro.textContent = "As senhas não coincidem.";
-      mensagemErro.style.display = "block";
-      return false;
-    } else {
-      mensagemErro.textContent = "";
-      mensagemErro.style.display = "none";
-      return true;
+  // Função para validar etapa
+  function validarEtapa(etapa) {
+    let valido = true;
+
+    if (etapa === 1) {
+      const camposEtapa1 = ['nome', 'email', 'dataNascimento', 'senha', 'confirmarSenha'];
+      camposEtapa1.forEach(campo => {
+        if (!validarCampo(campo, campos[campo].value)) {
+          valido = false;
+        }
+      });
+    } else if (etapa === 2) {
+      const camposEtapa2 = ['cep', 'rua', 'bairro', 'cidade', 'estado'];
+      camposEtapa2.forEach(campo => {
+        if (!validarCampo(campo, campos[campo].value)) {
+          valido = false;
+        }
+      });
+    }
+
+    return valido;
+  }
+
+  // Função para ir para próxima etapa
+  function proximaEtapa() {
+    if (validarEtapa(1)) {
+      etapaAtual = 2;
+      step1.classList.remove('active');
+      step2.classList.add('active');
+      step1Indicator.classList.remove('active');
+      step1Indicator.classList.add('completed');
+      step2Indicator.classList.add('active');
     }
   }
 
-  function validarEmail() {
-    if (!email.value.includes("@")) {
-      erroEmail.textContent = "O e-mail precisa conter '@'.";
-      erroEmail.style.display = "block";
-      return false;
-    } else {
-      erroEmail.textContent = "";
-      erroEmail.style.display = "none";
-      return true;
-    }
+  // Função para voltar etapa
+  function etapaAnterior() {
+    etapaAtual = 1;
+    step2.classList.remove('active');
+    step1.classList.add('active');
+    step2Indicator.classList.remove('active');
+    step1Indicator.classList.remove('completed');
+    step1Indicator.classList.add('active');
   }
 
-  // validações em tempo real
-  senha.addEventListener("input", validarForcaSenha);
-  confirmarSenha.addEventListener("input", validarSenhasIguais);
-  email.addEventListener("input", validarEmail);
-
-  
-  function loadFormData() {
-    const storedData = localStorage.getItem("cadastroFormData");
-    if (storedData) {
-      const formData = JSON.parse(storedData);
-      document.getElementById("nome").value = formData.nome || "";
-      document.getElementById("email").value = formData.email || "";
-      document.getElementById("dob").value = formData.dob || "";
-      document.getElementById("cep").value = formData.cep || "";
-      document.getElementById("rua").value = formData.rua || "";
-      document.getElementById("bairro").value = formData.bairro || "";
-      document.getElementById("cidade").value = formData.cidade || "";
-      document.getElementById("uf").value = formData.uf || "";
-    }
-  }
-
-  
-  loadFormData();
-
-  // submit form
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const senhaValida = validarForcaSenha();
-    const senhasIguais = validarSenhasIguais();
-    const emailValido = validarEmail();
-
-    if (!senhaValida || !senhasIguais || !emailValido) {
-      showNotification("Por favor, corrija os erros no formulário.", "error");
-      return;
-    }
-
+  // Função para buscar CEP
+  async function buscarCEP(cep) {
     try {
-      const userData = {
-        nome: document.getElementById("nome").value,
-        email: email.value,
-        dob: document.getElementById("dob").value,
-        cep: document.getElementById("cep").value,
-        rua: document.getElementById("rua").value,
-        bairro: document.getElementById("bairro").value,
-        cidade: document.getElementById("cidade").value,
-        uf: document.getElementById("uf").value,
-        senha: senha.value,
-      };
+      const cepLimpo = cep.replace(/\D/g, '');
+      if (cepLimpo.length !== 8) return;
 
-      // localStorage
-      localStorage.setItem("cadastroFormData", JSON.stringify(userData));
+      // Adicionar classe de loading
+      campos.cep.classList.add('loading');
 
-      console.log("Dados do usuário para registro:", userData);
+      const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+      const data = await response.json();
 
-      // not
-      showNotification("Cadastro realizado com sucesso! Redirecionando para o login...", "success");
-      setTimeout(() => {
-        window.location.href = "login.html"; 
-      }, 1500); 
+      if (!data.erro) {
+        campos.rua.value = data.logradouro || '';
+        campos.bairro.value = data.bairro || '';
+        campos.cidade.value = data.localidade || '';
+        campos.estado.value = data.uf || '';
 
+        // Validar campos preenchidos automaticamente
+        if (data.logradouro) validarCampo('rua', data.logradouro);
+        if (data.bairro) validarCampo('bairro', data.bairro);
+        if (data.localidade) validarCampo('cidade', data.localidade);
+        if (data.uf) validarCampo('estado', data.uf);
+      }
     } catch (error) {
-      showNotification("Erro no cadastro: " + error.message, "error");
+      console.error('Erro ao buscar CEP:', error);
+    } finally {
+      // Remover classe de loading
+      campos.cep.classList.remove('loading');
+    }
+  }
+
+  // Máscara para CEP
+  campos.cep.addEventListener('input', function (e) {
+    let valor = e.target.value.replace(/\D/g, '');
+    if (valor.length > 5) {
+      valor = valor.substring(0, 5) + '-' + valor.substring(5, 8);
+    }
+    e.target.value = valor;
+
+    // Buscar CEP automaticamente quando completo
+    if (valor.length === 9) {
+      buscarCEP(valor);
     }
   });
-});
 
-// data
-function formatDate(event) {
-  let input = event.target;
-  let value = input.value.replace(/\D/g, "");
-  if (value.length <= 2) {
-    input.value = value;
-  } else if (value.length <= 4) {
-    input.value = value.substring(0, 2) + "/" + value.substring(2);
-  } else {
-    input.value =
-      value.substring(0, 2) +
-      "/" +
-      value.substring(2, 4) +
-      "/" +
-      value.substring(4, 8);
-  }
-}
+  // Event listeners para botões
+  nextBtn.addEventListener('click', proximaEtapa);
+  prevBtn.addEventListener('click', etapaAnterior);
 
-// viacep
-function limpa_formulário_cep() {
-  document.getElementById("rua").value = "";
-  document.getElementById("bairro").value = "";
-  document.getElementById("cidade").value = "";
-  document.getElementById("uf").value = "";
-}
+  // Submissão do formulário
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-function meu_callback(conteudo) {
-  if (!("erro" in conteudo)) {
-    document.getElementById("rua").value = conteudo.logradouro;
-    document.getElementById("bairro").value = conteudo.bairro;
-    document.getElementById("cidade").value = conteudo.localidade;
-    document.getElementById("uf").value = conteudo.uf;
-  } else {
-    limpa_formulário_cep();
-    showNotification("CEP não encontrado.", "error");
-  }
-}
+    if (validarEtapa(2)) {
+      submitBtn.textContent = 'Enviando...';
+      submitBtn.disabled = true;
 
-function pesquisacep(valor) {
-  var cep = valor.replace(/\D/g, "");
+      setTimeout(() => {
+        // ✅ Notificação
+        showToast('Cadastro realizado com sucesso!', 'login.html');
 
-  if (cep != "") {
-    var validacep = /^[0-9]{8}$/;
+        // Reset do formulário (opcional, pois vamos sair da página)
+        form.reset();
+        etapaAnterior();
 
-    if (validacep.test(cep)) {
-      document.getElementById("rua").value = "...";
-      document.getElementById("bairro").value = "...";
-      document.getElementById("cidade").value = "...";
-      document.getElementById("uf").value = "...";
+        Object.keys(campos).forEach(key => {
+          limparValidacao(campos[key]);
+        });
 
-      var script = document.createElement("script");
-
-      script.src =
-        "https://viacep.com.br/ws/" + cep + "/json/?callback=meu_callback";
-
-      document.body.appendChild(script);
-    } else {
-      limpa_formulário_cep();
-      showNotification("Formato de CEP inválido.", "error");
+        submitBtn.textContent = 'Finalizar Cadastro';
+        submitBtn.disabled = false;
+      }, 2000);
     }
-  } else {
-    limpa_formulário_cep();
-  }
-}
+
+    function showToast(message, redirectUrl) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      container.appendChild(toast);
+
+      // Faz aparecer
+      setTimeout(() => toast.classList.add('show'), 50);
+
+      // Some após 2,5 segundos e redireciona
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+        if (redirectUrl) window.location.href = redirectUrl;
+      }, 2500);
+    }
+
+  });
+
+  // Navegação por teclado
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName !== 'BUTTON' && e.target.type !== 'submit') {
+      e.preventDefault();
+      if (etapaAtual === 1) {
+        proximaEtapa();
+      }
+    }
+  });
+
+  // Funcionalidade de toggle de senha
+  const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+
+  togglePasswordButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const targetId = this.getAttribute('data-target');
+      const targetInput = document.getElementById(targetId);
+
+      if (targetInput.type === 'password') {
+        targetInput.type = 'text';
+        this.src = '../assets/logos/olho-x.png'; // Ícone para ocultar
+        this.alt = 'Ocultar Senha';
+      } else {
+        targetInput.type = 'password';
+        this.src = '../assets/logos/olho.png'; // Ícone para mostrar
+        this.alt = 'Mostrar Senha';
+      }
+    });
+  });
+
+  // Inicialização
+  console.log('Formulário de cadastro inicializado');
+});

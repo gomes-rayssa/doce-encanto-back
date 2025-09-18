@@ -1,50 +1,45 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const loginForm = document.getElementById("loginForm");
+  const loginForm = document.getElementById("login-form");
   const emailInput = document.getElementById("email");
-  const senhaInput = document.getElementById("senha");
+  const senhaInput = document.getElementById("password");
 
-  
-  const notificationArea = document.createElement('div');
-  notificationArea.id = 'notification-area';
+  // Área para outras notificações, se quiser usar além do toast
+  const notificationArea = document.createElement("div");
+  notificationArea.id = "notification-area";
   document.body.appendChild(notificationArea);
 
-  // exibir a notificação
-  function showNotification(message, type = 'info') {
-    notificationArea.textContent = message;
-    notificationArea.className = 'notification ' + type; 
-    notificationArea.style.display = 'block'; 
+  // Alternar visibilidade da senha
+  window.togglePassword = function () {
+    const pwd = document.getElementById("password");
+    pwd.type = pwd.type === "password" ? "text" : "password";
+  };
 
-   
+  // Exibir toast após submit
+  loginForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // aqui você pode validar o e-mail e a senha antes de mostrar o toast
+    // exemplo simples de verificação vazia:
+    if (!emailInput.value.trim() || !senhaInput.value.trim()) {
+      showNotification("Preencha todos os campos!");
+      return;
+    }
+
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+  });
+
+  // Função extra para mensagens personalizadas na div notification-area
+  function showNotification(message) {
+    const note = document.createElement("div");
+    note.className = "toast show"; // reutiliza estilo do toast
+    note.textContent = message;
+    notificationArea.appendChild(note);
+
     setTimeout(() => {
-      notificationArea.style.display = 'none';
-      notificationArea.textContent = '';
-      notificationArea.className = ''; 
-    }, 3000); 
-  }
-
-  if (loginForm) {
-    loginForm.addEventListener("submit", function (event) {
-      event.preventDefault(); 
-
-      const emailDigitado = emailInput.value;
-      const senhaDigitada = senhaInput.value;
-
-      const storedUserData = localStorage.getItem("cadastroFormData");
-
-      if (storedUserData) {
-        const userData = JSON.parse(storedUserData);
-
-        if (emailDigitado === userData.email && senhaDigitada === userData.senha) {
-          showNotification("Login bem-sucedido! Redirecionando...", "success");
-          setTimeout(() => {
-            window.location.href = "usuario.html"; 
-          }, 1500); 
-        } else {
-          showNotification("Email ou senha incorretos. Verifique suas credenciais.", "error");
-        }
-      } else {
-        showNotification("Nenhum usuário cadastrado. Por favor, cadastre-se primeiro.", "info");
-      }
-    });
+      note.classList.remove("show");
+      setTimeout(() => note.remove(), 400);
+    }, 3000);
   }
 });
