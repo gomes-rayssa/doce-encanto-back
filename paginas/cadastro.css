@@ -5,19 +5,18 @@
 }
 
 body {
-    font-family: "Zen Maru Gothic";
     background-image: url(../assets/home/fundo-login.png);
     background-size: cover;
+}
+
+.formulario {
+    width: 100%;
+    max-width: 500px;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-}
-
-.container {
-    width: 100%;
-    max-width: 500px;
 }
 
 .form-container {
