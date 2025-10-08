@@ -1,3 +1,5 @@
+/* globais */
+
 * {
     margin: 0;
     padding: 0;
@@ -9,14 +11,13 @@ body {
     background-size: cover;
 }
 
+/* estrutura form */
+
 .formulario {
-    width: 100%;
-    max-width: 500px;
-    min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
+    align-items: center;
+    padding: 80px 20px;
 }
 
 .form-container {
@@ -25,19 +26,135 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     animation: slideUp 0.6s ease-out;
+    width: 100%;
+    max-width: 400px;
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.form-step {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+    width: 400px;
+    margin: 0 auto;
 }
 
+.form-step.active {
+    display: block;
+}
+
+/* títulos */
+h2 {
+    color: #990053;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* inputs - labels */
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #740040;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+select:focus {
+    outline: none;
+    border-color: #be0069;
+    box-shadow: 0 0 0 3px rgba(234, 102, 208, 0.1);
+    transform: translateY(-2px);
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="date"]:hover,
+select:hover {
+    border-color: #740040;
+}
+
+select {
+    cursor: pointer;
+}
+
+/* botões */
+.form-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    flex: 1;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #990053 0%, #740040 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background: #990053;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #740040;
+    color: #efe8da;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* barra de progresso */
 .progress-bar {
     display: flex;
     background: #efe8da;
@@ -108,14 +225,17 @@ body {
     color: #740040;
 }
 
-.form-step {
-    display: none;
-    padding: 40px;
-    animation: fadeIn 0.5s ease-in;
-}
+/* animações */
 
-.form-step.active {
-    display: block;
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeIn {
@@ -129,63 +249,33 @@ body {
     }
 }
 
-h2 {
-    color: #990053;
-    margin-bottom: 30px;
-    font-size: 28px;
-    font-weight: 600;
-    text-align: center;
+/* animação carregamento */
+.loading {
+    position: relative;
+    overflow: hidden;
 }
 
-.form-group {
-    margin-bottom: 25px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #740040;
-    font-weight: 500;
-    font-size: 14px;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="date"],
-select {
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
     width: 100%;
-    padding: 15px;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    background: white;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: loading 1.5s infinite;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="date"]:focus,
-select:focus {
-    outline: none;
-    border-color: #be0069;
-    box-shadow: 0 0 0 3px rgba(234, 102, 208, 0.1);
-    transform: translateY(-2px);
+@keyframes loading {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
 }
 
-input[type="text"]:hover,
-input[type="email"]:hover,
-input[type="password"]:hover,
-input[type="date"]:hover,
-select:hover {
-    border-color: #740040;
-}
-
-select {
-    cursor: pointer;
-}
-
+/* erro */
 .error-message {
     color: #dc3545;
     font-size: 12px;
@@ -194,58 +284,7 @@ select {
     min-height: 16px;
 }
 
-.form-buttons {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
-}
-
-.btn {
-    flex: 1;
-    padding: 15px 25px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #990053 0%, #740040 100%);
-    color: white;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-}
-
-.btn-secondary {
-    background: #990053;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background: #740040;
-    color: #efe8da;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none !important;
-}
-
-/* Validação visual */
+/* validação campos */
 .form-group.error input,
 .form-group.error select {
     border-color: #dc3545;
@@ -258,7 +297,87 @@ select {
     box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
 }
 
-/* Responsividade */
+/* icone senha */
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    user-select: none;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+/* links */
+.txt {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.link {
+    color: #990053;
+    text-decoration: none;
+    text-decoration: underline;
+}
+
+.link:hover {
+    color: #990053;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* aviso */
+.toast {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4caf50;
+    color: #fff;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 9999;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* estilização data */
+input[type="date"] {
+    font-family: "Zen Maru Gothic", "Playfair Display", sans-serif;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: hue-rotate(310deg) brightness(0.8);
+    cursor: pointer;
+}
+
+/* RESPONSIVIDADE */
+
 @media (max-width: 768px) {
     .container {
         padding: 10px;
@@ -296,7 +415,7 @@ select {
     input[type="date"],
     select {
         padding: 12px;
-        font-size: 16px; /* Evita zoom no iOS */
+        font-size: 16px;
     }
     
     .btn {
@@ -328,94 +447,4 @@ select {
     .step-number {
         margin-bottom: 0;
     }
-}
-
-/* Animações de carregamento */
-.loading {
-    position: relative;
-    overflow: hidden;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% {
-        left: -100%;
-    }
-    100% {
-        left: 100%;
-    }
-}
-
-
-.password-container {
-    position: relative;
-    width: 100%;
-}
-
-.password-container input {
-    padding-right: 45px; /* Espaço para o ícone */
-}
-
-.toggle-password {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-    user-select: none; /* Evita seleção da imagem */
-}
-
-.toggle-password:hover {
-    opacity: 1;
-}
-
-/* link de cadastro */
-.link {
-  color: #990053;
-  text-decoration: none;
-  text-decoration: underline;
-}
-
-.link:hover {
-  color: #990053;
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-/* Estilo do aviso de sucesso */
-.toast {
-  position: fixed;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #4caf50;      /* verde de sucesso */
-  color: #fff;
-  padding: 16px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  opacity: 0;               /* começa invisível */
-  pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  z-index: 9999;
-}
-
-.toast.show {
-  opacity: 1;               /* aparece */
-  transform: translate(-50%, 0);
 }

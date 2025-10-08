@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     confirmarSenha: document.getElementById('confirmar-senha'),
     cep: document.getElementById('cep'),
     rua: document.getElementById('rua'),
+    numero: document.getElementById('numero'),
     bairro: document.getElementById('bairro'),
     cidade: document.getElementById('cidade'),
     estado: document.getElementById('estado')
@@ -195,6 +196,18 @@ document.addEventListener('DOMContentLoaded', function () {
           return true;
         }
 
+      case 'numero': // <-- Adicione este novo case
+        if (!valor.trim()) {
+          mostrarErro(campo, 'Número é obrigatório');
+          return false;
+        } else if (isNaN(valor)) { // Valida se é um número
+          mostrarErro(campo, 'O número deve conter apenas dígitos');
+          return false;
+        } else {
+          mostrarSucesso(campo);
+          return true;
+        }
+
       case 'bairro':
         if (!valor.trim()) {
           mostrarErro(campo, 'Bairro é obrigatório');
@@ -239,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     } else if (etapa === 2) {
-      const camposEtapa2 = ['cep', 'rua', 'bairro', 'cidade', 'estado'];
+      const camposEtapa2 = ['cep', 'rua', 'numero', 'bairro', 'cidade', 'estado'];
       camposEtapa2.forEach(campo => {
         if (!validarCampo(campo, campos[campo].value)) {
           valido = false;
@@ -400,3 +413,5 @@ document.addEventListener('DOMContentLoaded', function () {
   // Inicialização
   console.log('Formulário de cadastro inicializado');
 });
+
+

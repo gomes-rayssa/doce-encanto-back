@@ -141,3 +141,36 @@ function requireLogin() {
 // Atualiza navegação quando a página carrega
 document.addEventListener('DOMContentLoaded', updateNavigation);
 
+
+
+// auth.js
+
+document.addEventListener('DOMContentLoaded', function() {
+  const userActionLink = document.querySelector('.nav-action.user-action');
+
+  function updateNavbar() {
+    // Verifica se o usuário está logado
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    // Altera o link com base no status de login
+    if (isLoggedIn) {
+      userActionLink.href = '../paginas/usuario.html';
+      userActionLink.title = 'Minha Conta';
+    } else {
+      userActionLink.href = '../paginas/cadastro.html';
+      userActionLink.title = 'Minha Conta';
+    }
+  }
+
+  // Chama a função ao carregar a página
+  updateNavbar();
+
+  // Opcional: Adicionar um evento de logout se você tiver um botão de saída
+  // const logoutButton = document.getElementById('logout-button');
+  // if (logoutButton) {
+  //   logoutButton.addEventListener('click', function() {
+  //     localStorage.removeItem('isLoggedIn');
+  //     window.location.href = '../index.html';
+  //   });
+  // }
+});

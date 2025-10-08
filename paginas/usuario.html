@@ -1,343 +1,353 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Minha Conta - Doce Encanto</title>
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="usuario.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap");
-      @import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap");
-      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
-    </style>
-  </head>
-  <body>
-    <!-- Navbar Modernizada -->
-    <header class="modern-header">
-      <nav class="modern-nav">
-        <div class="nav-container">
-          <!-- Logo -->
-          <div class="nav-logo">
-            <a href="../index.html" class="logo-link">
-              <i class="fas fa-birthday-cake"></i>
-              <span class="logo-text">Doce Encanto</span>
-            </a>
-          </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta - Perfil do Usuário</title>
+    <link rel="stylesheet" href="usuario.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Notificação -->
+    <div id="notification" class="notification hidden">
+        <span id="notification-message"></span>
+    </div>
 
-          <!-- Menu Principal -->
-          <ul class="nav-menu">
-            <li class="nav-item">
-              <a href="../index.html" class="nav-link">
-                <i class="fas fa-home"></i>
-                <span>Início</span>
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle">
-                <i class="fas fa-store"></i>
-                <span>Produtos</span>
-                <i class="fas fa-chevron-down"></i>
-              </a>
-              <div class="dropdown-menu">
-                <a href="bolos.html" class="dropdown-item">
-                  <i class="fas fa-birthday-cake"></i>
-                  <span>Bolos</span>
-                </a>
-                <a href="doces.html" class="dropdown-item">
-                  <i class="fas fa-candy-cane"></i>
-                  <span>Doces</span>
-                </a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a href="sobre.html" class="nav-link">
-                <i class="fas fa-info-circle"></i>
-                <span>Sobre</span>
-              </a>
-            </li>
-          </ul>
-
-          <!-- Ações do Usuário -->
-          <div class="nav-actions">
-            <a
-              href="usuario.html"
-              class="nav-action user-action active"
-              title="Minha Conta"
-            >
-              <i class="fas fa-user"></i>
-            </a>
-            <a
-              href="carrinho.html"
-              class="nav-action cart-action"
-              title="Carrinho"
-            >
-              <i class="fas fa-shopping-bag"></i>
-              <span class="cart-count">0</span>
-            </a>
-            <button class="mobile-menu-toggle">
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-          </div>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="header-title">Minha Conta</h1>
+                <button id="logout-btn" class="btn btn-outline">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
+                </button>
+            </div>
         </div>
-      </nav>
     </header>
 
-    <!-- Conteúdo Principal -->
-    <main class="user-page">
-      <div class="container">
-        <!-- Header da Página -->
-        <div class="page-header">
-          <div class="breadcrumb">
-            <a href="../index.html">Início</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Minha Conta</span>
-          </div>
-          <div class="user-welcome">
-            <div class="welcome-content">
-              <div class="user-avatar">
-                <i class="fas fa-user-circle"></i>
-              </div>
-              <div class="welcome-text">
-                <h1>Bem-vindo(a), <span id="welcomeName">Usuário</span>!</h1>
-                <p>
-                  Gerencie suas informações pessoais e acompanhe seu histórico
-                </p>
-              </div>
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="grid">
+                
+                <!-- Coluna Principal - Perfil -->
+                <div class="main-column">
+                    
+                    <!-- Informações Pessoais -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title-section">
+                                <h2 class="card-title">
+                                    <i class="fas fa-user"></i>
+                                    Informações Pessoais
+                                </h2>
+                                <p class="card-description">Gerencie suas informações de perfil</p>
+                            </div>
+                            <div class="card-actions">
+                                <button id="edit-btn" class="btn btn-outline btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                    Editar
+                                </button>
+                                <div id="edit-actions" class="edit-actions hidden">
+                                    <button id="cancel-btn" class="btn btn-outline btn-sm">
+                                        <i class="fas fa-times"></i>
+                                        Cancelar
+                                    </button>
+                                    <button id="save-btn" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-save"></i>
+                                        Salvar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="nome-completo">Nome Completo</label>
+                                    <input type="text" id="nome-completo" class="form-input" readonly>
+                                    <span class="form-display" id="nome-display">Maria Silva Santos</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" class="form-input" readonly>
+                                    <span class="form-display" id="email-display">maria.silva@email.com</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="data-nascimento">Data de Nascimento</label>
+                                    <input type="date" id="data-nascimento" class="form-input" readonly>
+                                    <span class="form-display" id="data-display">15/05/1990</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Endereço -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title-section">
+                                <h2 class="card-title">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Endereço
+                                </h2>
+                                <p class="card-description">Informações de entrega e cobrança</p>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-grid address-grid">
+                                <div class="form-group">
+                                    <label for="cep">CEP</label>
+                                    <input type="text" id="cep" class="form-input" placeholder="00000-000" readonly>
+                                    <span class="form-display" id="cep-display">01234-567</span>
+                                </div>
+                                
+                                <div class="form-group span-2">
+                                    <label for="rua">Rua</label>
+                                    <input type="text" id="rua" class="form-input" readonly>
+                                    <span class="form-display" id="rua-display">Rua das Flores</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="numero">Número</label>
+                                    <input type="text" id="numero" class="form-input" readonly>
+                                    <span class="form-display" id="numero-display">123</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="bairro">Bairro</label>
+                                    <input type="text" id="bairro" class="form-input" readonly>
+                                    <span class="form-display" id="bairro-display">Centro</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="cidade">Cidade</label>
+                                    <input type="text" id="cidade" class="form-input" readonly>
+                                    <span class="form-display" id="cidade-display">São Paulo</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="estado">Estado</label>
+                                    <input type="text" id="estado" class="form-input" maxlength="2" readonly>
+                                    <span class="form-display" id="estado-display">SP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ações da Conta -->
+                    <div class="card danger-card">
+                        <div class="card-header">
+                            <div class="card-title-section">
+                                <h2 class="card-title danger-title">Zona de Perigo</h2>
+                                <p class="card-description">Ações irreversíveis da conta</p>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="danger-actions">
+                                <button id="delete-btn" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                    Apagar Conta
+                                </button>
+                                <div id="delete-confirm" class="delete-confirm hidden">
+                                    <button id="confirm-delete-btn" class="btn btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                        Confirmar Exclusão
+                                    </button>
+                                    <button id="cancel-delete-btn" class="btn btn-outline">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="delete-warning" class="delete-warning hidden">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Esta ação não pode ser desfeita. Todos os seus dados serão permanentemente excluídos.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar - Dashboard de Pedidos -->
+                <div class="sidebar">
+                    
+                    <!-- Resumo dos Pedidos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title-section">
+                                <h2 class="card-title">Meus Pedidos</h2>
+                                <p class="card-description">Acompanhe o status dos seus pedidos</p>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="status-summary">
+                                <div class="status-item">
+                                    <div class="status-icon status-a-pagar">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <span class="status-label">A Pagar</span>
+                                        <span class="status-count">2</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="status-item">
+                                    <div class="status-icon status-preparando">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <span class="status-label">Preparando para Envio</span>
+                                        <span class="status-count">1</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="status-item">
+                                    <div class="status-icon status-enviado">
+                                        <i class="fas fa-truck"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <span class="status-label">Enviado</span>
+                                        <span class="status-count">3</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="status-item">
+                                    <div class="status-icon status-avaliar">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <span class="status-label">A Avaliar</span>
+                                        <span class="status-count">1</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="status-item">
+                                    <div class="status-icon status-devolucao">
+                                        <i class="fas fa-undo"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <span class="status-label">Devolução</span>
+                                        <span class="status-count">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista Detalhada de Pedidos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title-section">
+                                <h2 class="card-title">Pedidos Recentes</h2>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="orders-list">
+                                <div class="order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#12345</span>
+                                        <span class="order-status status-a-pagar-badge">
+                                            <i class="fas fa-clock"></i>
+                                            A Pagar
+                                        </span>
+                                    </div>
+                                    <div class="order-details">
+                                        <span class="order-value">R$ 89,90</span>
+                                        <span class="order-date">05/10/2024</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#12346</span>
+                                        <span class="order-status status-a-pagar-badge">
+                                            <i class="fas fa-clock"></i>
+                                            A Pagar
+                                        </span>
+                                    </div>
+                                    <div class="order-details">
+                                        <span class="order-value">R$ 156,50</span>
+                                        <span class="order-date">06/10/2024</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#12347</span>
+                                        <span class="order-status status-preparando-badge">
+                                            <i class="fas fa-box"></i>
+                                            Preparando para Envio
+                                        </span>
+                                    </div>
+                                    <div class="order-details">
+                                        <span class="order-value">R$ 234,00</span>
+                                        <span class="order-date">04/10/2024</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#12348</span>
+                                        <span class="order-status status-enviado-badge">
+                                            <i class="fas fa-truck"></i>
+                                            Enviado
+                                        </span>
+                                    </div>
+                                    <div class="order-details">
+                                        <span class="order-value">R$ 67,80</span>
+                                        <span class="order-date">01/10/2024</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#12349</span>
+                                        <span class="order-status status-enviado-badge">
+                                            <i class="fas fa-truck"></i>
+                                            Enviado
+                                        </span>
+                                    </div>
+                                    <div class="order-details">
+                                        <span class="order-value">R$ 123,45</span>
+                                        <span class="order-date">28/09/2024</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#12350</span>
+                                        <span class="order-status status-enviado-badge">
+                                            <i class="fas fa-truck"></i>
+                                            Enviado
+                                        </span>
+                                    </div>
+                                    <div class="order-details">
+                                        <span class="order-value">R$ 98,70</span>
+                                        <span class="order-date">25/09/2024</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#12351</span>
+                                        <span class="order-status status-avaliar-badge">
+                                            <i class="fas fa-star"></i>
+                                            A Avaliar
+                                        </span>
+                                    </div>
+                                    <div class="order-details">
+                                        <span class="order-value">R$ 45,30</span>
+                                        <span class="order-date">20/09/2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-
-        <!-- Conteúdo da Página -->
-        <div class="user-content">
-          <!-- Informações Pessoais -->
-          <div class="info-section">
-            <div class="section-header">
-              <h2>
-                <i class="fas fa-user"></i>
-                Informações Pessoais
-              </h2>
-            </div>
-
-            <div class="info-grid">
-              <div class="info-card">
-                <div class="info-icon">
-                  <i class="fas fa-user"></i>
-                </div>
-                <div class="info-content">
-                  <label>Nome Completo</label>
-                  <span id="userName">Carregando...</span>
-                </div>
-              </div>
-
-              <div class="info-card">
-                <div class="info-icon">
-                  <i class="fas fa-envelope"></i>
-                </div>
-                <div class="info-content">
-                  <label>Email</label>
-                  <span id="userEmail">Carregando...</span>
-                </div>
-              </div>
-
-              <div class="info-card">
-                <div class="info-icon">
-                  <i class="fas fa-calendar"></i>
-                </div>
-                <div class="info-content">
-                  <label>Data de Nascimento</label>
-                  <span id="userDob">Não informado</span>
-                </div>
-              </div>
-
-              <div class="info-card">
-                <div class="info-icon">
-                  <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <div class="info-content">
-                  <label>CEP</label>
-                  <span id="userCep">Não informado</span>
-                </div>
-              </div>
-
-              <div class="info-card full-width">
-                <div class="info-icon">
-                  <i class="fas fa-home"></i>
-                </div>
-                <div class="info-content">
-                  <label>Endereço</label>
-                  <span id="userAddress">Não informado</span>
-                </div>
-              </div>
-
-              <div class="info-card">
-                <div class="info-icon">
-                  <i class="fas fa-city"></i>
-                </div>
-                <div class="info-content">
-                  <label>Cidade</label>
-                  <span id="userCity">Não informado</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Estatísticas do Usuário -->
-          <div class="stats-section">
-            <div class="section-header">
-              <h2>
-                <i class="fas fa-chart-bar"></i>
-                Suas Estatísticas
-              </h2>
-            </div>
-
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-icon">
-                  <i class="fas fa-shopping-cart"></i>
-                </div>
-                <div class="stat-content">
-                  <span class="stat-number" id="totalOrders">0</span>
-                  <span class="stat-label">Pedidos Realizados</span>
-                </div>
-              </div>
-
-              <div class="stat-card">
-                <div class="stat-icon">
-                  <i class="fas fa-heart"></i>
-                </div>
-                <div class="stat-content">
-                  <span class="stat-number" id="favoriteItems">0</span>
-                  <span class="stat-label">Itens Favoritos</span>
-                </div>
-              </div>
-
-              <div class="stat-card">
-                <div class="stat-icon">
-                  <i class="fas fa-calendar-check"></i>
-                </div>
-                <div class="stat-content">
-                  <span class="stat-number" id="memberSince">-</span>
-                  <span class="stat-label">Membro há</span>
-                </div>
-              </div>
-
-              <div class="stat-card">
-                <div class="stat-icon">
-                  <i class="fas fa-star"></i>
-                </div>
-                <div class="stat-content">
-                  <span class="stat-number">VIP</span>
-                  <span class="stat-label">Status da Conta</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </main>
 
-    
-
-    <!-- Footer -->
-    <footer class="modern-footer">
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <div class="footer-logo">
-              <i class="fas fa-birthday-cake"></i>
-              <span>Doce Encanto</span>
-            </div>
-            <p class="footer-description">
-              Criando momentos doces e inesquecíveis desde 2020.
-            </p>
-            <div class="footer-social">
-              <a
-                href="https://facebook.com/"
-                target="_blank"
-                class="social-link"
-              >
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a
-                href="https://instagram.com/"
-                target="_blank"
-                class="social-link"
-              >
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a
-                href="https://twitter.com/"
-                target="_blank"
-                class="social-link"
-              >
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a
-                href="https://youtube.com/"
-                target="_blank"
-                class="social-link"
-              >
-                <i class="fab fa-youtube"></i>
-              </a>
-            </div>
-          </div>
-
-          <div class="footer-section">
-            <h4>Links Rápidos</h4>
-            <ul class="footer-links">
-              <li><a href="../index.html">Página Inicial</a></li>
-              <li><a href="bolos.html">Nossos Bolos</a></li>
-              <li><a href="doces.html">Nossos Doces</a></li>
-              <li><a href="sobre.html">Sobre Nós</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h4>Atendimento</h4>
-            <ul class="footer-links">
-              <li><a href="#">Central de Ajuda</a></li>
-              <li><a href="#">Política de Privacidade</a></li>
-              <li><a href="#">Termos de Uso</a></li>
-              <li><a href="#">Trocas e Devoluções</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h4>Contato</h4>
-            <div class="contact-info">
-              <div class="contact-item">
-                <i class="fas fa-phone"></i>
-                <span>(21) 99999-9999</span>
-              </div>
-              <div class="contact-item">
-                <i class="fas fa-envelope"></i>
-                <span>contato@doceencanto.com</span>
-              </div>
-              <div class="contact-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Rio de Janeiro, RJ</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="container">
-          <p>&copy; 2025 Doce Encanto. Todos os direitos reservados.</p>
-        </div>
-      </div>
-    </footer>
-
-    <script src="../auth.js"></script>
-    <script src="../cart.js"></script>
-    <script src="../script.js"></script>
-    <script src="../paginas/usuario.js"></script>
-  </body>
+    <script src="script.js"></script>
+</body>
 </html>

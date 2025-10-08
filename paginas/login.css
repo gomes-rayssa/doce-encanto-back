@@ -1,3 +1,5 @@
+/* globais */
+
 * {
     margin: 0;
     padding: 0;
@@ -9,14 +11,13 @@ body {
     background-size: cover;
 }
 
+/* estrutura form */
+
 .formulario {
-    width: 100%;
-    max-width: 500px;
-    min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
+    align-items: center;
+    padding: 80px 20px;
 }
 
 .form-container {
@@ -25,110 +26,24 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     animation: slideUp 0.6s ease-out;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.progress-bar {
-    display: flex;
-    background: #efe8da;
-    padding: 20px;
-    justify-content: space-between;
-    position: relative;
-}
-
-.progress-bar::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 25%;
-    right: 25%;
-    height: 2px;
-    background: #e9ecef;
-    transform: translateY(-50%);
-    z-index: 1;
-}
-
-.step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-    transition: all 0.3s ease;
-}
-
-.step-number {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #e9ecef;
-    color: #6c757d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    margin-bottom: 8px;
-    transition: all 0.3s ease;
-}
-
-.step-label {
-    font-size: 12px;
-    color: #6c757d;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.step.active .step-number {
-    background: #b52d78;
-    color: white;
-    transform: scale(1.1);
-}
-
-.step.active .step-label {
-    color: #990053;
-    font-weight: 600;
-}
-
-.step.completed .step-number {
-    background: #740040;
-    color: white;
-}
-
-.step.completed .step-label {
-    color: #740040;
+    width: 100%;
+    max-width: 400px;
 }
 
 .form-step {
     display: none;
-    padding: 40px;
-    animation: fadeIn 0.5s ease-in;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+    width: 400px;
+    margin: 0 auto;
 }
 
 .form-step.active {
     display: block;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateX(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
+/* títulos */
 h2 {
     color: #990053;
     margin-bottom: 30px;
@@ -137,6 +52,7 @@ h2 {
     text-align: center;
 }
 
+/* inputs - labels */
 .form-group {
     margin-bottom: 25px;
 }
@@ -152,7 +68,6 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="password"],
-input[type="date"],
 select {
     width: 100%;
     padding: 15px;
@@ -163,10 +78,8 @@ select {
     background: white;
 }
 
-input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
-input[type="date"]:focus,
 select:focus {
     outline: none;
     border-color: #be0069;
@@ -174,10 +87,8 @@ select:focus {
     transform: translateY(-2px);
 }
 
-input[type="text"]:hover,
 input[type="email"]:hover,
 input[type="password"]:hover,
-input[type="date"]:hover,
 select:hover {
     border-color: #740040;
 }
@@ -186,14 +97,7 @@ select {
     cursor: pointer;
 }
 
-.error-message {
-    color: #dc3545;
-    font-size: 12px;
-    margin-top: 5px;
-    display: block;
-    min-height: 16px;
-}
-
+/* botões */
 .form-buttons {
     display: flex;
     gap: 15px;
@@ -227,25 +131,16 @@ select {
     transform: translateY(0);
 }
 
-.btn-secondary {
-    background: #990053;
-    color: white;
+/* erro */
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+    min-height: 16px;
 }
 
-.btn-secondary:hover {
-    background: #740040;
-    color: #efe8da;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none !important;
-}
-
-/* Validação visual */
+/* validação campos */
 .form-group.error input,
 .form-group.error select {
     border-color: #dc3545;
@@ -258,7 +153,77 @@ select {
     box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
 }
 
-/* Responsividade */
+/* icone senha */
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    user-select: none;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+/* links */
+.txt {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.link {
+    color: #990053;
+    text-decoration: none;
+    text-decoration: underline;
+}
+
+.link:hover {
+    color: #990053;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* aviso */
+.toast {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4caf50;
+    color: #fff;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 9999;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* RESPONSIVIDADE */
+
 @media (max-width: 768px) {
     .container {
         padding: 10px;
@@ -290,13 +255,11 @@ select {
         font-size: 11px;
     }
     
-    input[type="text"],
     input[type="email"],
     input[type="password"],
-    input[type="date"],
     select {
         padding: 12px;
-        font-size: 16px; /* Evita zoom no iOS */
+        font-size: 16px;
     }
     
     .btn {
@@ -328,94 +291,4 @@ select {
     .step-number {
         margin-bottom: 0;
     }
-}
-
-/* Animações de carregamento */
-.loading {
-    position: relative;
-    overflow: hidden;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% {
-        left: -100%;
-    }
-    100% {
-        left: 100%;
-    }
-}
-
-
-.password-container {
-    position: relative;
-    width: 100%;
-}
-
-.password-container input {
-    padding-right: 45px; /* Espaço para o ícone */
-}
-
-.toggle-password {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-    user-select: none; /* Evita seleção da imagem */
-}
-
-.toggle-password:hover {
-    opacity: 1;
-}
-
-/* link de cadastro */
-.link {
-  color: #990053;
-  text-decoration: none;
-  text-decoration: underline;
-}
-
-.link:hover {
-  color: #990053;
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-/* Estilo do aviso de sucesso */
-.toast {
-  position: fixed;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #4caf50;      /* verde de sucesso */
-  color: #fff;
-  padding: 16px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  opacity: 0;               /* começa invisível */
-  pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  z-index: 9999;
-}
-
-.toast.show {
-  opacity: 1;               /* aparece */
-  transform: translate(-50%, 0);
 }

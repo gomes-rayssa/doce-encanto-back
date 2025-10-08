@@ -100,18 +100,25 @@
             <input type="email" id="email" name="email" required />
           </div>
 
-          <div class="form-group password-container">
-            <label for="password">Senha</label>
-            <input type="password" id="password" name="password" required />
-            <!-- Ícone para alternar a visualização da senha -->
-            <span class="toggle-password" onclick="togglePassword()"> 👁️ </span>
-          </div>
+          <div class="form-group">
+              <label for="senha">Senha</label>
+              <div class="password-container">
+                <input type="password" id="senha" name="senha" required />
+                <img
+                  src="../assets/logos/olho.png"
+                  alt="Mostrar Senha"
+                  class="toggle-password"
+                  data-target="senha"
+                />
+              </div>
+              <span class="error-message" id="senha-error"></span>
+            </div>
 
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary">Entrar</button>
           </div>
 
-          <p style="margin-top: 20px; text-align: center">
+          <p class="txt">
             Não tem conta?
             <a href="../paginas/cadastro.html" class="link">Cadastre-se</a>
           </p>
