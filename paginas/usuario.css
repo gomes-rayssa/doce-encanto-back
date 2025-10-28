@@ -544,3 +544,94 @@ body {
 .btn:disabled:hover {
     transform: none;
 }
+
+
+
+/* Estilos para o Pop-up Personalizado */
+.custom-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+
+.custom-popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+#popup-message {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.popup-actions {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.popup-actions .btn {
+    flex-grow: 1;
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+/* Ajuste para o botão de logout no card-actions (ao lado de Editar Dados) */
+.card-actions #logout-btn {
+    margin-right: 10px; 
+}
+
+
+
+
+/* Estilos para a Notificação (Toast) */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    background-color: #333;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transform: translateY(-50px);
+    z-index: 10000;
+    pointer-events: none; /* Não interfere em cliques */
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.hidden {
+    display: none;
+}
+
+.notification.success {
+    background-color: #4CAF50; /* Verde */
+}
+
+.notification.error {
+    background-color: #f44336; /* Vermelho */
+}

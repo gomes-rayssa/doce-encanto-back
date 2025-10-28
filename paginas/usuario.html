@@ -16,16 +16,13 @@
 </head>
 
 <body>
-    <!-- Notificação -->
     <div id="notification" class="notification hidden">
         <span id="notification-message"></span>
     </div>
 
-    <!-- Navbar Modernizada -->
     <header class="modern-header">
         <nav class="modern-nav">
             <div class="nav-container">
-                <!-- Logo -->
                 <div class="nav-logo">
                     <a href="../index.html" class="logo-link">
                         <i class="fas fa-birthday-cake"></i>
@@ -33,7 +30,6 @@
                     </a>
                 </div>
 
-                <!-- Menu Principal -->
                 <ul class="nav-menu">
                     <li class="nav-item">
                         <a href="../index.html" class="nav-link">
@@ -66,47 +62,56 @@
                     </li>
                 </ul>
 
-                <!-- Ações do Usuário -->
                 <div class="nav-actions">
-                    <a href="../paginas/cadastro.html" class="nav-action user-action" title="Minha Conta">
-                        <i class="fas fa-user"></i>
-                    </a>
+                    <li class="nav-item dropdown" style="list-style: none;">
+                        <a href="#" class="nav-link dropdown-toggle" title="Minha Conta">
+                            <i class="fas fa-user"></i>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="../paginas/login.html" class="dropdown-item">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <span>Login</span>
+                            </a>
+                            <a href="../paginas/cadastro.html" class="dropdown-item">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Cadastro</span>
+                            </a>
+                            <a href="../paginas/usuario.html" class="dropdown-item">
+                                <i class="fas fa-id-card"></i>
+                                <span>Minha Conta</span>
+                            </a>
+                        </div>
+                    </li>
+
                     <a href="../paginas/carrinho.html" class="nav-action cart-action" title="Carrinho">
                         <i class="fas fa-shopping-bag"></i>
                         <span class="cart-count">0</span>
                     </a>
+
                     <button class="mobile-menu-toggle">
                         <span></span>
                         <span></span>
                         <span></span>
                     </button>
                 </div>
+
             </div>
         </nav>
     </header>
 
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header-content">
                 <h1 class="header-title">Minha Conta</h1>
-                <button id="logout-btn" class="btn btn-outline">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Sair
-                </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="main">
         <div class="container">
             <div class="grid">
-
-                <!-- Coluna Principal - Perfil -->
                 <div class="main-column">
-
-                    <!-- Informações Pessoais -->
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title-section">
@@ -114,9 +119,15 @@
                                     <i class="fas fa-user"></i>
                                     Informações Pessoais
                                 </h2>
-                                <p class="card-description">Gerencie suas informações de perfil</p>
+                                <p class="card-description">
+                                    Gerencie suas informações de perfil
+                                </p>
                             </div>
                             <div class="card-actions">
+                                <button id="logout-btn" class="btn btn-outline btn-sm">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Sair
+                                </button>
                                 <button id="edit-btn" class="btn btn-outline btn-sm">
                                     <i class="fas fa-edit"></i>
                                     Editar
@@ -137,23 +148,22 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="nome-completo">Nome Completo</label>
-                                    <input type="text" id="nome-completo" class="form-input" readonly>
+                                    <input type="text" id="nome-completo" class="form-input" readonly />
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" class="form-input" readonly>
+                                    <input type="email" id="email" class="form-input" readonly />
                                 </div>
 
                                 <div class="form-group">
                                     <label for="data-nascimento">Data de Nascimento</label>
-                                    <input type="date" id="data-nascimento" class="form-input" readonly>
+                                    <input type="date" id="data-nascimento" class="form-input" readonly />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Endereço -->
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title-section">
@@ -161,45 +171,63 @@
                                     <i class="fas fa-map-marker-alt"></i>
                                     Endereço
                                 </h2>
-                                <p class="card-description">Informações de entrega e cobrança</p>
+                                <p class="card-description">
+                                    Informações de entrega e cobrança
+                                </p>
+                            </div>
+                            <div class="card-actions">
+                                <button id="edit-address-btn" class="btn btn-outline btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                    Editar Endereço
+                                </button>
+
+                                <div id="address-edit-actions" class="edit-actions hidden">
+                                    <button id="cancel-address-btn" class="btn btn-outline btn-sm">
+                                        <i class="fas fa-times"></i>
+                                        Cancelar
+                                    </button>
+                                    <button id="save-address-btn" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-save"></i>
+                                        Salvar
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="card-content">
                             <div class="form-grid address-grid">
                                 <div class="form-group">
                                     <label for="cep">CEP</label>
-                                    <input type="text" id="cep" class="form-input" placeholder="00000-000" readonly>
+                                    <input type="text" id="cep" class="form-input" placeholder="00000-000" readonly />
                                 </div>
 
                                 <div class="form-group span-2">
                                     <label for="rua">Rua</label>
-                                    <input type="text" id="rua" class="form-input" readonly>
+                                    <input type="text" id="rua" class="form-input" readonly />
                                 </div>
 
                                 <div class="form-group">
                                     <label for="numero">Número</label>
-                                    <input type="text" id="numero" class="form-input" readonly>
+                                    <input type="text" id="numero" class="form-input" readonly />
                                 </div>
 
                                 <div class="form-group">
                                     <label for="bairro">Bairro</label>
-                                    <input type="text" id="bairro" class="form-input" readonly>
+                                    <input type="text" id="bairro" class="form-input" readonly />
                                 </div>
 
                                 <div class="form-group">
                                     <label for="cidade">Cidade</label>
-                                    <input type="text" id="cidade" class="form-input" readonly>
+                                    <input type="text" id="cidade" class="form-input" readonly />
                                 </div>
 
                                 <div class="form-group">
                                     <label for="estado">Estado</label>
-                                    <input type="text" id="estado" class="form-input" maxlength="2" readonly>
+                                    <input type="text" id="estado" class="form-input" maxlength="2" readonly />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Ações da Conta -->
                     <div class="card danger-card">
                         <div class="card-header">
                             <div class="card-title-section">
@@ -213,6 +241,7 @@
                                     <i class="fas fa-trash"></i>
                                     Apagar Conta
                                 </button>
+
                                 <div id="delete-confirm" class="delete-confirm hidden">
                                     <button id="confirm-delete-btn" class="btn btn-danger">
                                         <i class="fas fa-trash"></i>
@@ -223,23 +252,23 @@
                                     </button>
                                 </div>
                             </div>
-                            <div id="delete-warning" class="delete-warning hidden">
+                            <div id="delete-warning" class="delete-warning">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                Esta ação não pode ser desfeita. Todos os seus dados serão permanentemente excluídos.
+                                Esta ação não pode ser desfeita. Todos os seus dados serão
+                                permanentemente excluídos.
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Sidebar - Dashboard de Pedidos -->
                 <div class="sidebar">
-
-                    <!-- Resumo dos Pedidos -->
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title-section">
                                 <h2 class="card-title">Meus Pedidos</h2>
-                                <p class="card-description">Acompanhe o status dos seus pedidos</p>
+                                <p class="card-description">
+                                    Acompanhe o status dos seus pedidos
+                                </p>
                             </div>
                         </div>
                         <div class="card-content">
@@ -297,7 +326,6 @@
                         </div>
                     </div>
 
-                    <!-- Lista Detalhada de Pedidos -->
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title-section">
@@ -411,97 +439,89 @@
         </div>
     </main>
 
-    <!-- Footer Modernizado -->
     <footer class="modern-footer">
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <div class="footer-logo">
-              <i class="fas fa-birthday-cake"></i>
-              <span>Doce Encanto</span>
-            </div>
-            <p class="footer-description">
-              Criando momentos doces e inesquecíveis desde 2020. Sabor e beleza
-              em cada mordida.
-            </p>
-            <div class="footer-social">
-              <a
-                href="https://facebook.com/"
-                target="_blank"
-                class="social-link"
-              >
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a
-                href="https://instagram.com/"
-                target="_blank"
-                class="social-link"
-              >
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a
-                href="https://twitter.com/"
-                target="_blank"
-                class="social-link"
-              >
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a
-                href="https://youtube.com/"
-                target="_blank"
-                class="social-link"
-              >
-                <i class="fab fa-youtube"></i>
-              </a>
-            </div>
-          </div>
-
-          <div class="footer-section">
-            <h4>Links Rápidos</h4>
-            <ul class="footer-links">
-              <li><a href="../index.html">Página Inicial</a></li>
-              <li><a href="bolos.html">Nossos Bolos</a></li>
-              <li><a href="doces.html">Nossos Doces</a></li>
-              <li><a href="sobre.html">Sobre Nós</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h4>Atendimento</h4>
-            <ul class="footer-links">
-              <li><a href="#">Central de Ajuda</a></li>
-              <li><a href="#">Política de Privacidade</a></li>
-              <li><a href="#">Termos de Uso</a></li>
-              <li><a href="#">Trocas e Devoluções</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h4>Contato</h4>
-            <div class="contact-info">
-              <div class="contact-item">
-                <i class="fas fa-phone"></i>
-                <span>(21) 99999-9999</span>
-              </div>
-              <div class="contact-item">
-                <i class="fas fa-envelope"></i>
-                <span>contato@doceencanto.com</span>
-              </div>
-              <div class="contact-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Rio de Janeiro, RJ</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
         <div class="container">
-          <p>&copy; 2025 Doce Encanto. Todos os direitos reservados.</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-birthday-cake"></i>
+                        <span>Doce Encanto</span>
+                    </div>
+                    <p class="footer-description">
+                        Criando momentos doces e inesquecíveis desde 2020. Sabor e beleza
+                        em cada mordida.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://facebook.com/" target="_blank" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com/" target="_blank" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://twitter.com/" target="_blank" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://youtube.com/" target="_blank" class="social-link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Página Inicial</a></li>
+                        <li><a href="bolos.html">Nossos Bolos</a></li>
+                        <li><a href="doces.html">Nossos Doces</a></li>
+                        <li><a href="sobre.html">Sobre Nós</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Atendimento</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Trocas e Devoluções</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>(21) 99999-9999</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>contato@doceencanto.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Rio de Janeiro, RJ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2025 Doce Encanto. Todos os direitos reservados.</p>
+            </div>
+        </div>
     </footer>
 
+    <div id="custom-popup" class="custom-popup hidden">
+        <div class="popup-content">
+            <p id="popup-message"></p>
+            <div class="popup-actions">
+                <button id="popup-yes-btn" class="btn btn-primary">Sim</button>
+                <button id="popup-no-btn" class="btn btn-outline">Não</button>
+            </div>
+        </div>
+    </div>
     <script src="usuario.js"></script>
 </body>
 
