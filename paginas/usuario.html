@@ -1,17 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Conta - Perfil do Usuário</title>
-    <link rel="stylesheet" href="usuario.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minha Conta</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../paginas/usuario.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap");
+    </style>
 </head>
+
 <body>
     <!-- Notificação -->
     <div id="notification" class="notification hidden">
         <span id="notification-message"></span>
     </div>
+
+    <!-- Navbar Modernizada -->
+    <header class="modern-header">
+        <nav class="modern-nav">
+            <div class="nav-container">
+                <!-- Logo -->
+                <div class="nav-logo">
+                    <a href="../index.html" class="logo-link">
+                        <i class="fas fa-birthday-cake"></i>
+                        <span class="logo-text">Doce Encanto</span>
+                    </a>
+                </div>
+
+                <!-- Menu Principal -->
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="../index.html" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <span>Início</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">
+                            <i class="fas fa-store"></i>
+                            <span>Produtos</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="../paginas/bolos.html" class="dropdown-item">
+                                <i class="fas fa-birthday-cake"></i>
+                                <span>Bolos</span>
+                            </a>
+                            <a href="../paginas/doces.html" class="dropdown-item">
+                                <i class="fas fa-candy-cane"></i>
+                                <span>Doces</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../paginas/sobre.html" class="nav-link">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Sobre</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Ações do Usuário -->
+                <div class="nav-actions">
+                    <a href="../paginas/cadastro.html" class="nav-action user-action" title="Minha Conta">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <a href="../paginas/carrinho.html" class="nav-action cart-action" title="Carrinho">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                    <button class="mobile-menu-toggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
 
     <!-- Header -->
     <header class="header">
@@ -30,10 +102,10 @@
     <main class="main">
         <div class="container">
             <div class="grid">
-                
+
                 <!-- Coluna Principal - Perfil -->
                 <div class="main-column">
-                    
+
                     <!-- Informações Pessoais -->
                     <div class="card">
                         <div class="card-header">
@@ -66,19 +138,16 @@
                                 <div class="form-group">
                                     <label for="nome-completo">Nome Completo</label>
                                     <input type="text" id="nome-completo" class="form-input" readonly>
-                                    <span class="form-display" id="nome-display">Maria Silva Santos</span>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="email" id="email" class="form-input" readonly>
-                                    <span class="form-display" id="email-display">maria.silva@email.com</span>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="data-nascimento">Data de Nascimento</label>
                                     <input type="date" id="data-nascimento" class="form-input" readonly>
-                                    <span class="form-display" id="data-display">15/05/1990</span>
                                 </div>
                             </div>
                         </div>
@@ -100,37 +169,31 @@
                                 <div class="form-group">
                                     <label for="cep">CEP</label>
                                     <input type="text" id="cep" class="form-input" placeholder="00000-000" readonly>
-                                    <span class="form-display" id="cep-display">01234-567</span>
                                 </div>
-                                
+
                                 <div class="form-group span-2">
                                     <label for="rua">Rua</label>
                                     <input type="text" id="rua" class="form-input" readonly>
-                                    <span class="form-display" id="rua-display">Rua das Flores</span>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="numero">Número</label>
                                     <input type="text" id="numero" class="form-input" readonly>
-                                    <span class="form-display" id="numero-display">123</span>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="bairro">Bairro</label>
                                     <input type="text" id="bairro" class="form-input" readonly>
-                                    <span class="form-display" id="bairro-display">Centro</span>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="cidade">Cidade</label>
                                     <input type="text" id="cidade" class="form-input" readonly>
-                                    <span class="form-display" id="cidade-display">São Paulo</span>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="estado">Estado</label>
                                     <input type="text" id="estado" class="form-input" maxlength="2" readonly>
-                                    <span class="form-display" id="estado-display">SP</span>
                                 </div>
                             </div>
                         </div>
@@ -170,7 +233,7 @@
 
                 <!-- Sidebar - Dashboard de Pedidos -->
                 <div class="sidebar">
-                    
+
                     <!-- Resumo dos Pedidos -->
                     <div class="card">
                         <div class="card-header">
@@ -190,7 +253,7 @@
                                         <span class="status-count">2</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="status-item">
                                     <div class="status-icon status-preparando">
                                         <i class="fas fa-box"></i>
@@ -200,7 +263,7 @@
                                         <span class="status-count">1</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="status-item">
                                     <div class="status-icon status-enviado">
                                         <i class="fas fa-truck"></i>
@@ -210,7 +273,7 @@
                                         <span class="status-count">3</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="status-item">
                                     <div class="status-icon status-avaliar">
                                         <i class="fas fa-star"></i>
@@ -220,7 +283,7 @@
                                         <span class="status-count">1</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="status-item">
                                     <div class="status-icon status-devolucao">
                                         <i class="fas fa-undo"></i>
@@ -256,7 +319,7 @@
                                         <span class="order-date">05/10/2024</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="order-item">
                                     <div class="order-header">
                                         <span class="order-id">#12346</span>
@@ -270,7 +333,7 @@
                                         <span class="order-date">06/10/2024</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="order-item">
                                     <div class="order-header">
                                         <span class="order-id">#12347</span>
@@ -284,7 +347,7 @@
                                         <span class="order-date">04/10/2024</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="order-item">
                                     <div class="order-header">
                                         <span class="order-id">#12348</span>
@@ -298,7 +361,7 @@
                                         <span class="order-date">01/10/2024</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="order-item">
                                     <div class="order-header">
                                         <span class="order-id">#12349</span>
@@ -312,7 +375,7 @@
                                         <span class="order-date">28/09/2024</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="order-item">
                                     <div class="order-header">
                                         <span class="order-id">#12350</span>
@@ -326,7 +389,7 @@
                                         <span class="order-date">25/09/2024</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="order-item">
                                     <div class="order-header">
                                         <span class="order-id">#12351</span>
@@ -348,6 +411,98 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <!-- Footer Modernizado -->
+    <footer class="modern-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo">
+              <i class="fas fa-birthday-cake"></i>
+              <span>Doce Encanto</span>
+            </div>
+            <p class="footer-description">
+              Criando momentos doces e inesquecíveis desde 2020. Sabor e beleza
+              em cada mordida.
+            </p>
+            <div class="footer-social">
+              <a
+                href="https://facebook.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="https://instagram.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://twitter.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a
+                href="https://youtube.com/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-section">
+            <h4>Links Rápidos</h4>
+            <ul class="footer-links">
+              <li><a href="../index.html">Página Inicial</a></li>
+              <li><a href="bolos.html">Nossos Bolos</a></li>
+              <li><a href="doces.html">Nossos Doces</a></li>
+              <li><a href="sobre.html">Sobre Nós</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Atendimento</h4>
+            <ul class="footer-links">
+              <li><a href="#">Central de Ajuda</a></li>
+              <li><a href="#">Política de Privacidade</a></li>
+              <li><a href="#">Termos de Uso</a></li>
+              <li><a href="#">Trocas e Devoluções</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Contato</h4>
+            <div class="contact-info">
+              <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>(21) 99999-9999</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>contato@doceencanto.com</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Rio de Janeiro, RJ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <p>&copy; 2025 Doce Encanto. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="usuario.js"></script>
 </body>
+
 </html>

@@ -9,8 +9,8 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
     color: #1f2937;
-    background-color: #f9fafb;
-    min-height: 100vh;
+    background-color: #f7f3ed;
+    
 }
 
 /* Container */
@@ -65,9 +65,9 @@ body {
 
 /* Cards */
 .card {
-    background: white;
-    border-radius: 0.75rem;
-    border: 1px solid #e5e7eb;
+    background: #efe8dabb;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     margin-bottom: 1.5rem;
     overflow: hidden;
@@ -93,7 +93,7 @@ body {
 .card-title {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #111827;
+    color:#5a0022;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -101,12 +101,12 @@ body {
 }
 
 .card-title i {
-    color: #6b7280;
+    color: #5a0022;
 }
 
 .card-description {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #990053;
 }
 
 .card-content {
@@ -159,14 +159,13 @@ body {
 }
 
 .btn-outline {
-    background-color: transparent;
-    color: #374151;
-    border-color: #d1d5db;
+    background-color: #990053;
+    color: #f0eadf;
 }
 
 .btn-outline:hover {
-    background-color: #f9fafb;
-    border-color: #9ca3af;
+    color: #f0eadf;
+    background-color: #5a0022;
 }
 
 .btn-danger {
@@ -218,7 +217,7 @@ body {
 .form-group label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #374151;
+    color: #990053;
     margin-bottom: 0.25rem;
 }
 
