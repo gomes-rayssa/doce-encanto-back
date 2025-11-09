@@ -666,7 +666,7 @@ body {
 
 /* NEWSLETTER */
 .newsletter-section {
-  padding: 6rem 0;
+  padding: 20px;
   background: var(--gradient-primary);
   color: white;
 }
@@ -698,7 +698,7 @@ body {
 
 .newsletter-form input {
   flex: 1;
-  min-width: 200px;
+  min-width: 50px;
   padding: 16px 20px;
   border: none;
   border-radius: 50px;
@@ -931,3 +931,86 @@ body {
   animation: slideInRight 0.6s ease forwards;
 }
 
+
+
+/* ====== ACESSIBILIDADE ====== */
+.accessibility {
+  position: relative;
+  display: inline-block;
+  margin-left: 1rem;
+}
+
+#accessibility-btn {
+  background: var(--accent-color);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#accessibility-btn:focus {
+  outline: 3px solid #000;
+  outline-offset: 2px;
+}
+
+#accessibility-btn:hover {
+  background: #c71585;
+}
+
+.accessibility-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  z-index: 1000;
+}
+
+.accessibility-menu button {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #333;
+  border-radius: 6px;
+}
+
+.accessibility-menu button:hover,
+.accessibility-menu button:focus {
+  background: #f2f2f2;
+  outline: none;
+}
+
+/* ====== CONTRASTE ALTO ====== */
+body.high-contrast {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+body.high-contrast a {
+  color: #00ffff !important;
+}
+
+body.high-contrast header,
+body.high-contrast footer {
+  background: #111 !important;
+  color: #fff !important;
+}
+
+/* ====== FOCO VISÍVEL ====== */
+a:focus,
+button:focus {
+  outline: 3px solid #ff4081;
+  outline-offset: 2px;
+}

@@ -276,3 +276,4 @@ document.addEventListener('DOMContentLoaded', function () {
         if (minhaContaItem) minhaContaItem.style.display = "none";
     }
 });
+
