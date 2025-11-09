@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', function () {
         estado: document.getElementById('estado')
     };
 
+    // Backup dos valores originais (carregados pelo PHP)
+    const originalValues = {};
+    Object.keys(campos).forEach(key => {
+        originalValues[key] = campos[key].value;
+    });
+
     // Elementos de Informações Pessoais
     const editBtn = document.getElementById('edit-btn');
     const saveBtn = document.getElementById('save-btn');
@@ -19,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const editActions = document.getElementById('edit-actions');
     const logoutBtn = document.getElementById('logout-btn');
 
-    // Elementos de Endereço (ATUALIZADOS)
+    // Elementos de Endereço
     const editAddressBtn = document.getElementById('edit-address-btn');
     const addressEditActions = document.getElementById('address-edit-actions');
     const saveAddressBtn = document.getElementById('save-address-btn');
@@ -28,72 +34,53 @@ document.addEventListener('DOMContentLoaded', function () {
     // Elementos da Zona de Perigo
     const deleteBtn = document.getElementById('delete-btn');
 
-    // Elementos do Pop-up Personalizado (Confirmação)
+    // Elementos do Pop-up e Notificação
     const customPopup = document.getElementById('custom-popup');
     const popupMessage = document.getElementById('popup-message');
-
-    // Buscar usuário do localStorage
-    let usuarios = JSON.parse(localStorage.getItem('doceEncanto_users')) || [];
-    let usuarioAtual = JSON.parse(localStorage.getItem("doceEncanto_currentUser")) || usuarios[usuarios.length - 1] || null;
+    const notification = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notification-message');
 
     // --- Funções Auxiliares ---
 
-    // Função para mostrar notificação personalizada (Toast)
     function showNotification(message, type = 'success') {
-        const notification = document.getElementById('notification');
-        const notificationMessage = document.getElementById('notification-message');
-        
         notificationMessage.textContent = message;
         notification.classList.remove('hidden', 'success', 'error');
         notification.classList.add(type);
-        
-        notification.offsetHeight; // Força reflow/reinicialização
+        notification.offsetHeight; 
         notification.classList.add('show'); 
 
-        // Oculta após 3 segundos
         setTimeout(() => {
             notification.classList.remove('show');
-            setTimeout(() => {
-                notification.classList.add('hidden');
-            }, 500);
+            setTimeout(() => notification.classList.add('hidden'), 500);
         }, 3000);
     }
     
-    function preencherCampos() {
-        if (!usuarioAtual) return;
-        campos.nome.value = usuarioAtual.nome || '';
-        campos.email.value = usuarioAtual.email || '';
-        campos.dataNascimento.value = usuarioAtual.dataNascimento || '';
-        campos.cep.value = usuarioAtual.endereco.cep || '';
-        campos.rua.value = usuarioAtual.endereco.rua || '';
-        campos.numero.value = usuarioAtual.endereco.numero || '';
-        campos.bairro.value = usuarioAtual.endereco.bairro || '';
-        campos.cidade.value = usuarioAtual.endereco.cidade || '';
-        campos.estado.value = usuarioAtual.endereco.estado || '';
+    // Restaura os valores originais (pré-edição)
+    function restaurarValores() {
+        Object.keys(campos).forEach(key => {
+            campos[key].value = originalValues[key];
+        });
     }
-
-    function setReadonly(inputs, valor) {
-        inputs.forEach(input => {
-            input.readOnly = valor;
+    
+    // Atualiza os valores de backup (pós-salvar)
+    function atualizarBackup() {
+         Object.keys(campos).forEach(key => {
+            originalValues[key] = campos[key].value;
         });
     }
 
-    /**
-     * Exibe o pop-up personalizado e configura a ação de "Sim".
-     * @param {string} message - A mensagem a ser exibida no pop-up.
-     * @param {function} callbackYes - Função a ser executada ao clicar em "Sim".
-     */
+    function setReadonly(inputs, valor) {
+        inputs.forEach(input => input.readOnly = valor);
+    }
+
     function showPopup(message, callbackYes) {
         popupMessage.textContent = message;
         customPopup.classList.remove('hidden');
 
-        // Clona e substitui os botões para remover listeners antigos
         const oldYesBtn = document.getElementById('popup-yes-btn');
         const oldNoBtn = document.getElementById('popup-no-btn');
-        
         const newYesBtn = oldYesBtn.cloneNode(true);
         const newNoBtn = oldNoBtn.cloneNode(true);
-
         oldYesBtn.replaceWith(newYesBtn);
         oldNoBtn.replaceWith(newNoBtn);
 
@@ -108,13 +95,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // --- Lógica Inicial ---
-    
-    preencherCampos();
+    // Removemos preencherCampos(), pois o PHP já fez isso.
     setReadonly(Object.values(campos), true);
 
     // --- Event Listeners ---
 
-    // 1. Informações Pessoais: Botão Editar
+    // 1. Informações Pessoais: Editar
     editBtn.addEventListener('click', () => {
         const personalFields = [campos.nome, campos.email, campos.dataNascimento];
         setReadonly(personalFields, false);
@@ -122,12 +108,13 @@ document.addEventListener('DOMContentLoaded', function () {
         editBtn.classList.add('hidden');
         logoutBtn.classList.add('hidden'); 
         editAddressBtn.classList.add('hidden');
+        campos.nome.focus();
     });
 
-    // 1.1 Informações Pessoais: Botão Cancelar
+    // 1.1 Informações Pessoais: Cancelar
     cancelBtn.addEventListener('click', () => {
         const personalFields = [campos.nome, campos.email, campos.dataNascimento];
-        preencherCampos(); 
+        restaurarValores(); // Restaura valores originais
         setReadonly(personalFields, true);
         editActions.classList.add('hidden');
         editBtn.classList.remove('hidden');
@@ -135,144 +122,141 @@ document.addEventListener('DOMContentLoaded', function () {
         editAddressBtn.classList.remove('hidden');
     });
 
-    // 1.2 Informações Pessoais: Botão Salvar
-    saveBtn.addEventListener('click', () => {
-        if (!usuarioAtual) return;
-
-        // Atualiza campos pessoais
-        usuarioAtual.nome = campos.nome.value;
-        usuarioAtual.email = campos.email.value;
-        usuarioAtual.dataNascimento = campos.dataNascimento.value;
-
-        // Atualiza no localStorage
-        usuarios[usuarios.length - 1] = usuarioAtual;
-        localStorage.setItem('doceEncanto_users', JSON.stringify(usuarios));
-        localStorage.setItem("doceEncanto_currentUser", JSON.stringify(usuarioAtual));
-        
+    // 1.2 Informações Pessoais: Salvar (MODIFICADO COM FETCH)
+    saveBtn.addEventListener('click', async () => {
         const personalFields = [campos.nome, campos.email, campos.dataNascimento];
-        setReadonly(personalFields, true);
-        editActions.classList.add('hidden');
-        editBtn.classList.remove('hidden');
-        logoutBtn.classList.remove('hidden');
-        editAddressBtn.classList.remove('hidden');
+        
+        const data = {
+            action: 'save_personal',
+            nome: campos.nome.value,
+            email: campos.email.value, // Nota: Mudar email exigiria verificação
+            dataNascimento: campos.dataNascimento.value
+        };
 
-        showNotification('Informações pessoais salvas com sucesso!', 'success');
+        try {
+            const response = await fetch('processa_perfil.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                showNotification(result.message, 'success');
+                setReadonly(personalFields, true);
+                editActions.classList.add('hidden');
+                editBtn.classList.remove('hidden');
+                logoutBtn.classList.remove('hidden');
+                editAddressBtn.classList.remove('hidden');
+                atualizarBackup(); // Salva os novos valores como "originais"
+            } else {
+                showNotification(result.message, 'error');
+            }
+        } catch (error) {
+            showNotification('Erro de conexão ao salvar.', 'error');
+        }
     });
 
-    // 2. Botão de Editar Endereço (AGORA MUDA PARA SALVAR/CANCELAR)
+    // 2. Endereço: Editar
     editAddressBtn.addEventListener('click', () => {
         const addressFields = [campos.cep, campos.rua, campos.numero, campos.bairro, campos.cidade, campos.estado];
-        
-        // Ativa o modo de edição
         setReadonly(addressFields, false);
         editAddressBtn.classList.add('hidden');
         addressEditActions.classList.remove('hidden');
-
-        // Oculta botões relacionados a outros cards
         editBtn.classList.add('hidden'); 
         logoutBtn.classList.add('hidden');
+        campos.cep.focus();
     });
 
-    // 2.1 Botão Cancelar Endereço
+    // 2.1 Endereço: Cancelar
     cancelAddressBtn.addEventListener('click', () => {
         const addressFields = [campos.cep, campos.rua, campos.numero, campos.bairro, campos.cidade, campos.estado];
-        preencherCampos(); // Volta aos valores originais
+        restaurarValores(); // Restaura valores originais
         setReadonly(addressFields, true);
-        
         editAddressBtn.classList.remove('hidden');
         addressEditActions.classList.add('hidden');
-
-        // Mostra botões relacionados a outros cards
         editBtn.classList.remove('hidden'); 
         logoutBtn.classList.remove('hidden');
     });
 
-    // 2.2 Botão Salvar Endereço
-    saveAddressBtn.addEventListener('click', () => {
+    // 2.2 Endereço: Salvar (MODIFICADO COM FETCH)
+    saveAddressBtn.addEventListener('click', async () => {
         const addressFields = [campos.cep, campos.rua, campos.numero, campos.bairro, campos.cidade, campos.estado];
         
-        if (!usuarioAtual) return;
+        const data = {
+            action: 'save_address',
+            endereco: {
+                cep: campos.cep.value,
+                rua: campos.rua.value,
+                numero: campos.numero.value,
+                bairro: campos.bairro.value,
+                cidade: campos.cidade.value,
+                estado: campos.estado.value
+            }
+        };
 
-        // Atualiza dados do endereço
-        usuarioAtual.endereco.cep = campos.cep.value;
-        usuarioAtual.endereco.rua = campos.rua.value;
-        usuarioAtual.endereco.numero = campos.numero.value;
-        usuarioAtual.endereco.bairro = campos.bairro.value;
-        usuarioAtual.endereco.cidade = campos.cidade.value;
-        usuarioAtual.endereco.estado = campos.estado.value;
-
-        // Atualiza no localStorage
-        usuarios[usuarios.length - 1] = usuarioAtual;
-        localStorage.setItem('doceEncanto_users', JSON.stringify(usuarios));
-        localStorage.setItem("doceEncanto_currentUser", JSON.stringify(usuarioAtual));
-
-        setReadonly(addressFields, true);
-        editAddressBtn.classList.remove('hidden');
-        addressEditActions.classList.add('hidden');
-
-        // Mostra botões relacionados a outros cards
-        editBtn.classList.remove('hidden'); 
-        logoutBtn.classList.remove('hidden');
-
-        showNotification('Endereço salvo com sucesso!', 'success');
+        try {
+            const response = await fetch('processa_perfil.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+                showNotification(result.message, 'success');
+                setReadonly(addressFields, true);
+                editAddressBtn.classList.remove('hidden');
+                addressEditActions.classList.add('hidden');
+                editBtn.classList.remove('hidden'); 
+                logoutBtn.classList.remove('hidden');
+                atualizarBackup(); // Salva os novos valores
+            } else {
+                showNotification(result.message, 'error');
+            }
+        } catch (error) {
+            showNotification('Erro de conexão ao salvar endereço.', 'error');
+        }
     });
 
-    // 3. Logout (Com Pop-up e Notificação Personalizada)
-    logoutBtn.addEventListener('click', () => {
-        showPopup("Deseja sair da conta?", () => {
+    // 3. Logout (MODIFICADO)
+    // O botão agora é um <a>, mas o JS de confirmação ainda é útil.
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Impede o link de ser seguido imediatamente
+        
+        showPopup("Deseja realmente sair da conta?", () => {
             // Ação de Sim (Logout)
-            localStorage.removeItem('doceEncanto_currentUser');
-            
-            showNotification('Você saiu da conta. Redirecionando...', 'success');
-            
-            // Redireciona APÓS o toast aparecer
+            showNotification('Saindo...', 'success');
             setTimeout(() => {
-                window.location.href = '../index.html'; 
-            }, 3500);
+                window.location.href = logoutBtn.href; // Redireciona para o script de logout
+            }, 1500);
         });
     });
     
-    // 4. Apagar Conta (Funcional e com Pop-up e Notificação Personalizada)
+    // 4. Apagar Conta (MODIFICADO COM FETCH)
     deleteBtn.addEventListener('click', () => {
-        showPopup("Deseja apagar sua conta permanentemente? Esta ação é irreversível.", () => {
+        showPopup("Deseja apagar sua conta permanentemente? Esta ação é irreversível.", async () => {
             // Ação de Sim (Excluir Conta)
-            if (!usuarioAtual) return;
+            try {
+                const response = await fetch('processa_apagar_conta.php', {
+                    method: 'POST'
+                });
+                const result = await response.json();
 
-            // Encontra e remove o usuário do array principal
-            const indexToRemove = usuarios.findIndex(u => u.email === usuarioAtual.email);
-            
-            if (indexToRemove !== -1) {
-                 usuarios.splice(indexToRemove, 1);
-                 localStorage.setItem('doceEncanto_users', JSON.stringify(usuarios));
+                if (result.success) {
+                    showNotification('Sua conta foi apagada. Redirecionando...', 'error');
+                    setTimeout(() => {
+                        window.location.href = '../index.php';
+                    }, 3000);
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } catch (error) {
+                showNotification('Erro de conexão.', 'error');
             }
-            
-            // Remove o status de usuário logado
-            localStorage.removeItem('doceEncanto_currentUser');
-
-            showNotification('Sua conta foi apagada permanentemente. Sentiremos sua falta!', 'error');
-            
-            // Redireciona APÓS o toast aparecer
-            setTimeout(() => {
-                window.location.href = '../index.html';
-            }, 3500); 
         });
     });
 
-
-    // --- Lógica de Visibilidade do Menu ---
-    const loginItem = document.querySelector('.dropdown-menu a[href*="login.html"]');
-    const cadastroItem = document.querySelector('.dropdown-menu a[href*="cadastro.html"]');
-    const minhaContaItem = document.querySelector('.dropdown-menu a[href*="usuario.html"]');
-
-    const currentUserStatus = localStorage.getItem("doceEncanto_currentUser");
-
-    if (currentUserStatus) {
-        if (loginItem) loginItem.style.display = "none";
-        if (cadastroItem) cadastroItem.style.display = "none";
-        if (minhaContaItem) minhaContaItem.style.display = "block";
-    } else {
-        if (loginItem) loginItem.style.display = "block";
-        if (cadastroItem) cadastroItem.style.display = "block";
-        if (minhaContaItem) minhaContaItem.style.display = "none";
-    }
+    // Lógica de visibilidade do menu FOI REMOVIDA
+    // O header.php agora cuida disso no servidor.
 });

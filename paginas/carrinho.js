@@ -1,164 +1,120 @@
-// Sistema de carrinho atualizado para Doce Encanto
-
 document.addEventListener("DOMContentLoaded", function() {
-    // Verifica se estamos na página do carrinho
-    if (window.location.pathname.includes("carrinho.html")) {
-        exibirCarrinho();
-    }
-});
-
-// Exibir itens no carrinho
-function exibirCarrinho() {
-    const listaCarrinho = document.getElementById("lista-carrinho");
-    const totalEl = document.getElementById("total");
-    const finalizarBtn = document.getElementById("finalizar-compra");
-
-    if (!listaCarrinho || !totalEl) return;
-
-    const carrinho = cartManager.getItems();
-    listaCarrinho.innerHTML = "";
-
-    if (carrinho.length === 0) {
-        listaCarrinho.innerHTML = `
-            <div class="carrinho-vazio">
-                <i class="fas fa-shopping-cart"></i>
-                <h3>Seu carrinho está vazio</h3>
-                <p>Adicione alguns produtos deliciosos!</p>
-                <a href="../index.html" class="btn-continuar">Continuar Comprando</a>
-            </div>
-        `;
-        totalEl.textContent = "0,00";
-        if (finalizarBtn) finalizarBtn.disabled = true;
-        return;
-    }
-
-    carrinho.forEach((item, index) => {
-        const li = document.createElement("li");
-        li.className = "item-carrinho";
-
-        li.innerHTML = `
-            <div class="item-imagem">
-                <img src="${item.imagem || '../assets/logos/logo-navbar.jpg'}" alt="${item.nome}" />
-            </div>
-            <div class="item-info">
-                <h3>${item.nome}</h3>
-                <p class="item-categoria">${item.categoria}</p>
-                <p class="item-preco">R$ ${item.preco.toFixed(2)}</p>
-            </div>
-            <div class="item-quantidade">
-                <button onclick="alterarQuantidade('${item.id}', ${item.quantidade - 1})" class="btn-quantidade">-</button>
-                <span class="quantidade">${item.quantidade}</span>
-                <button onclick="alterarQuantidade('${item.id}', ${item.quantidade + 1})" class="btn-quantidade">+</button>
-            </div>
-            <div class="item-total">
-                <p>R$ ${(item.preco * item.quantidade).toFixed(2)}</p>
-            </div>
-            <div class="item-remover">
-                <button onclick="removerItem('${item.id}')" class="btn-remover">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
-        listaCarrinho.appendChild(li);
-    });
-
-    const total = cartManager.getTotalValue();
-    totalEl.textContent = total.toFixed(2);
     
-    if (finalizarBtn) {
-        finalizarBtn.disabled = false;
-    }
-}
+    // --- Funções de Ação ---
 
-// Alterar quantidade de um item
-function alterarQuantidade(itemId, novaQuantidade) {
-    cartManager.updateQuantity(itemId, novaQuantidade);
-    exibirCarrinho();
-}
-
-// Remover item do carrinho
-function removerItem(itemId) {
-    if (confirm("Tem certeza que deseja remover este item?")) {
-        cartManager.removeItem(itemId);
-        exibirCarrinho();
-        showCartNotification("Item removido do carrinho!");
-    }
-}
-
-// Limpar carrinho
-function limparCarrinho() {
-    if (confirm("Tem certeza que deseja limpar todo o carrinho?")) {
-        cartManager.clearCart();
-        exibirCarrinho();
-        showCartNotification("Carrinho limpo!");
-    }
-}
-
-// Modal de compra
-const modal = document.getElementById("modal-compra-sucesso");
-const closeBtn = document.querySelector(".close-btn");
-
-function exibirModal() {
-    if (modal) modal.style.display = "flex";
-}
-
-function fecharModal() {
-    if (modal) modal.style.display = "none";
-}
-
-// Finalizar compra
-function finalizarCompra() {
-    const carrinho = cartManager.getItems();
-    
-    if (carrinho.length === 0) {
-        alert("Seu carrinho está vazio!");
-        return;
-    }
-
-    // Verifica se o usuário está logado
-    if (!userManager.isLoggedIn()) {
-        if (confirm("Você precisa estar logado para finalizar a compra. Deseja fazer login agora?")) {
-            window.location.href = "login.html";
+    // Função assíncrona para enviar dados ao backend
+    async function enviarAcaoCarrinho(data, recarregar = true) {
+        try {
+            const response = await fetch('processa_carrinho.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                if (recarregar) {
+                    // Recarrega a página para mostrar as mudanças
+                    window.location.reload();
+                }
+                return result; // Retorna o resultado para o 'finalizar'
+            } else {
+                alert('Erro: ' + (result.message || 'Não foi possível atualizar o carrinho.'));
+                if (result.redirect) {
+                    // Redireciona para login se o backend mandar
+                    window.location.href = result.redirect;
+                }
+                return null;
+            }
+        } catch (error) {
+            alert('Erro de conexão. Tente novamente.');
+            return null;
         }
-        return;
     }
 
-    // Simula processamento da compra
-    const total = cartManager.getTotalValue();
-    const user = userManager.getCurrentUser();
-    
-    // Em uma aplicação real, aqui seria feita a integração com gateway de pagamento
-    console.log("Processando compra:", {
-        usuario: user.nome,
-        itens: carrinho,
-        total: total
+    // Alterar quantidade de um item
+    window.alterarQuantidade = function(itemId, novaQuantidade) {
+        enviarAcaoCarrinho({
+            action: 'update',
+            id: itemId,
+            quantidade: novaQuantidade
+        });
+    }
+
+    // Remover item do carrinho
+    window.removerItem = function(itemId) {
+        if (confirm("Tem certeza que deseja remover este item?")) {
+            enviarAcaoCarrinho({
+                action: 'remove',
+                id: itemId
+            });
+        }
+    }
+
+    // Limpar carrinho
+    const limparCarrinhoBtn = document.getElementById("limpar-carrinho");
+    if (limparCarrinhoBtn) {
+        limparCarrinhoBtn.addEventListener("click", () => {
+            if (confirm("Tem certeza que deseja limpar todo o carrinho?")) {
+                enviarAcaoCarrinho({ action: 'clear' });
+            }
+        });
+    }
+
+    // --- Modal de Compra ---
+    const modal = document.getElementById("modal-compra-sucesso");
+    const closeBtn = document.querySelector(".close-btn");
+
+    function exibirModal() {
+        if (modal) modal.style.display = "flex";
+    }
+
+    function fecharModal() {
+        if (modal) modal.style.display = "none";
+        window.location.href = '../index.php'; // Redireciona para home após fechar
+    }
+
+    // Finalizar compra
+    const finalizarCompraBtn = document.getElementById("finalizar-compra");
+    if (finalizarCompraBtn) {
+        finalizarCompraBtn.addEventListener('click', async () => {
+            finalizarCompraBtn.disabled = true;
+            finalizarCompraBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+
+            const result = await enviarAcaoCarrinho({ action: 'finalize' }, false); // Envia sem recarregar
+
+            if (result && result.success) {
+                // Sucesso! Mostra o modal
+                exibirModal();
+                // Atualiza o header
+                const cartCountElement = document.querySelector('.cart-count');
+                if (cartCountElement) cartCountElement.textContent = '0';
+                // Limpa a página
+                document.getElementById('lista-carrinho').innerHTML = `
+                    <div class="carrinho-vazio">
+                        <i class="fas fa-check-circle" style="color: green; font-size: 4rem;"></i>
+                        <h3>Compra realizada com sucesso!</h3>
+                        <p>Obrigado por comprar conosco.</p>
+                        <a href="../index.php" class="btn-continuar">Continuar Comprando</a>
+                    </div>`;
+                document.getElementById('total').textContent = '0,00';
+                if(limparCarrinhoBtn) limparCarrinhoBtn.disabled = true;
+                finalizarCompraBtn.remove();
+            } else {
+                // Falha (ex: não logado) ou erro de rede
+                finalizarCompraBtn.disabled = false;
+                finalizarCompraBtn.innerHTML = '<i class="fas fa-credit-card"></i> Finalizar Compra';
+            }
+        });
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener("click", fecharModal);
+    }
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            fecharModal();
+        }
     });
-
-    // Limpa o carrinho e mostra modal de sucesso
-    cartManager.clearCart();
-    exibirModal();
-    exibirCarrinho();
-}
-
-// Event listeners
-const finalizarCompraBtn = document.getElementById("finalizar-compra");
-if (finalizarCompraBtn) {
-    finalizarCompraBtn.addEventListener("click", finalizarCompra);
-}
-
-const limparCarrinhoBtn = document.getElementById("limpar-carrinho");
-if (limparCarrinhoBtn) {
-    limparCarrinhoBtn.addEventListener("click", limparCarrinho);
-}
-
-if (closeBtn) {
-    closeBtn.addEventListener("click", fecharModal);
-}
-
-// Fecha modal ao clicar fora
-window.addEventListener("click", (event) => {
-    if (event.target === modal) {
-        fecharModal();
-    }
 });
-

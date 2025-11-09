@@ -2,34 +2,36 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("login-form");
     const emailInput = document.getElementById("email");
     const senhaInput = document.getElementById("senha");
+    const loginButton = document.getElementById("login-button");
 
-    // Elemento Toast (usado para mensagens)
+    // Elemento Toast (igual ao seu original)
     const toast = document.createElement("div");
     toast.className = "toast";
     document.body.appendChild(toast);
 
     // =======================
-    // Função toast
+    // Função toast (mantida)
     // =======================
     function showToast(message, type, callback = null) {
         toast.textContent = message;
-        toast.classList.add("show", type);
+        // Adiciona classe de tipo (ex: 'error' ou 'success')
+        toast.style.backgroundColor = (type === 'error') ? '#dc3545' : '#28a745';
+        toast.classList.add("show");
 
         setTimeout(() => {
-            toast.classList.remove("show", type);
-            // Chama o callback (se houver) após a remoção da classe 'show'
+            toast.classList.remove("show");
+            // Chama o callback (se houver) após a animação
             setTimeout(() => {
                 if (callback) callback();
-            }, 500); // Pequeno atraso para permitir a animação do toast
-        }, 2000); // Tempo que o toast fica visível
+            }, 500);
+        }, 2000); 
     }
 
-
     // =======================
-    // Evento do formulário de LOGIN
+    // Evento do formulário de LOGIN (Modificado para Fetch)
     // =======================
-    loginForm.addEventListener("submit", function (e) {
-        e.preventDefault();
+    loginForm.addEventListener("submit", async function (e) {
+        e.preventDefault(); // Impede o envio padrão do formulário
 
         const email = emailInput.value.trim();
         const senha = senhaInput.value.trim();
@@ -39,34 +41,40 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Puxar a lista completa de usuários (Chave usada no Cadastro: doceEncanto_users)
-        const usuarios = JSON.parse(localStorage.getItem("doceEncanto_users")) || [];
+        // Desabilita o botão para evitar cliques duplos
+        loginButton.disabled = true;
+        loginButton.textContent = "Entrando...";
 
-        // Procurar o usuário na lista pelo email E senha
-        const usuarioEncontrado = usuarios.find(user => 
-            user.email === email && user.senha === senha
-        );
-
-        if (usuarioEncontrado) {
-            // Login bem-sucedido
-            showToast("Login realizado com sucesso! Redirecionando...", "success", () => {
-                // ❗ ESSENCIAL: Salva o usuário logado nesta chave
-                localStorage.setItem("doceEncanto_currentUser", JSON.stringify(usuarioEncontrado));
-                
-                // Redireciona para a página de usuário
-                window.location.href = '../paginas/usuario.html'; 
+        try {
+            // Envia os dados para o script PHP de backend
+            const response = await fetch('processa_login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email, senha: senha })
             });
-        } else {
-            // Se o usuário não foi encontrado
-            
-            // Verifica se o email existe (para mensagem mais específica)
-            const emailExists = usuarios.some(user => user.email === email);
 
-            if (emailExists) {
-                showToast("Senha incorreta!", "error");
+            const data = await response.json();
+
+            if (data.success) {
+                // Login bem-sucedido
+                showToast(data.message, "success", () => {
+                    // Redireciona para a página que o PHP indicou
+                    window.location.href = data.redirect || 'usuario.php'; 
+                });
             } else {
-                showToast("Email não cadastrado!", "error");
+                // Falha no login (email ou senha errada)
+                showToast(data.message || "Erro desconhecido", "error");
+                loginButton.disabled = false;
+                loginButton.textContent = "Entrar";
             }
+
+        } catch (error) {
+            console.error('Erro no fetch:', error);
+            showToast("Erro de conexão. Tente novamente.", "error");
+            loginButton.disabled = false;
+            loginButton.textContent = "Entrar";
         }
     });
 
