@@ -1,35 +1,32 @@
-document.addEventListener('DOMContentLoaded', function () {
-  // Elementos do DOM
-  const form = document.getElementById('registration-form');
-  const step1 = document.getElementById('step1');
-  const step2 = document.getElementById('step2');
-  const step1Indicator = document.getElementById('step1-indicator');
-  const step2Indicator = document.getElementById('step2-indicator');
-  const nextBtn = document.getElementById('next-step1');
-  const prevBtn = document.getElementById('prev-step2');
-  const submitBtn = document.getElementById('submit-form');
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("registration-form");
+  const step1 = document.getElementById("step1");
+  const step2 = document.getElementById("step2");
+  const step1Indicator = document.getElementById("step1-indicator");
+  const step2Indicator = document.getElementById("step2-indicator");
+  const nextBtn = document.getElementById("next-step1");
+  const prevBtn = document.getElementById("prev-step2");
+  const submitBtn = document.getElementById("submit-form");
 
-  // Campos do formulário
   const campos = {
-    nome: document.getElementById('nome'),
-    email: document.getElementById('email'),
-    celular: document.getElementById('celular'),
-    dataNascimento: document.getElementById('data-nascimento'),
-    senha: document.getElementById('senha'),
-    confirmarSenha: document.getElementById('confirmar-senha'),
-    cep: document.getElementById('cep'),
-    rua: document.getElementById('rua'),
-    numero: document.getElementById('numero'),
-    bairro: document.getElementById('bairro'),
-    cidade: document.getElementById('cidade'),
-    estado: document.getElementById('estado')
+    nome: document.getElementById("nome"),
+    email: document.getElementById("email"),
+    dataNascimento: document.getElementById("data-nascimento"),
+    senha: document.getElementById("senha"),
+    confirmarSenha: document.getElementById("confirmar-senha"),
+    cep: document.getElementById("cep"),
+    rua: document.getElementById("rua"),
+    numero: document.getElementById("numero"),
+    bairro: document.getElementById("bairro"),
+    cidade: document.getElementById("cidade"),
+    estado: document.getElementById("estado"),
   };
 
   let etapaAtual = 1;
 
-  // --- Funções de validação ---
   function validarEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
   }
 
   function validarSenha(senha) {
@@ -41,235 +38,304 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function validarCEP(cep) {
-    return /^\d{5}-?\d{3}$/.test(cep);
-  }
-
-  function validarCelular(celular) {
-    const numeros = celular.replace(/\D/g, '');
-    return /^[1-9]{2}9\d{8}$/.test(numeros); // Ex: 21998765432
+    const regex = /^\d{5}-?\d{3}$/;
+    return regex.test(cep);
   }
 
   function validarIdade(dataNascimento) {
     const hoje = new Date();
     const nascimento = new Date(dataNascimento);
     let idade = hoje.getFullYear() - nascimento.getFullYear();
-    const mes = hoje.getMonth() - nascimento.getMonth();
-    if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) idade--;
+    const mesAtual = hoje.getMonth();
+    const mesNascimento = nascimento.getMonth();
+    if (
+      mesAtual < mesNascimento ||
+      (mesAtual === mesNascimento && hoje.getDate() < nascimento.getDate())
+    ) {
+      idade--;
+    }
     return idade >= 18;
   }
 
-  // --- Máscara de celular ---
-  campos.celular.addEventListener('input', function (e) {
-    let valor = e.target.value.replace(/\D/g, '');
-    if (valor.length > 11) valor = valor.substring(0, 11);
-
-    if (valor.length > 6) {
-      e.target.value = `(${valor.substring(0, 2)}) ${valor.substring(2, 7)}-${valor.substring(7)}`;
-    } else if (valor.length > 2) {
-      e.target.value = `(${valor.substring(0, 2)}) ${valor.substring(2)}`;
-    } else {
-      e.target.value = valor;
-    }
-  });
-
-  // --- Validação visual ---
   function mostrarErro(campo, mensagem) {
-    const grupo = campo.closest('.form-group');
-    const erro = grupo.querySelector('.error-message');
-    grupo.classList.add('error');
-    grupo.classList.remove('success');
-    erro.textContent = mensagem;
+    const formGroup = campo.closest(".form-group");
+    const errorElement = formGroup.querySelector(".error-message");
+    formGroup.classList.add("error");
+    formGroup.classList.remove("success");
+    errorElement.textContent = mensagem;
   }
 
   function mostrarSucesso(campo) {
-    const grupo = campo.closest('.form-group');
-    const erro = grupo.querySelector('.error-message');
-    grupo.classList.add('success');
-    grupo.classList.remove('error');
-    erro.textContent = '';
+    const formGroup = campo.closest(".form-group");
+    const errorElement = formGroup.querySelector(".error-message");
+    formGroup.classList.add("success");
+    formGroup.classList.remove("error");
+    errorElement.textContent = "";
   }
 
   function limparValidacao(campo) {
-    const grupo = campo.closest('.form-group');
-    const erro = grupo.querySelector('.error-message');
-    grupo.classList.remove('error', 'success');
-    erro.textContent = '';
+    const formGroup = campo.closest(".form-group");
+    const errorElement = formGroup.querySelector(".error-message");
+    formGroup.classList.remove("error", "success");
+    errorElement.textContent = "";
   }
 
-  // --- Validação por campo ---
-  Object.keys(campos).forEach(key => {
+  Object.keys(campos).forEach((key) => {
     const campo = campos[key];
-    campo.addEventListener('blur', () => validarCampo(key, campo.value));
-    campo.addEventListener('input', () => {
-      if (campo.closest('.form-group').classList.contains('error')) {
+    campo.addEventListener("blur", () => validarCampo(key, campo.value));
+    campo.addEventListener("input", () => {
+      if (campo.closest(".form-group").classList.contains("error")) {
         validarCampo(key, campo.value);
       }
     });
   });
 
-  function validarCampo(nome, valor) {
-    const campo = campos[nome];
-    switch (nome) {
-      case 'nome':
-        if (!valor.trim()) return mostrarErro(campo, 'Nome é obrigatório'), false;
-        if (valor.trim().length < 2) return mostrarErro(campo, 'Nome muito curto'), false;
-        mostrarSucesso(campo); return true;
-
-      case 'email':
-        if (!valor.trim()) return mostrarErro(campo, 'E-mail é obrigatório'), false;
-        if (!validarEmail(valor)) return mostrarErro(campo, 'E-mail inválido'), false;
-        mostrarSucesso(campo); return true;
-
-      case 'celular':
-        if (!valor.trim()) return mostrarErro(campo, 'Celular é obrigatório'), false;
-        if (!validarCelular(valor)) return mostrarErro(campo, 'Número inválido. Use o formato (99) 99999-9999'), false;
-        mostrarSucesso(campo); return true;
-
-      case 'dataNascimento':
-        if (!valor) return mostrarErro(campo, 'Data é obrigatória'), false;
-        if (!validarIdade(valor)) return mostrarErro(campo, 'Você deve ter pelo menos 18 anos'), false;
-        mostrarSucesso(campo); return true;
-
-      case 'senha':
-        if (!valor) return mostrarErro(campo, 'Senha é obrigatória'), false;
-        if (!validarSenha(valor)) return mostrarErro(campo, 'Senha deve conter 8+ caracteres, maiúscula, minúscula e símbolo'), false;
-        mostrarSucesso(campo); return true;
-
-      case 'confirmarSenha':
-        if (!valor) return mostrarErro(campo, 'Confirmação obrigatória'), false;
-        if (valor !== campos.senha.value) return mostrarErro(campo, 'Senhas não coincidem'), false;
-        mostrarSucesso(campo); return true;
-
-      case 'cep':
-        if (!validarCEP(valor)) return mostrarErro(campo, 'CEP inválido'), false;
-        mostrarSucesso(campo); return true;
-
-      case 'numero':
-        if (!valor.trim() || isNaN(valor)) return mostrarErro(campo, 'Número inválido'), false;
-        mostrarSucesso(campo); return true;
-
-      case 'rua':
-      case 'bairro':
-      case 'cidade':
-        if (!valor.trim()) return mostrarErro(campo, `${nome} é obrigatório`), false;
-        mostrarSucesso(campo); return true;
-
-      case 'estado':
-        if (!valor) return mostrarErro(campo, 'Estado é obrigatório'), false;
-        mostrarSucesso(campo); return true;
-
-      default: return true;
+  function validarCampo(nomeCampo, valor) {
+    const campo = campos[nomeCampo];
+    switch (nomeCampo) {
+      case "nome":
+        if (!valor.trim())
+          return mostrarErro(campo, "Nome é obrigatório"), false;
+        if (valor.trim().length < 2)
+          return (
+            mostrarErro(campo, "Nome deve ter pelo menos 2 caracteres"), false
+          );
+        mostrarSucesso(campo);
+        return true;
+      case "email":
+        if (!valor.trim())
+          return mostrarErro(campo, "E-mail é obrigatório"), false;
+        if (!validarEmail(valor))
+          return mostrarErro(campo, "E-mail inválido"), false;
+        mostrarSucesso(campo);
+        return true;
+      case "dataNascimento":
+        if (!valor)
+          return mostrarErro(campo, "Data de nascimento é obrigatória"), false;
+        if (!validarIdade(valor))
+          return mostrarErro(campo, "Você deve ter pelo menos 18 anos"), false;
+        mostrarSucesso(campo);
+        return true;
+      case "senha":
+        if (!valor) return mostrarErro(campo, "Senha é obrigatória"), false;
+        if (!validarSenha(valor))
+          return (
+            mostrarErro(
+              campo,
+              "Senha deve ter pelo menos 8 caracteres, incluindo maiúscula, minúscula e símbolo"
+            ),
+            false
+          );
+        mostrarSucesso(campo);
+        if (campos.confirmarSenha.value)
+          validarCampo("confirmarSenha", campos.confirmarSenha.value);
+        return true;
+      case "confirmarSenha":
+        if (!valor)
+          return (
+            mostrarErro(campo, "Confirmação de senha é obrigatória"), false
+          );
+        if (valor !== campos.senha.value)
+          return mostrarErro(campo, "Senhas não coincidem"), false;
+        mostrarSucesso(campo);
+        return true;
+      case "cep":
+        if (!valor.trim())
+          return mostrarErro(campo, "CEP é obrigatório"), false;
+        if (!validarCEP(valor))
+          return mostrarErro(campo, "CEP inválido"), false;
+        mostrarSucesso(campo);
+        return true;
+      case "numero":
+        if (!valor.trim())
+          return mostrarErro(campo, "Número é obrigatório"), false;
+        if (isNaN(valor))
+          return (
+            mostrarErro(campo, "O número deve conter apenas dígitos"), false
+          );
+        mostrarSucesso(campo);
+        return true;
+      case "rua":
+      case "bairro":
+      case "cidade":
+        if (!valor.trim())
+          return (
+            mostrarErro(
+              campo,
+              `${
+                nomeCampo.charAt(0).toUpperCase() + nomeCampo.slice(1)
+              } é obrigatório`
+            ),
+            false
+          );
+        mostrarSucesso(campo);
+        return true;
+      case "estado":
+        if (!valor) return mostrarErro(campo, "Estado é obrigatório"), false;
+        mostrarSucesso(campo);
+        return true;
+      default:
+        return true;
     }
   }
 
-  // --- Etapas ---
   function validarEtapa(etapa) {
-    const camposEtapa = etapa === 1
-      ? ['nome', 'email', 'celular', 'dataNascimento', 'senha', 'confirmarSenha']
-      : ['cep', 'rua', 'numero', 'bairro', 'cidade', 'estado'];
-
-    return camposEtapa.every(campo => validarCampo(campo, campos[campo].value));
+    let valido = true;
+    const camposEtapa =
+      etapa === 1
+        ? ["nome", "email", "dataNascimento", "senha", "confirmarSenha"]
+        : ["cep", "rua", "numero", "bairro", "cidade", "estado"];
+    camposEtapa.forEach((campo) => {
+      if (!validarCampo(campo, campos[campo].value)) valido = false;
+    });
+    return valido;
   }
 
   function proximaEtapa() {
     if (validarEtapa(1)) {
       etapaAtual = 2;
-      step1.classList.remove('active');
-      step2.classList.add('active');
-      step1Indicator.classList.remove('active');
-      step1Indicator.classList.add('completed');
-      step2Indicator.classList.add('active');
+      step1.classList.remove("active");
+      step2.classList.add("active");
+      step1Indicator.classList.remove("active");
+      step1Indicator.classList.add("completed");
+      step2Indicator.classList.add("active");
     }
   }
 
   function etapaAnterior() {
     etapaAtual = 1;
-    step2.classList.remove('active');
-    step1.classList.add('active');
-    step2Indicator.classList.remove('active');
-    step1Indicator.classList.remove('completed');
-    step1Indicator.classList.add('active');
+    step2.classList.remove("active");
+    step1.classList.add("active");
+    step2Indicator.classList.remove("active");
+    step1Indicator.classList.remove("completed");
+    step1Indicator.classList.add("active");
   }
 
-  nextBtn.addEventListener('click', proximaEtapa);
-  prevBtn.addEventListener('click', etapaAnterior);
-
-  // --- CEP automático ---
   async function buscarCEP(cep) {
     try {
-      const cepLimpo = cep.replace(/\D/g, '');
+      const cepLimpo = cep.replace(/\D/g, "");
       if (cepLimpo.length !== 8) return;
-      const resp = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-      const data = await resp.json();
+      campos.cep.classList.add("loading");
+      const response = await fetch(
+        `https://viacep.com.br/ws/${cepLimpo}/json/`
+      );
+      const data = await response.json();
       if (!data.erro) {
-        campos.rua.value = data.logradouro || '';
-        campos.bairro.value = data.bairro || '';
-        campos.cidade.value = data.localidade || '';
-        campos.estado.value = data.uf || '';
+        campos.rua.value = data.logouro || "";
+        campos.bairro.value = data.bairro || "";
+        campos.cidade.value = data.localidade || "";
+        campos.estado.value = data.uf || "";
+        if (data.logouro) validarCampo("rua", data.logouro);
+        if (data.bairro) validarCampo("bairro", data.bairro);
+        if (data.localidade) validarCampo("cidade", data.localidade);
+        if (data.uf) validarCampo("estado", data.uf);
       }
-    } catch (err) {
-      console.error('Erro ao buscar CEP', err);
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+    } finally {
+      campos.cep.classList.remove("loading");
     }
   }
 
-  campos.cep.addEventListener('input', e => {
-    let valor = e.target.value.replace(/\D/g, '');
-    if (valor.length > 5) valor = valor.substring(0, 5) + '-' + valor.substring(5);
+  campos.cep.addEventListener("input", function (e) {
+    let valor = e.target.value.replace(/\D/g, "");
+    if (valor.length > 5)
+      valor = valor.substring(0, 5) + "-" + valor.substring(5, 8);
     e.target.value = valor;
     if (valor.length === 9) buscarCEP(valor);
   });
 
-  // --- Submissão ---
-  form.addEventListener('submit', e => {
+  nextBtn.addEventListener("click", proximaEtapa);
+  prevBtn.addEventListener("click", etapaAnterior);
+
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
+
     if (validarEtapa(2)) {
-      submitBtn.textContent = 'Enviando...';
+      submitBtn.textContent = "Enviando...";
       submitBtn.disabled = true;
 
-      setTimeout(() => {
-        const novoUsuario = {
-          nome: campos.nome.value,
-          email: campos.email.value,
-          celular: campos.celular.value,
-          dataNascimento: campos.dataNascimento.value,
-          senha: campos.senha.value,
-          endereco: {
-            cep: campos.cep.value,
-            rua: campos.rua.value,
-            numero: campos.numero.value,
-            bairro: campos.bairro.value,
-            cidade: campos.cidade.value,
-            estado: campos.estado.value
-          }
-        };
+      const novoUsuario = {
+        nome: campos.nome.value,
+        email: campos.email.value,
+        dataNascimento: campos.dataNascimento.value,
+        senha: campos.senha.value,
+        endereco: {
+          cep: campos.cep.value,
+          rua: campos.rua.value,
+          numero: campos.numero.value,
+          bairro: campos.bairro.value,
+          cidade: campos.cidade.value,
+          estado: campos.estado.value,
+        },
+      };
 
-        const usuarios = JSON.parse(localStorage.getItem('doceEncanto_users')) || [];
-        usuarios.push(novoUsuario);
-        localStorage.setItem('doceEncanto_users', JSON.stringify(usuarios));
+      try {
+        const response = await fetch("processa_cadastro.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(novoUsuario),
+        });
 
-        showToast('Cadastro realizado com sucesso!', 'login.html');
-        form.reset();
-        etapaAnterior();
-        submitBtn.textContent = 'Finalizar Cadastro';
+        const data = await response.json();
+
+        if (data.success) {
+          showToast("Cadastro realizado com sucesso!", "login.php");
+
+          form.reset();
+          etapaAnterior();
+          Object.keys(campos).forEach((key) => limparValidacao(campos[key]));
+        } else {
+          showToast(data.message || "Erro ao cadastrar", "error");
+        }
+      } catch (error) {
+        console.error("Erro no fetch:", error);
+        showToast("Erro de conexão.", "error");
+      } finally {
+        submitBtn.textContent = "Finalizar Cadastro";
         submitBtn.disabled = false;
-      }, 1500);
+      }
     }
   });
 
-  function showToast(msg, redirect) {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = msg;
+  function showToast(message, redirectUrl = null, type = "success") {
+    const container = document.getElementById("toast-container");
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = message;
+
+    if (type === "error") {
+      toast.style.backgroundColor = "#dc3545";
+    } else {
+      toast.style.backgroundColor = "#4caf50";
+    }
+
     container.appendChild(toast);
-    setTimeout(() => toast.classList.add('show'), 50);
+
+    setTimeout(() => toast.classList.add("show"), 50);
     setTimeout(() => {
-      toast.classList.remove('show');
-      setTimeout(() => toast.remove(), 300);
-      if (redirect) window.location.href = redirect;
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 400);
+      if (redirectUrl && type === "success") {
+        window.location.href = redirectUrl;
+      }
     }, 2500);
   }
 
-  console.log('Formulário de cadastro inicializado');
-});
+  const togglePasswordButtons = document.querySelectorAll(".toggle-password");
+  togglePasswordButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const targetId = this.getAttribute("data-target");
+      const targetInput = document.getElementById(targetId);
+      if (targetInput.type === "password") {
+        targetInput.type = "text";
+        this.src = "../assets/logos/olho-x.png";
+      } else {
+        targetInput.type = "password";
+        this.src = "../assets/logos/olho.png";
+      }
+    });
+  });
 
+  console.log("Formulário de cadastro inicializado");
+});

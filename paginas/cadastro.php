@@ -1,0 +1,162 @@
+<?php
+include 'header.php';
+?>
+
+<link rel="stylesheet" href="cadastro.css" />
+
+<div class="formulario">
+  <div class="form-container">
+    <div class="progress-bar">
+      <div class="step active" id="step1-indicator">
+        <span class="step-number">1</span>
+        <span class="step-label">Dados Pessoais</span>
+      </div>
+      <div class="step" id="step2-indicator">
+        <span class="step-number">2</span>
+        <span class="step-label">Endereço</span>
+      </div>
+    </div>
+
+    <form id="registration-form">
+      <div class="form-step active" id="step1">
+        <h2>Dados Pessoais</h2>
+        <div class="form-group">
+          <label for="nome">Nome Completo</label>
+          <input type="text" id="nome" name="nome" required />
+          <span class="error-message" id="nome-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" required />
+          <span class="error-message" id="email-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="data-nascimento">Data de Nascimento</label>
+          <input type="date" id="data-nascimento" name="data-nascimento" required />
+          <span class="error-message" id="data-nascimento-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <div class="password-container">
+            <input type="password" id="senha" name="senha" required />
+            <img src="../assets/logos/olho.png" alt="Mostrar Senha" class="toggle-password" data-target="senha" />
+          </div>
+          <span class="error-message" id="senha-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmar-senha">Confirmar Senha</label>
+          <div class="password-container">
+            <input type="password" id="confirmar-senha" name="confirmar-senha" required />
+            <img src="../assets/logos/olho.png" alt="Mostrar Senha" class="toggle-password"
+              data-target="confirmar-senha" />
+          </div>
+          <span class="error-message" id="confirmar-senha-error"></span>
+        </div>
+
+        <div class="form-buttons">
+          <button type="button" class="btn btn-primary" id="next-step1">
+            Próximo
+          </button>
+        </div>
+
+        <p class="txt">
+          Já tem uma conta?
+          <a href="login.php" class="link">Faça login aqui</a>
+        </p>
+      </div>
+
+      <div class="form-step" id="step2">
+        <h2>Dados de Endereço</h2>
+        <div class="form-group">
+          <label for="cep">CEP</label>
+          <input type="text" id="cep" name="cep" placeholder="00000-000" required />
+          <span class="error-message" id="cep-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="rua">Rua</label>
+          <input type="text" id="rua" name="rua" required />
+          <span class="error-message" id="rua-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="numero">Número</label>
+          <input type="text" id="numero" name="numero" required />
+          <span class="error-message" id="numero-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="bairro">Bairro</label>
+          <input type="text" id="bairro" name="bairro" required />
+          <span class="error-message" id="bairro-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="cidade">Cidade</label>
+          <input type="text" id="cidade" name="cidade" required />
+          <span class="error-message" id="cidade-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="estado">Estado</label>
+          <select id="estado" name="estado" required>
+            <option value="">Selecione o estado</option>
+            <option value="AC">Acre</option>
+            <option value="AL">Alagoas</option>
+            <option value="AP">Amapá</option>
+            <option value="AM">Amazonas</option>
+            <option value="BA">Bahia</option>
+            <option value="CE">Ceará</option>
+            <option value="DF">Distrito Federal</option>
+            <option value="ES">Espírito Santo</option>
+            <option value="GO">Goiás</option>
+            <option value="MA">Maranhão</option>
+            <option value="MT">Mato Grosso</option>
+            <option value="MS">Mato Grosso do Sul</option>
+            <option value="MG">Minas Gerais</option>
+            <option value="PA">Pará</option>
+            <option value="PB">Paraíba</option>
+            <option value="PR">Paraná</option>
+            <option value="PE">Pernambuco</option>
+            <option value="PI">Piauí</option>
+            <option value="RJ">Rio de Janeiro</option>
+            <option value="RN">Rio Grande do Norte</option>
+            <option value="RS">Rio Grande do Sul</option>
+            <option value="RO">Rondônia</option>
+            <option value="RR">Roraima</option>
+            <option value="SC">Santa Catarina</option>
+            <option value="SP">São Paulo</option>
+            <option value="SE">Sergipe</option>
+            <option value="TO">Tocantins</option>
+          </select>
+          <span class="error-message" id="estado-error"></span>
+        </div>
+
+        <div class="form-buttons">
+          <button type="button" class="btn btn-secondary" id="prev-step2">
+            Voltar
+          </button>
+          <button type="submit" class="btn btn-primary" id="submit-form">
+            Finalizar Cadastro
+          </button>
+        </div>
+        <p class="txt">
+          Já tem uma conta?
+          <a href="login.php" class="link">Faça login aqui</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<?php
+include 'footer.php';
+?>
+
+<script src="cadastro.js"></script>

@@ -1,7 +1,7 @@
 /* Estilos para a página do carrinho */
 
 body {
-    background-color:#f7f3ed;
+  background-color: #f7f3ed;
 }
 
 .carrinho-container {
@@ -145,7 +145,8 @@ body {
   gap: 1rem;
 }
 
-.btn-finalizar, .btn-limpar {
+.btn-finalizar,
+.btn-limpar {
   padding: 1rem;
   border: none;
   border-radius: 8px;
@@ -196,7 +197,7 @@ body {
 
 .carrinho-vazio h3 {
   color: #990053;
-  font-family: 'Berkshire Swash', cursive;
+  font-family: "Berkshire Swash", cursive;
   font-size: 2rem;
   margin-bottom: 1rem;
 }
@@ -253,7 +254,7 @@ body {
 
 .modal h2 {
   color: #990053;
-  font-family: 'Berkshire Swash', cursive;
+  font-family: "Berkshire Swash", cursive;
   margin-bottom: 1rem;
 }
 
@@ -263,34 +264,33 @@ body {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .item-carrinho {
     grid-template-columns: 60px 1fr;
     grid-template-rows: auto auto auto;
     gap: 0.5rem;
   }
-  
+
   .item-imagem {
     grid-row: 1 / 3;
   }
-  
+
   .item-info {
     grid-column: 2;
   }
-  
+
   .item-quantidade,
   .item-total,
   .item-remover {
     grid-column: 2;
     justify-self: start;
   }
-  
+
   .item-quantidade {
     margin-top: 0.5rem;
   }
-  
+
   .carrinho-resumo {
     position: static;
   }
 }
-
