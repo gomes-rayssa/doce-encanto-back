@@ -66,6 +66,7 @@ label {
 
 input[type="text"],
 input[type="email"],
+input[type="tel"],
 input[type="password"],
 input[type="date"],
 select {
@@ -80,6 +81,7 @@ select {
 
 input[type="text"]:focus,
 input[type="email"]:focus,
+input[type="tel"]:focus,
 input[type="password"]:focus,
 input[type="date"]:focus,
 select:focus {
@@ -91,6 +93,7 @@ select:focus {
 
 input[type="text"]:hover,
 input[type="email"]:hover,
+input[type="tel"]:hover,
 input[type="password"]:hover,
 input[type="date"]:hover,
 select:hover {
@@ -415,6 +418,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
   input[type="text"],
   input[type="email"],
+  input[type="tel"],
   input[type="password"],
   input[type="date"],
   select {

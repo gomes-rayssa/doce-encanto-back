@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const campos = {
     nome: document.getElementById("nome"),
     email: document.getElementById("email"),
+    celular: document.getElementById("celular"),
     dataNascimento: document.getElementById("data-nascimento"),
     senha: document.getElementById("senha"),
     confirmarSenha: document.getElementById("confirmar-senha"),
@@ -56,6 +57,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     return idade >= 18;
   }
+
+  function validarCelular(valor) {
+    const apenasNumeros = valor.replace(/\D/g, "");
+    return apenasNumeros.length === 10 || apenasNumeros.length === 11;
+  }
+
+  function aplicarMascaraCelular(valor) {
+    const digitos = valor.replace(/\D/g, "");
+    if (digitos.length <= 10) {
+      return digitos.replace(/^(\d{0,2})(\d{0,4})(\d{0,4}).*/, (m, d1, d2, d3) =>
+        !d1 ? "" : `(${d1}${d2 ? ") " + d2 : ""}${d3 ? "-" + d3 : ""}`
+      );
+    } else {
+      return digitos.replace(/^(\d{0,2})(\d{0,5})(\d{0,4}).*/, (m, d1, d2, d3) =>
+        !d1 ? "" : `(${d1}${d2 ? ") " + d2 : ""}${d3 ? "-" + d3 : ""}`
+      );
+    }
+  }
+
+  campos.celular.addEventListener("input", (e) => {
+    e.target.value = aplicarMascaraCelular(e.target.value);
+  });
 
   function mostrarErro(campo, mensagem) {
     const formGroup = campo.closest(".form-group");
@@ -107,6 +130,13 @@ document.addEventListener("DOMContentLoaded", function () {
           return mostrarErro(campo, "E-mail é obrigatório"), false;
         if (!validarEmail(valor))
           return mostrarErro(campo, "E-mail inválido"), false;
+        mostrarSucesso(campo);
+        return true;
+      case "celular":
+        if (!valor.trim())
+          return mostrarErro(campo, "Celular é obrigatório"), false;
+        if (!validarCelular(valor))
+          return mostrarErro(campo, "Número de celular inválido"), false;
         mostrarSucesso(campo);
         return true;
       case "dataNascimento":
@@ -162,8 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return (
             mostrarErro(
               campo,
-              `${
-                nomeCampo.charAt(0).toUpperCase() + nomeCampo.slice(1)
+              `${nomeCampo.charAt(0).toUpperCase() + nomeCampo.slice(1)
               } é obrigatório`
             ),
             false
@@ -183,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let valido = true;
     const camposEtapa =
       etapa === 1
-        ? ["nome", "email", "dataNascimento", "senha", "confirmarSenha"]
+        ? ["nome", "email", "celular", "dataNascimento", "senha", "confirmarSenha"]
         : ["cep", "rua", "numero", "bairro", "cidade", "estado"];
     camposEtapa.forEach((campo) => {
       if (!validarCampo(campo, campos[campo].value)) valido = false;
@@ -258,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const novoUsuario = {
         nome: campos.nome.value,
         email: campos.email.value,
+        celular: campos.celular.value,
         dataNascimento: campos.dataNascimento.value,
         senha: campos.senha.value,
         endereco: {
@@ -286,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
           etapaAnterior();
           Object.keys(campos).forEach((key) => limparValidacao(campos[key]));
         } else {
-          showToast(data.message || "Erro ao cadastrar", "error");
+          showToast(data.message || "Erro ao cadastrar", null, "error");
         }
       } catch (error) {
         console.error("Erro no fetch:", error);

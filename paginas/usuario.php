@@ -84,6 +84,14 @@ $endereco = $usuario['endereco'] ?? [];
                             </div>
 
                             <div class="form-group">
+                                <label for="celular">Celular</label>
+                                <input type="text" id="celular" class="form-input" readonly
+                                    value="<?php echo htmlspecialchars($usuario['celular'] ?? ''); ?>"
+                                    placeholder="(00) 00000-0000" />
+                            </div>
+
+
+                            <div class="form-group">
                                 <label for="data-nascimento">Data de Nascimento</label>
                                 <input type="date" id="data-nascimento" class="form-input" readonly
                                     value="<?php echo htmlspecialchars($usuario['dataNascimento'] ?? ''); ?>" />

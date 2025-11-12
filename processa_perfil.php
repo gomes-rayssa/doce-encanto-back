@@ -32,12 +32,15 @@ if ($usuarioIndex === -1) {
 if ($action === 'save_personal') {
     $novoNome = $data['nome'];
     $novaData = $data['dataNascimento'];
+    $novoCelular = $data['celular'] ?? '';
 
     $_SESSION['usuario_data']['nome'] = $novoNome;
     $_SESSION['usuario_data']['dataNascimento'] = $novaData;
+    $_SESSION['usuario_data']['celular'] = $novoCelular;
 
     $_SESSION['lista_usuarios'][$usuarioIndex]['nome'] = $novoNome;
     $_SESSION['lista_usuarios'][$usuarioIndex]['dataNascimento'] = $novaData;
+    $_SESSION['lista_usuarios'][$usuarioIndex]['celular'] = $novoCelular;
 
     echo json_encode(['success' => true, 'message' => 'Informações pessoais salvas!']);
     exit;

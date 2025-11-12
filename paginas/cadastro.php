@@ -33,6 +33,12 @@ include 'header.php';
         </div>
 
         <div class="form-group">
+          <label for="celular">Celular</label>
+          <input type="tel" id="celular" name="celular" placeholder="(00) 90000-0000" required />
+          <span class="error-message" id="celular-error"></span>
+        </div>
+
+        <div class="form-group">
           <label for="data-nascimento">Data de Nascimento</label>
           <input type="date" id="data-nascimento" name="data-nascimento" required />
           <span class="error-message" id="data-nascimento-error"></span>

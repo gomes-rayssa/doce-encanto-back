@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded"),
     const campos = {
       nome: document.getElementById("nome-completo"),
       email: document.getElementById("email"),
+      celular: document.getElementById("celualr"),
       dataNascimento: document.getElementById("data-nascimento"),
       cep: document.getElementById("cep"),
       rua: document.getElementById("rua"),
@@ -99,7 +100,7 @@ document.addEventListener("DOMContentLoaded"),
     setReadonly(Object.values(campos), true);
 
     editBtn.addEventListener("click", () => {
-      const personalFields = [campos.nome, campos.email, campos.dataNascimento];
+      const personalFields = [campos.nome, campos.email, campos.celular, campos.dataNascimento];
       setReadonly(personalFields, false);
       editActions.classList.remove("hidden");
       editBtn.classList.add("hidden");
@@ -109,7 +110,7 @@ document.addEventListener("DOMContentLoaded"),
     });
 
     cancelBtn.addEventListener("click", () => {
-      const personalFields = [campos.nome, campos.email, campos.dataNascimento];
+      const personalFields = [campos.nome, campos.email, campos.celular, campos.dataNascimento];
       restaurarValores();
       setReadonly(personalFields, true);
       editActions.classList.add("hidden");
@@ -119,12 +120,13 @@ document.addEventListener("DOMContentLoaded"),
     });
 
     saveBtn.addEventListener("click", async () => {
-      const personalFields = [campos.nome, campos.email, campos.dataNascimento];
+      const personalFields = [campos.nome, campos.email, campos.celular, campos.dataNascimento];
 
       const data = {
         action: "save_personal",
         nome: campos.nome.value,
         email: campos.email.value,
+        celular: campos.celular.value,
         dataNascimento: campos.dataNascimento.value,
       };
 
