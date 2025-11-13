@@ -1,7 +1,7 @@
--- Cria o banco de dados (se não existir)
+-- Cria o banco de dados
 CREATE DATABASE IF NOT EXISTS doce_encanto;
 
--- Seleciona o banco de dados
+-- Seleciona o banco
 USE doce_encanto;
 
 -- Tabelas
@@ -26,6 +26,18 @@ CREATE TABLE IF NOT EXISTS produtos (
     estoque INT DEFAULT 0
 );
 
+CREATE TABLE IF NOT EXISTS enderecos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    cep VARCHAR(10) NOT NULL,
+    rua VARCHAR(255) NOT NULL,
+    numero VARCHAR(10) NOT NULL,
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    estado VARCHAR(2) NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS pedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT,
@@ -45,11 +57,11 @@ CREATE TABLE IF NOT EXISTS itens_pedido (
     FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE RESTRICT
 );
 
--- Inserção de um usuário administrador (opcional)
+-- Usuário administrador
 INSERT INTO usuarios (nome, email, senha_hash, isAdmin) VALUES
-('Admin Doce Encanto', 'admin@doceencanto.com', 'Doce2025@', TRUE); -- Substitua pela hash de uma senha forte
+('Admin Doce Encanto', 'admin@doceencanto.com', 'Doce2025@', TRUE); 
 
--- Inserção de alguns produtos de exemplo
+-- Exemplo
 INSERT INTO produtos (nome, descricao, preco, categoria, estoque) VALUES
 ('Bolo de Chocolate', 'Delicioso bolo de chocolate com cobertura de brigadeiro.', 55.00, 'Bolos', 10),
 ('Brigadeiro Gourmet', 'Brigadeiro tradicional com granulado belga.', 3.50, 'Doces', 100),

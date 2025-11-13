@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (data.success) {
         showToast(data.message, "success", () => {
-          window.location.href = data.redirect || "usuario.php";
+          window.location.href = data.redirect || "/doce-encanto-back/usuario.php";
         });
       } else {
         showToast(data.message || "Erro desconhecido", "error");

@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await response.json();
 
         if (data.success) {
-          showToast("Cadastro realizado com sucesso!", "login.php");
+          showToast("Cadastro realizado com sucesso!", "/doce-encanto-back/login.php", "success");
 
           form.reset();
           etapaAnterior();
