@@ -1,5 +1,6 @@
 <?php
 include 'header.php';
+include 'db_config.php';
 ?>
 
 <link rel="stylesheet" href="style.css" />
