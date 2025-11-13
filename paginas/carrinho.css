@@ -1,7 +1,7 @@
 /* Estilos para a página do carrinho */
 
 body {
-  background-color: #f7f3ed;
+    background-color:#f7f3ed;
 }
 
 .carrinho-container {
@@ -145,8 +145,7 @@ body {
   gap: 1rem;
 }
 
-.btn-finalizar,
-.btn-limpar {
+.btn-finalizar, .btn-limpar {
   padding: 1rem;
   border: none;
   border-radius: 8px;
@@ -197,7 +196,7 @@ body {
 
 .carrinho-vazio h3 {
   color: #990053;
-  font-family: "Berkshire Swash", cursive;
+  font-family: 'Berkshire Swash', cursive;
   font-size: 2rem;
   margin-bottom: 1rem;
 }
@@ -217,45 +216,388 @@ body {
   background: #5a0022;
 }
 
-/* Modal */
-.modal {
+/* Modal de Pagamento */
+.modal-pagamento {
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: 2000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-pagamento.show {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-pagamento-content {
+  background-color: white;
+  margin: 2% auto;
+  padding: 2.5rem;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.4s ease;
+}
+
+.modal-pagamento-content h2 {
+  color: #990053;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.8rem;
+}
+
+.close-modal-pagamento {
+  color: #aaa;
+  float: right;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  line-height: 1;
+  margin-top: -10px;
+}
+
+.close-modal-pagamento:hover {
+  color: #990053;
+}
+
+/* Resumo do Pedido */
+.resumo-pedido {
+  background: #f7f3ed;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.resumo-pedido h3 {
+  color: #990053;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.resumo-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.resumo-item.total-final {
+  border-top: 2px solid #990053;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #990053;
+}
+
+/* Form Section */
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section h3 {
+  color: #990053;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Métodos de Pagamento */
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.payment-method {
+  cursor: pointer;
+}
+
+.payment-method input[type="radio"] {
+  display: none;
+}
+
+.method-card {
+  border: 2px solid #e0e0e0;
+  padding: 1.5rem 1rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.method-card i {
+  font-size: 2rem;
+  color: #990053;
+  margin-bottom: 0.5rem;
+}
+
+.method-card span {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.payment-method input[type="radio"]:checked + .method-card {
+  border-color: #990053;
+  background: #fff5f9;
+  box-shadow: 0 4px 12px rgba(153, 0, 83, 0.2);
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.9rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #990053;
+  box-shadow: 0 0 0 3px rgba(153, 0, 83, 0.1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
+/* Card Brands */
+.card-brands {
+  position: absolute;
+  right: 1rem;
+  top: 2.5rem;
+  display: flex;
+  gap: 0.3rem;
+}
+
+.card-brands i {
+  font-size: 1.5rem;
+  opacity: 0.3;
+}
+
+/* CVV Help */
+.cvv-help {
+  position: absolute;
+  right: 1rem;
+  top: 2.8rem;
+  color: #999;
+  cursor: help;
+}
+
+/* Endereço Salvo */
+.endereco-salvo {
+  background: #f7f3ed;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #990053;
+}
+
+.endereco-salvo p {
+  margin: 0.3rem 0;
+  color: #333;
+}
+
+.aviso-login {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  padding: 1rem;
+  border-radius: 8px;
+  color: #856404;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-cancelar-pagamento,
+.btn-confirmar-pagamento {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-cancelar-pagamento {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-cancelar-pagamento:hover {
+  background: #5a6268;
+}
+
+.btn-confirmar-pagamento {
+  background: #28a745;
+  color: white;
+}
+
+.btn-confirmar-pagamento:hover {
+  background: #218838;
+}
+
+/* Modal de Sucesso */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
   justify-content: center;
   align-items: center;
 }
 
 .modal-content {
   background-color: white;
-  padding: 2rem;
-  border-radius: 10px;
+  padding: 3rem;
+  border-radius: 20px;
   text-align: center;
-  max-width: 400px;
+  max-width: 500px;
   width: 90%;
+  animation: popIn 0.4s ease;
 }
 
-.close-btn {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
+.success-icon {
+  font-size: 5rem;
+  color: #28a745;
+  margin-bottom: 1rem;
+  animation: scaleIn 0.5s ease;
+}
+
+.modal-content h2 {
+  color: #990053;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.modal-content p {
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.pedido-numero {
+  font-size: 1.3rem;
+  color: #990053;
+  margin-top: 1rem;
+}
+
+.btn-fechar-sucesso {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background: #990053;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.close-btn:hover {
-  color: #000;
+.btn-fechar-sucesso:hover {
+  background: #5a0022;
+  transform: translateY(-2px);
 }
 
-.modal h2 {
-  color: #990053;
-  font-family: "Berkshire Swash", cursive;
-  margin-bottom: 1rem;
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 /* Responsividade */
@@ -264,33 +606,50 @@ body {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-
+  
   .item-carrinho {
     grid-template-columns: 60px 1fr;
     grid-template-rows: auto auto auto;
     gap: 0.5rem;
   }
-
+  
   .item-imagem {
     grid-row: 1 / 3;
   }
-
+  
   .item-info {
     grid-column: 2;
   }
-
+  
   .item-quantidade,
   .item-total,
   .item-remover {
     grid-column: 2;
     justify-self: start;
   }
-
+  
   .item-quantidade {
     margin-top: 0.5rem;
   }
-
+  
   .carrinho-resumo {
     position: static;
+  }
+
+  .modal-pagamento-content {
+    padding: 1.5rem;
+    margin: 5% auto;
+  }
+
+  .payment-methods {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    flex-direction: column;
   }
 }
