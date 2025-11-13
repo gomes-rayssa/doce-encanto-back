@@ -1,6 +1,5 @@
 <?php
 include 'header.php';
-include 'db_config.php';
 
 $carrinho = $_SESSION['carrinho'] ?? [];
 $total = 0;
