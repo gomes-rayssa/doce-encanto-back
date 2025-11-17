@@ -1,25 +1,5 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['lista_usuarios'])) {
-  $_SESSION['lista_usuarios'] = [
-    [
-      'nome' => 'Administrador',
-      'email' => 'admin@doceencanto.com',
-      'dataNascimento' => '2000-01-01',
-      'senha_hash' => password_hash('admin123', PASSWORD_DEFAULT),
-      'endereco' => [
-        'cep' => '00000-000',
-        'rua' => 'Rua da Matriz',
-        'numero' => '1',
-        'bairro' => 'Centro',
-        'cidade' => 'AdminCity',
-        'estado' => 'AD'
-      ],
-      'isAdmin' => true
-    ]
-  ];
-}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

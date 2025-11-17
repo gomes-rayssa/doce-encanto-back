@@ -6,17 +6,18 @@ include 'db_config.php';
 
 $data = json_decode(file_get_contents('php://input'), true);
 
+// Validação básica
 if (empty($data['nome']) || empty($data['email']) || empty($data['celular']) || empty($data['senha'])) {
-  echo json_encode(['success' => false, 'message' => 'Dados essenciais ausentes.']);
-  exit;
+    echo json_encode(['success' => false, 'message' => 'Dados essenciais ausentes.']);
+    exit;
 }
 
 $email = $data['email'];
 
+// Verifica se o e-mail já existe
 $sql_check = "SELECT id FROM usuarios WHERE email = ?";
 if ($stmt_check = mysqli_prepare($link, $sql_check)) {
-    mysqli_stmt_bind_param($stmt_check, "s", $param_email_check);
-    $param_email_check = $email;
+    mysqli_stmt_bind_param($stmt_check, "s", $email);
     mysqli_stmt_execute($stmt_check);
     mysqli_stmt_store_result($stmt_check);
 
@@ -28,56 +29,48 @@ if ($stmt_check = mysqli_prepare($link, $sql_check)) {
     mysqli_stmt_close($stmt_check);
 }
 
+// Valida celular
 $celular = $data['celular'] ?? '';
-$celular_limpo = preg_replace('/\D/', '', $celular); 
+$celular_limpo = preg_replace('/\D/', '', $celular);
 
-if (!empty($celular)) {
-  if (strlen($celular_limpo) < 10 || strlen($celular_limpo) > 11) {
+if (!empty($celular) && (strlen($celular_limpo) < 10 || strlen($celular_limpo) > 11)) {
     echo json_encode(['success' => false, 'message' => 'Número de celular inválido.']);
     exit;
-  }
 }
 
+// Hash da senha
 $senha_hash = password_hash($data['senha'], PASSWORD_DEFAULT);
 
-$novoUsuario = [
-  'nome' => $data['nome'],
-  'email' => $data['email'],
-  "celular" => $data['celular'],
-  'dataNascimento' => $data['dataNascimento'],
-  'senha_hash' => $senha_hash,
-  'endereco' => $data['endereco'] ?? []
-];
-
+// Insere o usuário
 $sql_user = "INSERT INTO usuarios (nome, email, celular, dataNascimento, senha_hash) VALUES (?, ?, ?, ?, ?)";
 
 if ($stmt_user = mysqli_prepare($link, $sql_user)) {
-    mysqli_stmt_bind_param($stmt_user, "sssss", $param_nome, $param_email, $param_celular, $param_dataNascimento, $param_senha_hash);
-
-    $param_nome = $data['nome'];
-    $param_email = $data['email'];
-    $param_celular = $data['celular'] ?? '';
-    $param_dataNascimento = $data['dataNascimento'] ?? '';
-    $param_senha_hash = $senha_hash;
+    mysqli_stmt_bind_param($stmt_user, "sssss", 
+        $data['nome'],
+        $data['email'],
+        $data['celular'],
+        $data['dataNascimento'],
+        $senha_hash
+    );
 
     if (mysqli_stmt_execute($stmt_user)) {
         $usuario_id = mysqli_insert_id($link);
         mysqli_stmt_close($stmt_user);
 
+        // Insere o endereço se fornecido
         $endereco = $data['endereco'] ?? [];
         if (!empty($endereco)) {
             $sql_address = "INSERT INTO enderecos (usuario_id, cep, rua, numero, bairro, cidade, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             if ($stmt_address = mysqli_prepare($link, $sql_address)) {
-                mysqli_stmt_bind_param($stmt_address, "issssss", $param_user_id, $param_cep, $param_rua, $param_numero, $param_bairro, $param_cidade, $param_estado);
-
-                $param_user_id = $usuario_id;
-                $param_cep = $endereco['cep'] ?? '';
-                $param_rua = $endereco['rua'] ?? '';
-                $param_numero = $endereco['numero'] ?? '';
-                $param_bairro = $endereco['bairro'] ?? '';
-                $param_cidade = $endereco['cidade'] ?? '';
-                $param_estado = $endereco['estado'] ?? '';
-
+                mysqli_stmt_bind_param($stmt_address, "issssss", 
+                    $usuario_id,
+                    $endereco['cep'] ?? '',
+                    $endereco['rua'] ?? '',
+                    $endereco['numero'] ?? '',
+                    $endereco['bairro'] ?? '',
+                    $endereco['cidade'] ?? '',
+                    $endereco['estado'] ?? ''
+                );
                 mysqli_stmt_execute($stmt_address);
                 mysqli_stmt_close($stmt_address);
             }
@@ -85,8 +78,7 @@ if ($stmt_user = mysqli_prepare($link, $sql_user)) {
 
         echo json_encode([
             'success' => true,
-            'message' => 'Cadastro realizado com sucesso!',
-            'usuario_id' => $usuario_id
+            'message' => 'Cadastro realizado com sucesso!'
         ]);
     } else {
         echo json_encode([
@@ -100,4 +92,6 @@ if ($stmt_user = mysqli_prepare($link, $sql_user)) {
         'message' => 'Erro de preparação da query: ' . mysqli_error($link)
     ]);
 }
+
+mysqli_close($link);
 ?>
