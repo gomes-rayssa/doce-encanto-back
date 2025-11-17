@@ -83,7 +83,7 @@ if ($stmt = mysqli_prepare($link, $sql)) {
                     exit;
                 }
             }
-        } else {
+         else {
             echo json_encode(['success' => false, 'message' => 'E-mail não encontrado!']);
             exit;
         }
@@ -93,4 +93,5 @@ if ($stmt = mysqli_prepare($link, $sql)) {
 
 echo json_encode(['success' => false, 'message' => 'Erro ao processar login']);
 mysqli_close($link);
+}
 ?>

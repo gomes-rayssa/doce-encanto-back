@@ -16,7 +16,7 @@ $email = $data['email'];
 
 // Verifica se o e-mail já existe
 $sql_check = "SELECT id FROM usuarios WHERE email = ?";
-if ($stmt_check = mysqli_prepare($link, $sql_check)) {
+if ($stmt_check = mysqli_prepare($conn, $sql_check)) { // CORREÇÃO: $link -> $conn
     mysqli_stmt_bind_param($stmt_check, "s", $email);
     mysqli_stmt_execute($stmt_check);
     mysqli_stmt_store_result($stmt_check);
@@ -44,7 +44,7 @@ $senha_hash = password_hash($data['senha'], PASSWORD_DEFAULT);
 // Insere o usuário
 $sql_user = "INSERT INTO usuarios (nome, email, celular, dataNascimento, senha_hash) VALUES (?, ?, ?, ?, ?)";
 
-if ($stmt_user = mysqli_prepare($link, $sql_user)) {
+if ($stmt_user = mysqli_prepare($conn, $sql_user)) { 
     mysqli_stmt_bind_param($stmt_user, "sssss", 
         $data['nome'],
         $data['email'],
@@ -54,14 +54,14 @@ if ($stmt_user = mysqli_prepare($link, $sql_user)) {
     );
 
     if (mysqli_stmt_execute($stmt_user)) {
-        $usuario_id = mysqli_insert_id($link);
+        $usuario_id = mysqli_insert_id($conn); 
         mysqli_stmt_close($stmt_user);
 
         // Insere o endereço se fornecido
         $endereco = $data['endereco'] ?? [];
         if (!empty($endereco)) {
             $sql_address = "INSERT INTO enderecos (usuario_id, cep, rua, numero, bairro, cidade, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            if ($stmt_address = mysqli_prepare($link, $sql_address)) {
+            if ($stmt_address = mysqli_prepare($conn, $sql_address)) { 
                 mysqli_stmt_bind_param($stmt_address, "issssss", 
                     $usuario_id,
                     $endereco['cep'] ?? '',
@@ -83,15 +83,15 @@ if ($stmt_user = mysqli_prepare($link, $sql_user)) {
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Erro ao cadastrar usuário: ' . mysqli_error($link)
+            'message' => 'Erro ao cadastrar usuário: ' . mysqli_error($conn) // CORREÇÃO: $link -> $conn
         ]);
     }
 } else {
     echo json_encode([
         'success' => false,
-        'message' => 'Erro de preparação da query: ' . mysqli_error($link)
+        'message' => 'Erro de preparação da query: ' . mysqli_error($conn) // CORREÇÃO: $link -> $conn
     ]);
 }
 
-mysqli_close($link);
+mysqli_close($conn); // CORREÇÃO: $link -> $conn
 ?>
