@@ -250,11 +250,11 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       const data = await response.json();
       if (!data.erro) {
-        campos.rua.value = data.logouro || "";
+        campos.rua.value = data.logradouro || "";
         campos.bairro.value = data.bairro || "";
         campos.cidade.value = data.localidade || "";
         campos.estado.value = data.uf || "";
-        if (data.logouro) validarCampo("rua", data.logouro);
+        if (data.logradouro) validarCampo("rua", data.logradouro);
         if (data.bairro) validarCampo("bairro", data.bairro);
         if (data.localidade) validarCampo("cidade", data.localidade);
         if (data.uf) validarCampo("estado", data.uf);

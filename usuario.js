@@ -296,4 +296,33 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     });
   }
+
+  // Preenchimento automático de CEP
+  if (campos.cep) {
+    campos.cep.addEventListener("input", async function (e) {
+      let valor = e.target.value.replace(/\D/g, "");
+      if (valor.length > 5)
+        valor = valor.substring(0, 5) + "-" + valor.substring(5, 8);
+      e.target.value = valor;
+
+      if (valor.length === 9) {
+        try {
+          const cepLimpo = valor.replace(/\D/g, "");
+          const response = await fetch(
+            `https://viacep.com.br/ws/${cepLimpo}/json/`
+          );
+          const data = await response.json();
+
+          if (!data.erro) {
+            if (campos.rua) campos.rua.value = data.logradouro || "";
+            if (campos.bairro) campos.bairro.value = data.bairro || "";
+            if (campos.cidade) campos.cidade.value = data.localidade || "";
+            if (campos.estado) campos.estado.value = data.uf || "";
+          }
+        } catch (error) {
+          console.error("Erro ao buscar CEP:", error);
+        }
+      }
+    });
+  }
 });
