@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS itens_pedido (
 -- Usuário administrador
 -- Senha: Doce2025@ (hash gerado com PASSWORD_DEFAULT)
 INSERT INTO usuarios (nome, email, senha_hash, isAdmin) VALUES
-('Admin Doce Encanto', 'admin@doceencanto.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE); 
+('Admin Doce Encanto', 'admin@doceencanto.com', '$2y$10$9HgTp/YSAfS0SqqNraUideIBeICrYRAKTpMp5WMGyvHbQbsk/SKgm', TRUE); 
 
 -- Exemplo
 INSERT INTO produtos (nome, descricao, preco, categoria, estoque) VALUES

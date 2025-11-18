@@ -96,10 +96,12 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
 
                     mysqli_close($conn);
 
+                    $redirect_url = ((int)$isAdmin === 1) ? 'admin.php' : 'usuario.php';
+
                     echo json_encode([
                         'success'  => true,
                         'message'  => 'Login realizado com sucesso!',
-                        'redirect' => 'usuario.php'
+                        'redirect' => $redirect_url
                     ]);
                     exit;
 
