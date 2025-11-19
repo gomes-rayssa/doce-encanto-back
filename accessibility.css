@@ -1,0 +1,541 @@
+/* ==========================================
+   SISTEMA DE ACESSIBILIDADE - DOCE ENCANTO
+   ========================================== */
+
+/* ==========================================
+   SKIP TO CONTENT
+   ========================================== */
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #990053;
+  color: white;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  border-radius: 0 0 8px 8px;
+  font-weight: 600;
+  z-index: 10000;
+  transition: top 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* ==========================================
+   BOTÃO FLUTUANTE DE ACESSIBILIDADE
+   ========================================== */
+.accessibility-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #990053, #5a0022);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 9998;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.accessibility-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.accessibility-button:focus {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ==========================================
+   PAINEL DE ACESSIBILIDADE
+   ========================================== */
+.accessibility-panel {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 320px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.accessibility-panel.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.accessibility-panel-header {
+  background: linear-gradient(135deg, #990053, #5a0022);
+  color: white;
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accessibility-panel-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.accessibility-panel-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.accessibility-panel-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.accessibility-panel-close:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.accessibility-panel-content {
+  padding: 1.25rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* ==========================================
+   CONTROLES DE ACESSIBILIDADE
+   ========================================== */
+.accessibility-control {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.accessibility-control:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.accessibility-control-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.9375rem;
+}
+
+.accessibility-control-label i {
+  color: #990053;
+  font-size: 1rem;
+}
+
+.accessibility-control-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.accessibility-btn {
+  flex: 1;
+  min-width: 90px;
+  padding: 0.625rem 1rem;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+}
+
+.accessibility-btn:hover {
+  border-color: #990053;
+  background: #fff5f9;
+}
+
+.accessibility-btn:focus {
+  outline: 2px solid #990053;
+  outline-offset: 2px;
+}
+
+.accessibility-btn.active {
+  background: linear-gradient(135deg, #990053, #5a0022);
+  border-color: #990053;
+  color: white;
+}
+
+.accessibility-btn i {
+  font-size: 1rem;
+}
+
+/* ==========================================
+   RESET BUTTON
+   ========================================== */
+.accessibility-reset {
+  width: 100%;
+  padding: 0.75rem;
+  background: #f3f4f6;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #374151;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.accessibility-reset:hover {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.accessibility-reset:focus {
+  outline: 2px solid #990053;
+  outline-offset: 2px;
+}
+
+/* ==========================================
+   CLASSES DE MODIFICAÇÃO DE ACESSIBILIDADE
+   ========================================== */
+
+/* Tamanho de Fonte */
+body.font-size-medium {
+  font-size: 16px;
+}
+
+body.font-size-large {
+  font-size: 18px;
+}
+
+body.font-size-extra-large {
+  font-size: 20px;
+}
+
+body.font-size-large h1,
+body.font-size-extra-large h1 {
+  font-size: 2.5rem;
+}
+
+body.font-size-large h2,
+body.font-size-extra-large h2 {
+  font-size: 2rem;
+}
+
+body.font-size-large h3,
+body.font-size-extra-large h3 {
+  font-size: 1.5rem;
+}
+
+body.font-size-large .btn,
+body.font-size-extra-large .btn {
+  font-size: 1.125rem;
+  padding: 1rem 2rem;
+}
+
+/* Alto Contraste */
+body.high-contrast {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+body.high-contrast * {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+body.high-contrast a,
+body.high-contrast button,
+body.high-contrast .btn {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+
+body.high-contrast img {
+  filter: grayscale(100%) contrast(120%);
+  border: 2px solid #fff !important;
+}
+
+body.high-contrast .modern-header,
+body.high-contrast .modern-footer {
+  background: #000 !important;
+  border-color: #fff !important;
+}
+
+/* Modo Escuro */
+body.dark-mode {
+  background-color: #1a1a1a !important;
+  color: #e5e5e5 !important;
+}
+
+body.dark-mode .modern-header,
+body.dark-mode .modern-nav,
+body.dark-mode .card,
+body.dark-mode .product-card,
+body.dark-mode .category-card {
+  background-color: #2d2d2d !important;
+  color: #e5e5e5 !important;
+}
+
+body.dark-mode .nav-link,
+body.dark-mode .footer-links a {
+  color: #e5e5e5 !important;
+}
+
+body.dark-mode .btn-primary {
+  background: #990053 !important;
+  color: white !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #2d2d2d !important;
+  color: #e5e5e5 !important;
+  border-color: #444 !important;
+}
+
+body.dark-mode .modern-footer {
+  background-color: #1a1a1a !important;
+}
+
+/* Espaçamento de Leitura */
+body.reading-spacing p,
+body.reading-spacing li,
+body.reading-spacing a {
+  line-height: 2 !important;
+  letter-spacing: 0.05em !important;
+}
+
+body.reading-spacing h1,
+body.reading-spacing h2,
+body.reading-spacing h3,
+body.reading-spacing h4 {
+  line-height: 1.6 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Modo Dislexia */
+body.dyslexia-font * {
+  font-family: 'Arial', 'Helvetica', sans-serif !important;
+}
+
+/* Escala de Cinza */
+body.grayscale {
+  filter: grayscale(100%);
+}
+
+body.grayscale img,
+body.grayscale video {
+  filter: grayscale(100%);
+}
+
+/* ==========================================
+   MELHORIAS DE FOCO
+   ========================================== */
+*:focus {
+  outline: 2px solid #990053;
+  outline-offset: 2px;
+}
+
+button:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #990053;
+  outline-offset: 2px;
+}
+
+/* Foco visível aprimorado */
+.nav-link:focus,
+.btn:focus,
+.product-card:focus,
+.category-card:focus {
+  box-shadow: 0 0 0 4px rgba(153, 0, 83, 0.3);
+}
+
+/* ==========================================
+   INDICADOR DE FOCO DO TECLADO
+   ========================================== */
+.keyboard-user *:focus {
+  outline: 3px solid #990053;
+  outline-offset: 3px;
+}
+
+/* ==========================================
+   SCROLLBAR PERSONALIZADA (Acessível)
+   ========================================== */
+.accessibility-panel-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.accessibility-panel-content::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.accessibility-panel-content::-webkit-scrollbar-thumb {
+  background: #990053;
+  border-radius: 4px;
+}
+
+.accessibility-panel-content::-webkit-scrollbar-thumb:hover {
+  background: #5a0022;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+@media (max-width: 768px) {
+  .accessibility-button {
+    width: 50px;
+    height: 50px;
+    font-size: 1.25rem;
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .accessibility-panel {
+    width: calc(100vw - 30px);
+    right: 15px;
+    bottom: 75px;
+  }
+
+  .accessibility-panel-content {
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .accessibility-panel {
+    width: calc(100vw - 20px);
+    right: 10px;
+    left: 10px;
+    bottom: 70px;
+  }
+
+  .accessibility-control-buttons {
+    flex-direction: column;
+  }
+
+  .accessibility-btn {
+    min-width: 100%;
+  }
+}
+
+/* ==========================================
+   ANIMAÇÕES
+   ========================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.accessibility-panel.active .accessibility-control {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.accessibility-panel.active .accessibility-control:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.accessibility-panel.active .accessibility-control:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.accessibility-panel.active .accessibility-control:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.accessibility-panel.active .accessibility-control:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* ==========================================
+   IMPRESSÃO
+   ========================================== */
+@media print {
+  .accessibility-button,
+  .accessibility-panel,
+  .skip-to-content {
+    display: none !important;
+  }
+}
+
+/* ==========================================
+   PREFERS REDUCED MOTION
+   ========================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================
+   ALTO CONTRASTE DO SISTEMA
+   ========================================== */
+@media (prefers-contrast: high) {
+  body {
+    border: 3px solid;
+  }
+
+  button,
+  a,
+  input,
+  select {
+    border: 2px solid currentColor;
+  }
+}

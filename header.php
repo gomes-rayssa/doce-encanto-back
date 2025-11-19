@@ -2,14 +2,21 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Doce Encanto - Confeitaria Gourmet com bolos e doces artesanais de alta qualidade" />
+  <meta name="keywords" content="confeitaria, bolos, doces, gourmet, artesanal" />
   <title>Doce Encanto - Confeitaria Gourmet</title>
+  
+  <!-- Estilos -->
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="accessibility.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  
+  <!-- Fontes -->
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap");
     @import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap");
@@ -18,77 +25,80 @@ session_start();
 </head>
 
 <body>
-  <header class="modern-header">
-    <nav class="modern-nav">
+  <!-- Skip to Content -->
+  <a href="#main-content" class="skip-to-content">
+    Pular para o conteúdo principal
+  </a>
+
+  <!-- Header -->
+  <header class="modern-header" role="banner">
+    <nav class="modern-nav" role="navigation" aria-label="Navegação principal">
       <div class="nav-container">
         <div class="nav-logo">
-          <a href="index.php" class="logo-link">
-            <i class="fas fa-birthday-cake"></i>
+          <a href="index.php" class="logo-link" aria-label="Doce Encanto - Página inicial">
+            <i class="fas fa-birthday-cake" aria-hidden="true"></i>
             <span class="logo-text">Doce Encanto</span>
           </a>
         </div>
 
-        <ul class="nav-menu">
-          <li class="nav-item">
-            <a href="index.php" class="nav-link">
-              <i class="fas fa-home"></i>
+        <ul class="nav-menu" role="menubar">
+          <li class="nav-item" role="none">
+            <a href="index.php" class="nav-link" role="menuitem" aria-label="Ir para página inicial">
+              <i class="fas fa-home" aria-hidden="true"></i>
               <span>Início</span>
             </a>
           </li>
-          <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle">
-              <i class="fas fa-store"></i>
+          <li class="nav-item dropdown" role="none">
+            <a href="#" class="nav-link dropdown-toggle" role="menuitem" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-store" aria-hidden="true"></i>
               <span>Produtos</span>
-              <i class="fas fa-chevron-down"></i>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
             </a>
-            <div class="dropdown-menu">
-              <a href="bolos.php" class="dropdown-item">
-                <i class="fas fa-birthday-cake"></i>
+            <div class="dropdown-menu" role="menu" aria-label="Submenu de produtos">
+              <a href="bolos.php" class="dropdown-item" role="menuitem">
+                <i class="fas fa-birthday-cake" aria-hidden="true"></i>
                 <span>Bolos</span>
               </a>
-              <a href="doces.php" class="dropdown-item">
-                <i class="fas fa-candy-cane"></i>
+              <a href="doces.php" class="dropdown-item" role="menuitem">
+                <i class="fas fa-candy-cane" aria-hidden="true"></i>
                 <span>Doces</span>
               </a>
             </div>
           </li>
-          <li class="nav-item">
-            <a href="sobre.php" class="nav-link">
-              <i class="fas fa-info-circle"></i>
+          <li class="nav-item" role="none">
+            <a href="sobre.php" class="nav-link" role="menuitem" aria-label="Sobre a Doce Encanto">
+              <i class="fas fa-info-circle" aria-hidden="true"></i>
               <span>Sobre</span>
             </a>
           </li>
         </ul>
 
         <div class="nav-actions">
-
-          <li class="nav-item dropdown" style="list-style: none;">
-            <a href="#" class="nav-link dropdown-toggle" title="Minha Conta">
-              <i class="fas fa-user"></i>
-              <i class="fas fa-chevron-down"></i>
+          <li class="nav-item dropdown" style="list-style: none;" role="none">
+            <a href="#" class="nav-link dropdown-toggle" title="Minha Conta" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-label="Menu da conta">
+              <i class="fas fa-user" aria-hidden="true"></i>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
             </a>
-            <div class="dropdown-menu">
-
+            <div class="dropdown-menu" role="menu" aria-label="Submenu da conta">
               <?php if (isset($_SESSION['usuario_logado'])): ?>
-                <a href="usuario.php" class="dropdown-item">
-                  <i class="fas fa-id-card"></i>
+                <a href="usuario.php" class="dropdown-item" role="menuitem">
+                  <i class="fas fa-id-card" aria-hidden="true"></i>
                   <span>Minha Conta</span>
                 </a>
-                <a href="logout.php" class="dropdown-item">
-                  <i class="fas fa-sign-out-alt"></i>
+                <a href="logout.php" class="dropdown-item" role="menuitem">
+                  <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
                   <span>Sair</span>
                 </a>
               <?php else: ?>
-                <a href="login.php" class="dropdown-item">
-                  <i class="fas fa-sign-in-alt"></i>
+                <a href="login.php" class="dropdown-item" role="menuitem">
+                  <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
                   <span>Login</span>
                 </a>
-                <a href="cadastro.php" class="dropdown-item">
-                  <i class="fas fa-user-plus"></i>
+                <a href="cadastro.php" class="dropdown-item" role="menuitem">
+                  <i class="fas fa-user-plus" aria-hidden="true"></i>
                   <span>Cadastro</span>
                 </a>
               <?php endif; ?>
-
             </div>
           </li>
 
@@ -100,18 +110,20 @@ session_start();
             }
           }
           ?>
-          <a href="carrinho.php" class="nav-action cart-action" title="Carrinho">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="cart-count"><?php echo $total_itens_carrinho; ?></span>
+          <a href="carrinho.php" class="nav-action cart-action" title="Carrinho de compras" aria-label="Carrinho com <?php echo $total_itens_carrinho; ?> itens">
+            <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+            <span class="cart-count" aria-live="polite"><?php echo $total_itens_carrinho; ?></span>
           </a>
 
-          <button class="mobile-menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
+          <button class="mobile-menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="mobile-menu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
           </button>
         </div>
-
       </div>
     </nav>
   </header>
+
+  <!-- Main Content -->
+  <main id="main-content" role="main">

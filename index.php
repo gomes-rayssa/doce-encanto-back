@@ -41,13 +41,14 @@ $produtos_destaque = [
 ];
 ?>
 
-<section class="hero-section">
+<main id="main-content">
+<section class="hero-section" aria-labelledby="hero-title">
   <div class="hero-background">
     <div class="hero-overlay"></div>
   </div>
   <div class="hero-content">
     <div class="hero-text">
-      <h1 class="hero-title">
+      <h1 class="hero-title" id="hero-title">
         <span class="title-line">Confeitaria</span>
         <span class="title-line highlight">Gourmet</span>
       </h1>
@@ -56,16 +57,16 @@ $produtos_destaque = [
       </p>
       <div class="hero-buttons">
         <a href="paginas/bolos.php" class="btn btn-primary">
-          <i class="fas fa-birthday-cake"></i>
+          <i class="fas fa-birthday-cake" aria-hidden="true"></i>
           Ver Bolos
         </a>
         <a href="paginas/doces.php" class="btn btn-secondary">
-          <i class="fas fa-candy-cane"></i>
+          <i class="fas fa-candy-cane" aria-hidden="true"></i>
           Ver Doces
         </a>
       </div>
     </div>
-    <div class="hero-stats">
+    <div class="hero-stats" role="region" aria-label="Estatísticas da empresa">
       <div class="stat-item">
         <span class="stat-number">1000+</span>
         <span class="stat-label">Clientes Felizes</span>
@@ -82,10 +83,10 @@ $produtos_destaque = [
   </div>
 </section>
 
-<section class="categories-section">
+<section class="categories-section" aria-labelledby="categories-title">
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">Nossas Especialidades</h2>
+      <h2 class="section-title" id="categories-title">Nossas Especialidades</h2>
       <p class="section-subtitle">
         Descubra nossos produtos artesanais feitos com amor e ingredientes
         selecionados
@@ -94,8 +95,8 @@ $produtos_destaque = [
     <div class="categories-grid">
       <div class="category-card" data-category="bolos">
         <div class="category-image">
-          <img src="../assets/bolos/bolo-chocolate.png" alt="Bolos" />
-          <div class="category-overlay">
+          <img src="../assets/bolos/bolo-chocolate.png" alt="Bolo de chocolate - Categoria Bolos" />
+          <div class="category-overlay" aria-hidden="true">
             <i class="fas fa-birthday-cake"></i>
           </div>
         </div>
@@ -103,14 +104,14 @@ $produtos_destaque = [
           <h3>Bolos</h3>
           <p>Bolos únicos para momentos especiais</p>
           <a href="paginas/bolos.php" class="category-link">
-            Ver Coleção <i class="fas fa-arrow-right"></i>
+            Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </a>
         </div>
       </div>
       <div class="category-card" data-category="doces">
         <div class="category-image">
-          <img src="../assets/doces/brigadeiro.png" alt="Doces" />
-          <div class="category-overlay">
+          <img src="../assets/doces/brigadeiro.png" alt="Brigadeiro - Categoria Doces" />
+          <div class="category-overlay" aria-hidden="true">
             <i class="fas fa-candy-cane"></i>
           </div>
         </div>
@@ -118,14 +119,14 @@ $produtos_destaque = [
           <h3>Doces</h3>
           <p>Pequenos prazeres da vida</p>
           <a href="paginas/doces.php" class="category-link">
-            Ver Coleção <i class="fas fa-arrow-right"></i>
+            Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </a>
         </div>
       </div>
       <div class="category-card" data-category="trufas">
         <div class="category-image">
-          <img src="../assets/doces-trufas/brigadeiro.png" alt="Trufas" />
-          <div class="category-overlay">
+          <img src="../assets/doces-trufas/brigadeiro.png" alt="Trufa de brigadeiro - Categoria Trufas" />
+          <div class="category-overlay" aria-hidden="true">
             <i class="fas fa-gem"></i>
           </div>
         </div>
@@ -133,7 +134,7 @@ $produtos_destaque = [
           <h3>Trufas</h3>
           <p>Sofisticação em cada mordida</p>
           <a href="paginas/doces.php#trufas" class="category-link">
-            Ver Coleção <i class="fas fa-arrow-right"></i>
+            Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </a>
         </div>
       </div>
@@ -141,79 +142,85 @@ $produtos_destaque = [
   </div>
 </section>
 
-<section class="featured-products">
+<section class="featured-products" aria-labelledby="featured-title">
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">Mais Vendidos</h2>
+      <h2 class="section-title" id="featured-title">Mais Vendidos</h2>
       <p class="section-subtitle">Os favoritos dos nossos clientes</p>
     </div>
     <div class="products-grid">
 
       <?php foreach ($produtos_destaque as $produto): ?>
 
-        <div class="product-card">
+        <article class="product-card">
           <div class="product-image">
             <img src="<?php echo htmlspecialchars($produto['imagem']); ?>"
-              alt="<?php echo htmlspecialchars($produto['nome']); ?>" />
+              alt="<?php echo htmlspecialchars($produto['nome']); ?> - <?php echo htmlspecialchars($produto['descricao']); ?>" />
 
             <?php if (!empty($produto['badge'])): ?>
-              <div class="product-badge <?php echo strtolower(htmlspecialchars($produto['badge'])); ?>">
+              <div class="product-badge <?php echo strtolower(htmlspecialchars($produto['badge'])); ?>" aria-label="<?php echo htmlspecialchars($produto['badge']); ?>">
                 <?php echo htmlspecialchars($produto['badge']); ?>
               </div>
             <?php endif; ?>
 
             <div class="product-actions">
-              <button class="quick-view" title="Visualização Rápida">
-                <i class="fas fa-eye"></i>
+              <button class="quick-view" aria-label="Visualização rápida de <?php echo htmlspecialchars($produto['nome']); ?>">
+                <i class="fas fa-eye" aria-hidden="true"></i>
               </button>
 
-              <button class="add-to-cart" onclick="adicionarItem(
+              <button class="add-to-cart" aria-label="Adicionar <?php echo htmlspecialchars($produto['nome']); ?> ao carrinho" onclick="adicionarItem(
                   '<?php echo $produto['id']; ?>',
                   '<?php echo htmlspecialchars($produto['nome'], ENT_QUOTES); ?>',
                   <?php echo $produto['preco']; ?>,
                   '<?php echo htmlspecialchars($produto['imagem'], ENT_QUOTES); ?>',
                   '<?php echo htmlspecialchars($produto['categoria'], ENT_QUOTES); ?>'
-                )" title="Adicionar ao Carrinho">
-                <i class="fas fa-shopping-cart"></i>
+                )">
+                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
               </button>
             </div>
           </div>
           <div class="product-info">
             <h3 class="product-name"><?php echo htmlspecialchars($produto['nome']); ?></h3>
             <p class="product-description"><?php echo htmlspecialchars($produto['descricao']); ?></p>
-            <div class="product-rating">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
+            <div class="product-rating" role="img" aria-label="Avaliação: 4.9 de 5 estrelas">
+              <i class="fas fa-star" aria-hidden="true"></i>
+              <i class="fas fa-star" aria-hidden="true"></i>
+              <i class="fas fa-star" aria-hidden="true"></i>
+              <i class="fas fa-star" aria-hidden="true"></i>
+              <i class="fas fa-star" aria-hidden="true"></i>
               <span>(4.9)</span>
             </div>
-            <div class="product-price">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></div>
+            <div class="product-price" aria-label="Preço: R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?>">
+              R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?>
+            </div>
           </div>
-        </div>
+        </article>
 
       <?php endforeach; ?>
     </div>
   </div>
 </section>
 
-<section class="newsletter-section">
+<section class="newsletter-section" aria-labelledby="newsletter-title">
   <div class="container">
     <div class="newsletter-content">
       <div class="newsletter-text">
-        <h2>Fique por dentro das novidades!</h2>
+        <h2 id="newsletter-title">Fique por dentro das novidades!</h2>
         <p>
           Receba ofertas exclusivas, novos sabores e promoções especiais
           diretamente no seu email
         </p>
       </div>
-      <form id="newsletter-form" class="newsletter-form">
+      <form id="newsletter-form" class="newsletter-form" aria-labelledby="newsletter-title">
         <div class="form-group">
-          <input type="text" id="newsletter-nome" placeholder="Seu nome" required />
-          <input type="email" id="newsletter-email" placeholder="seu@email.com" required />
-          <button type="submit" class="btn btn-primary">
-            <i class="fas fa-paper-plane"></i>
+          <label for="newsletter-nome" class="sr-only">Seu nome</label>
+          <input type="text" id="newsletter-nome" name="nome" placeholder="Seu nome" required aria-required="true" />
+          
+          <label for="newsletter-email" class="sr-only">Seu email</label>
+          <input type="email" id="newsletter-email" name="email" placeholder="seu@email.com" required aria-required="true" />
+          
+          <button type="submit" class="btn btn-primary" aria-label="Inscrever-se na newsletter">
+            <i class="fas fa-paper-plane" aria-hidden="true"></i>
             Inscrever-se
           </button>
         </div>
@@ -221,6 +228,7 @@ $produtos_destaque = [
     </div>
   </div>
 </section>
+</main>
 
 <?php
 include 'footer.php';
