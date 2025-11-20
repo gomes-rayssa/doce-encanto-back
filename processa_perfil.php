@@ -6,6 +6,7 @@ include 'db_config.php';
 
 if (!isset($_SESSION['usuario_logado']) || !isset($_SESSION['usuario_id'])) {
     echo json_encode(['success' => false, 'message' => 'Usuário não autenticado.']);
+    $conn->close();
     exit;
 }
 
@@ -13,6 +14,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 if (!$data || !isset($data['action'])) {
     echo json_encode(['success' => false, 'message' => 'Requisição inválida.']);
+    $conn->close();
     exit;
 }
 
@@ -23,29 +25,30 @@ $usuario_id = $_SESSION['usuario_id'];
 if ($action === 'save_personal') {
     $sql = "UPDATE usuarios SET nome = ?, celular = ?, dataNascimento = ? WHERE id = ?";
     
-    if ($stmt = mysqli_prepare($conn, $sql)) {
-        mysqli_stmt_bind_param($stmt, "sssi", 
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("sssi", 
             $data['nome'],
             $data['celular'],
             $data['dataNascimento'],
             $usuario_id
         );
         
-        if (mysqli_stmt_execute($stmt)) {
+        if ($stmt->execute()) {
             // Atualiza os dados na sessão
             $_SESSION['usuario_data']['nome'] = $data['nome'];
             $_SESSION['usuario_data']['celular'] = $data['celular'];
             $_SESSION['usuario_data']['dataNascimento'] = $data['dataNascimento'];
             
-            mysqli_stmt_close($stmt);
+            $stmt->close();
             echo json_encode(['success' => true, 'message' => 'Informações pessoais atualizadas!']);
         } else {
-            mysqli_stmt_close($stmt);
-            echo json_encode(['success' => false, 'message' => 'Erro ao atualizar: ' . mysqli_error($conn)]);
+            $stmt->close();
+            echo json_encode(['success' => false, 'message' => 'Erro ao atualizar: ' . $conn->error]);
         }
     } else {
         echo json_encode(['success' => false, 'message' => 'Erro de preparação da query']);
     }
+    $conn->close();
     exit;
 }
 
@@ -57,19 +60,19 @@ if ($action === 'save_address') {
     $sql_check = "SELECT id FROM enderecos WHERE usuario_id = ?";
     $endereco_existe = false;
     
-    if ($stmt_check = mysqli_prepare($conn, $sql_check)) {
-        mysqli_stmt_bind_param($stmt_check, "i", $usuario_id);
-        mysqli_stmt_execute($stmt_check);
-        mysqli_stmt_store_result($stmt_check);
-        $endereco_existe = mysqli_stmt_num_rows($stmt_check) > 0;
-        mysqli_stmt_close($stmt_check);
+    if ($stmt_check = $conn->prepare($sql_check)) {
+        $stmt_check->bind_param("i", $usuario_id);
+        $stmt_check->execute();
+        $stmt_check->store_result();
+        $endereco_existe = $stmt_check->num_rows > 0;
+        $stmt_check->close();
     }
     
     if ($endereco_existe) {
         // Atualiza endereço existente
         $sql = "UPDATE enderecos SET cep = ?, rua = ?, numero = ?, bairro = ?, cidade = ?, estado = ? WHERE usuario_id = ?";
-        if ($stmt = mysqli_prepare($conn, $sql)) {
-            mysqli_stmt_bind_param($stmt, "ssssssi",
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("ssssssi",
                 $endereco['cep'],
                 $endereco['rua'],
                 $endereco['numero'],
@@ -79,20 +82,20 @@ if ($action === 'save_address') {
                 $usuario_id
             );
             
-            if (mysqli_stmt_execute($stmt)) {
+            if ($stmt->execute()) {
                 $_SESSION['usuario_data']['endereco'] = $endereco;
-                mysqli_stmt_close($stmt);
+                $stmt->close();
                 echo json_encode(['success' => true, 'message' => 'Endereço atualizado com sucesso!']);
             } else {
-                mysqli_stmt_close($stmt);
+                $stmt->close();
                 echo json_encode(['success' => false, 'message' => 'Erro ao atualizar endereço']);
             }
         }
     } else {
         // Insere novo endereço
         $sql = "INSERT INTO enderecos (usuario_id, cep, rua, numero, bairro, cidade, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        if ($stmt = mysqli_prepare($conn, $sql)) {
-            mysqli_stmt_bind_param($stmt, "issssss",
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("issssss",
                 $usuario_id,
                 $endereco['cep'],
                 $endereco['rua'],
@@ -102,19 +105,20 @@ if ($action === 'save_address') {
                 $endereco['estado']
             );
             
-            if (mysqli_stmt_execute($stmt)) {
+            if ($stmt->execute()) {
                 $_SESSION['usuario_data']['endereco'] = $endereco;
-                mysqli_stmt_close($stmt);
+                $stmt->close();
                 echo json_encode(['success' => true, 'message' => 'Endereço salvo com sucesso!']);
             } else {
-                mysqli_stmt_close($stmt);
+                $stmt->close();
                 echo json_encode(['success' => false, 'message' => 'Erro ao salvar endereço']);
             }
         }
     }
+    $conn->close();
     exit;
 }
 
 echo json_encode(['success' => false, 'message' => 'Ação desconhecida.']);
-mysqli_close($conn);
+$conn->close();
 ?>

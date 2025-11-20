@@ -11,6 +11,7 @@ $senha = $data['senha'] ?? '';
 
 if (empty($email) || empty($senha)) {
     echo json_encode(['success' => false, 'message' => 'Preencha todos os campos']);
+    $conn->close();
     exit;
 }
 
@@ -18,15 +19,14 @@ $sql = "SELECT id, nome, email, celular, dataNascimento, senha_hash, isAdmin
         FROM usuarios 
         WHERE email = ?";
 
-if ($stmt = mysqli_prepare($conn, $sql)) {
-    mysqli_stmt_bind_param($stmt, "s", $email);
+if ($stmt = $conn->prepare($sql)) {
+    $stmt->bind_param("s", $email);
 
-    if (mysqli_stmt_execute($stmt)) {
-        mysqli_stmt_store_result($stmt);
+    if ($stmt->execute()) {
+        $stmt->store_result();
 
-        if (mysqli_stmt_num_rows($stmt) == 1) {
-            mysqli_stmt_bind_result(
-                $stmt,
+        if ($stmt->num_rows == 1) {
+            $stmt->bind_result(
                 $id,
                 $nome,
                 $email_db,
@@ -36,10 +36,10 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
                 $isAdmin
             );
 
-            if (mysqli_stmt_fetch($stmt)) {
+            if ($stmt->fetch()) {
 
                 if (password_verify($senha, $senha_hash)) {
-                    mysqli_stmt_close($stmt);
+                    $stmt->close();
 
                     $endereco = null;
                     $sql_endereco = "SELECT cep, rua, numero, bairro, cidade, estado 
@@ -47,14 +47,13 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
                                      WHERE usuario_id = ? 
                                      LIMIT 1";
 
-                    if ($stmt_endereco = mysqli_prepare($conn, $sql_endereco)) {
-                        mysqli_stmt_bind_param($stmt_endereco, "i", $id);
-                        mysqli_stmt_execute($stmt_endereco);
-                        mysqli_stmt_store_result($stmt_endereco);
+                    if ($stmt_endereco = $conn->prepare($sql_endereco)) {
+                        $stmt_endereco->bind_param("i", $id);
+                        $stmt_endereco->execute();
+                        $stmt_endereco->store_result();
 
-                        if (mysqli_stmt_num_rows($stmt_endereco) > 0) {
-                            mysqli_stmt_bind_result(
-                                $stmt_endereco,
+                        if ($stmt_endereco->num_rows > 0) {
+                            $stmt_endereco->bind_result(
                                 $cep,
                                 $rua,
                                 $numero,
@@ -63,7 +62,7 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
                                 $estado
                             );
 
-                            if (mysqli_stmt_fetch($stmt_endereco)) {
+                            if ($stmt_endereco->fetch()) {
                                 $endereco = [
                                     'cep'    => $cep,
                                     'rua'    => $rua,
@@ -75,7 +74,7 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
                             }
                         }
 
-                        mysqli_stmt_close($stmt_endereco);
+                        $stmt_endereco->close();
                     }
 
                     $_SESSION['usuario_logado'] = true;
@@ -94,7 +93,7 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
                         $_SESSION['is_admin'] = true;
                     }
 
-                    mysqli_close($conn);
+                    $conn->close();
 
                     $redirect_url = ((int)$isAdmin === 1) ? 'admin.php' : 'usuario.php';
 
@@ -106,37 +105,37 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
                     exit;
 
                 } else {
-                    mysqli_stmt_close($stmt);
-                    mysqli_close($conn);
+                    $stmt->close();
+                    $conn->close();
 
                     echo json_encode(['success' => false, 'message' => 'Senha incorreta!']);
                     exit;
                 }
             } else {
-                mysqli_stmt_close($stmt);
-                mysqli_close($conn);
+                $stmt->close();
+                $conn->close();
 
                 echo json_encode(['success' => false, 'message' => 'Erro ao buscar dados do usuário.']);
                 exit;
             }
         } else {
-            mysqli_stmt_close($stmt);
-            mysqli_close($conn);
+            $stmt->close();
+            $conn->close();
 
             echo json_encode(['success' => false, 'message' => 'E-mail não encontrado!']);
             exit;
         }
     } else {
-        $erro = mysqli_error($conn);
-        mysqli_stmt_close($stmt);
-        mysqli_close($conn);
+        $erro = $conn->error;
+        $stmt->close();
+        $conn->close();
 
         echo json_encode(['success' => false, 'message' => 'Erro ao executar consulta: ' . $erro]);
         exit;
     }
 } else {
-    $erro = mysqli_error($conn);
-    mysqli_close($conn);
+    $erro = $conn->error;
+    $conn->close();
 
     echo json_encode(['success' => false, 'message' => 'Erro de preparação da consulta: ' . $erro]);
     exit;

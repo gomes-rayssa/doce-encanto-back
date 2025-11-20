@@ -12,11 +12,13 @@ if ($data === null) {
         'success' => false,
         'message' => 'Dados inválidos enviados (JSON mal formatado).'
     ]);
+    $conn->close();
     exit;
 }
 
 if (empty($data['nome']) || empty($data['email']) || empty($data['celular']) || empty($data['senha'])) {
     echo json_encode(['success' => false, 'message' => 'Dados essenciais ausentes.']);
+    $conn->close();
     exit;
 }
 
@@ -26,23 +28,26 @@ $celular        = trim($data['celular']);
 $dataNascimento = $data['dataNascimento'] ?? null;
 $senha          = $data['senha'];
 
+// Checagem de e-mail único
 $sql_check = "SELECT id FROM usuarios WHERE email = ?";
-if ($stmt_check = mysqli_prepare($conn, $sql_check)) {
-    mysqli_stmt_bind_param($stmt_check, "s", $email);
-    mysqli_stmt_execute($stmt_check);
-    mysqli_stmt_store_result($stmt_check);
+if ($stmt_check = $conn->prepare($sql_check)) {
+    $stmt_check->bind_param("s", $email);
+    $stmt_check->execute();
+    $stmt_check->store_result();
 
-    if (mysqli_stmt_num_rows($stmt_check) > 0) {
+    if ($stmt_check->num_rows > 0) {
         echo json_encode(['success' => false, 'message' => 'Este e-mail já está cadastrado.']);
-        mysqli_stmt_close($stmt_check);
+        $stmt_check->close();
+        $conn->close();
         exit;
     }
-    mysqli_stmt_close($stmt_check);
+    $stmt_check->close();
 } else {
     echo json_encode([
         'success' => false,
-        'message' => 'Erro ao preparar consulta de verificação de e-mail: ' . mysqli_error($conn)
+        'message' => 'Erro ao preparar consulta de verificação de e-mail: ' . $conn->error
     ]);
+    $conn->close();
     exit;
 }
 
@@ -50,6 +55,7 @@ $celular_limpo = preg_replace('/\D/', '', $celular);
 
 if (!empty($celular) && (strlen($celular_limpo) < 10 || strlen($celular_limpo) > 11)) {
     echo json_encode(['success' => false, 'message' => 'Número de celular inválido.']);
+    $conn->close();
     exit;
 }
 
@@ -57,10 +63,9 @@ $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
 $sql_user = "INSERT INTO usuarios (nome, email, celular, dataNascimento, senha_hash) VALUES (?, ?, ?, ?, ?)";
 
-if ($stmt_user = mysqli_prepare($conn, $sql_user)) {
+if ($stmt_user = $conn->prepare($sql_user)) {
 
-    mysqli_stmt_bind_param(
-        $stmt_user,
+    $stmt_user->bind_param(
         "sssss",
         $nome,
         $email,
@@ -69,9 +74,9 @@ if ($stmt_user = mysqli_prepare($conn, $sql_user)) {
         $senha_hash
     );
 
-    if (mysqli_stmt_execute($stmt_user)) {
-        $usuario_id = mysqli_insert_id($conn);
-        mysqli_stmt_close($stmt_user);
+    if ($stmt_user->execute()) {
+        $usuario_id = $conn->insert_id;
+        $stmt_user->close();
 
         $endereco = $data['endereco'] ?? [];
 
@@ -79,7 +84,7 @@ if ($stmt_user = mysqli_prepare($conn, $sql_user)) {
             $sql_address = "INSERT INTO enderecos (usuario_id, cep, rua, numero, bairro, cidade, estado) 
                             VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            if ($stmt_address = mysqli_prepare($conn, $sql_address)) {
+            if ($stmt_address = $conn->prepare($sql_address)) {
 
                 $cep    = $endereco['cep'] ?? '';
                 $rua    = $endereco['rua'] ?? '';
@@ -88,8 +93,7 @@ if ($stmt_user = mysqli_prepare($conn, $sql_user)) {
                 $cidade = $endereco['cidade'] ?? '';
                 $estado = $endereco['estado'] ?? '';
 
-                mysqli_stmt_bind_param(
-                    $stmt_address,
+                $stmt_address->bind_param(
                     "issssss",
                     $usuario_id,
                     $cep,
@@ -100,14 +104,14 @@ if ($stmt_user = mysqli_prepare($conn, $sql_user)) {
                     $estado
                 );
 
-                mysqli_stmt_execute($stmt_address);
-                mysqli_stmt_close($stmt_address);
+                $stmt_address->execute();
+                $stmt_address->close();
             } else {
                 echo json_encode([
                     'success' => false,
-                    'message' => 'Erro ao preparar cadastro de endereço: ' . mysqli_error($conn)
+                    'message' => 'Erro ao preparar cadastro de endereço: ' . $conn->error
                 ]);
-                mysqli_close($conn);
+                $conn->close();
                 exit;
             }
         }
@@ -120,15 +124,15 @@ if ($stmt_user = mysqli_prepare($conn, $sql_user)) {
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Erro ao cadastrar usuário: ' . mysqli_error($conn)
+            'message' => 'Erro ao cadastrar usuário: ' . $conn->error
         ]);
     }
 } else {
     echo json_encode([
         'success' => false,
-        'message' => 'Erro de preparação da query de usuário: ' . mysqli_error($conn)
+        'message' => 'Erro de preparação da query de usuário: ' . $conn->error
     ]);
 }
 
-mysqli_close($conn);
+$conn->close();
 ?>

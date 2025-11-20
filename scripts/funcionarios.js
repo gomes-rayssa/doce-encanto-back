@@ -1,11 +1,65 @@
-const employeeModal = document.getElementById('employeeModal');
+// scripts/funcionarios.js
 
-function openEmployeeModal(isEdit = false) {
-    document.getElementById('modalTitle').textContent = isEdit ? 'Editar Funcionário' : 'Novo Funcionário';
-    document.getElementById('employeeForm').reset();
+const employeeModal = document.getElementById('employeeModal');
+let currentEmployeeId = null; // Para rastrear se estamos editando ou adicionando
+
+function showAdminNotification(message, type = "success") {
+    // Implementação de notificação simples para o admin
+    alert(`${type.toUpperCase()}: ${message}`);
+}
+
+async function sendAdminAction(action, data) {
+    // Cria FormData para enviar dados, mesmo que não haja arquivo
+    const formData = new FormData();
+    for (const key in data) {
+        formData.append(key, data[key]);
+    }
+    
+    formData.append('action', action);
+
+    try {
+        const response = await fetch("processa_admin.php", {
+            method: "POST",
+            body: formData,
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            showAdminNotification(result.message, "success");
+            closeEmployeeModal();
+            setTimeout(() => {
+                window.location.reload(); 
+            }, 500);
+        } else {
+            showAdminNotification(result.message, "error");
+        }
+    } catch (error) {
+        console.error("Erro no fetch:", error);
+        showAdminNotification("Erro de conexão com o servidor.", "error");
+    }
+}
+
+
+function openEmployeeModal(isEdit = false, id = null) {
+    const modalTitle = document.getElementById('modalTitle');
+    const form = document.getElementById('employeeForm');
+    
+    // Limpar form e variáveis de estado
+    form.reset();
+    currentEmployeeId = id;
     document.getElementById('funcaoField').style.display = 'none';
     document.getElementById('veiculoField').style.display = 'none';
     document.getElementById('placaField').style.display = 'none';
+
+
+    if (isEdit && id) {
+        modalTitle.textContent = 'Editar Funcionário #' + id;
+        // NOTA: Em um projeto real, faria-se um FETCH para carregar os dados aqui.
+    } else {
+        modalTitle.textContent = 'Novo Funcionário';
+    }
+
     employeeModal.classList.add('active');
 }
 
@@ -34,29 +88,61 @@ function toggleVehicleField() {
     }
 }
 
-// Funções de Ação (apenas log/confirmação)
+// Lógica de Submissão do Formulário de Funcionário
+document.getElementById('employeeForm')?.addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(this);
+    const action = currentEmployeeId ? 'edit_employee' : 'add_employee';
+    
+    formData.append('action', action);
+    if (currentEmployeeId) {
+        formData.append('id', currentEmployeeId);
+    }
+    
+    fetch("processa_admin.php", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            showAdminNotification(result.message, "success");
+            closeEmployeeModal();
+            setTimeout(() => {
+                window.location.reload(); 
+            }, 500);
+        } else {
+            showAdminNotification(result.message, "error");
+        }
+    })
+    .catch(error => {
+        console.error("Erro no fetch:", error);
+        showAdminNotification("Erro de conexão com o servidor.", "error");
+    });
+});
+
+
+// Funções de Ação para Entregadores
 function editEmployee(id) {
-    console.log('Editar entregador: ' + id);
-    openEmployeeModal(true);
-    document.getElementById('employeeType').value = 'entregador';
-    toggleVehicleField();
+    openEmployeeModal(true, id);
+    // NOTA: O carregamento dos dados de tipo/veículo deve ser feito via AJAX aqui.
 }
 
 function deleteEmployee(id) {
     if (confirm('Tem certeza que deseja excluir este entregador?')) {
-        console.log('Excluir entregador: ' + id);
+        sendAdminAction('delete_employee', { id: id });
     }
 }
 
+// Funções de Ação para Funcionários Internos
 function editStaff(id) {
-    console.log('Editar funcionário: ' + id);
-    openEmployeeModal(true);
-    document.getElementById('employeeType').value = 'funcionario';
-    toggleVehicleField();
+    openEmployeeModal(true, id);
+    // NOTA: O carregamento dos dados de tipo/função deve ser feito via AJAX aqui.
 }
 
 function deleteStaff(id) {
     if (confirm('Tem certeza que deseja excluir este funcionário?')) {
-        console.log('Excluir funcionário: ' + id);
+        sendAdminAction('delete_employee', { id: id });
     }
 }

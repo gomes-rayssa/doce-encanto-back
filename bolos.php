@@ -1,32 +1,31 @@
 <?php
 include 'header.php';
+include 'db_config.php';
 
-$bolos = [
-  [
-    'id' => 'bolo_chocolate',
-    'nome' => 'Bolo de Chocolate',
-    'descricao' => 'Bolo de massa de chocolate, recheio de trufado de chocolate ao leite',
-    'preco' => 100.00,
-    'imagem' => '../assets/bolos/bolo-chocolate.png',
-    'categoria' => 'tradicionais'
-  ],
-  [
-    'id' => 'bolo_red_velvet',
-    'nome' => 'Bolo Red Velvet',
-    'descricao' => 'Bolo de massa red velvet, recheios de Leite Moça®',
-    'preco' => 120.00,
-    'imagem' => '../assets/bolos/bolo-red velvet.png',
-    'categoria' => 'tradicionais'
-  ],
-  [
-    'id' => 'bolo_pistache',
-    'nome' => 'Bolo de Pistache',
-    'descricao' => 'Bolo de massa branca, recheios de trufado e aerado de pistache',
-    'preco' => 150.00,
-    'imagem' => '../assets/bolos/bolo-pistache.png',
-    'categoria' => 'gourmet'
-  ]
-];
+// Busca os produtos na tabela produtos
+$bolos = [];
+$sql = "SELECT id, nome, descricao, preco, imagem_url, categoria FROM produtos WHERE categoria = 'Bolos' ORDER BY nome";
+
+if ($result = $conn->query($sql)) {
+    while ($row = $result->fetch_assoc()) {
+        $bolos[] = [
+            'id' => $row['id'],
+            'nome' => $row['nome'],
+            'descricao' => $row['descricao'],
+            'preco' => (float)$row['preco'],
+            'imagem' => htmlspecialchars($row['imagem_url']), // Usa o caminho da URL do DB
+            'categoria' => htmlspecialchars(strtolower($row['categoria'])),
+        ];
+    }
+    $result->free();
+}
+
+$conn->close();
+
+// Contagem para a sidebar
+$count_todos = count($bolos);
+$count_tradicionais = count(array_filter($bolos, fn($b) => $b['categoria'] == 'tradicionais'));
+$count_gourmet = count(array_filter($bolos, fn($b) => $b['categoria'] == 'gourmet'));
 ?>
 
 <link rel="stylesheet" href="style.css" />
@@ -65,21 +64,21 @@ $bolos = [
               <a href="#todos" class="category-link active" data-category="todos">
                 <i class="fas fa-th-large"></i>
                 <span>Todos os Bolos</span>
-                <span class="count"><?php echo count($bolos); ?></span>
+                <span class="count"><?php echo $count_todos; ?></span>
               </a>
             </li>
             <li class="category-item">
               <a href="#tradicionais" class="category-link" data-category="tradicionais">
                 <i class="fas fa-birthday-cake"></i>
                 <span>Bolos Tradicionais</span>
-                <span class="count">2</span>
+                <span class="count"><?php echo $count_tradicionais; ?></span>
               </a>
             </li>
             <li class="category-item">
               <a href="#gourmet" class="category-link" data-category="gourmet">
                 <i class="fas fa-star"></i>
                 <span>Bolos Gourmet</span>
-                <span class="count">1</span>
+                <span class="count"><?php echo $count_gourmet; ?></span>
               </a>
             </li>
           </ul>
@@ -98,7 +97,7 @@ $bolos = [
       <section class="products-area">
         <div class="products-header">
           <div class="results-info">
-            <span id="resultsCount">Mostrando <?php echo count($bolos); ?> produtos</span>
+            <span id="resultsCount">Mostrando <?php echo $count_todos; ?> produtos</span>
           </div>
           <div class="view-toggle">
             <button class="view-btn active" data-view="grid" title="Visualização em Grade">
