@@ -53,8 +53,6 @@ include 'header.php';
               <img src="../assets/logos/olho.png" alt="" aria-hidden="true" />
             </button>
           </div>
-          <span class="help-text" id="senha-help">A senha deve ter no mínimo 6 caracteres</span>
-          <span class="error-message" id="senha-error" role="alert" aria-live="polite"></span>
         </div>
 
         <div class="form-group">
