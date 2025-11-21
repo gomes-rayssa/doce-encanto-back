@@ -4,6 +4,7 @@ $pedidoId = $_GET['id'] ?? '1234';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,14 +12,16 @@ $pedidoId = $_GET['id'] ?? '1234';
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <?php include 'components/header-adm.php'; ?>
     <?php include 'components/sidebar.php'; ?>
-    
+
     <main class="main-content">
         <div class="dashboard-header">
             <div>
-                <a href="pedidos.php" style="color: var(--text-light); text-decoration: none; margin-bottom: 0.5rem; display: block;">
+                <a href="pedidos.php"
+                    style="color: var(--text-light); text-decoration: none; margin-bottom: 0.5rem; display: block;">
                     <i class="fas fa-arrow-left"></i> Voltar
                 </a>
                 <h1>Pedido #<?php echo $pedidoId; ?></h1>
@@ -29,7 +32,6 @@ $pedidoId = $_GET['id'] ?? '1234';
         </div>
 
         <div class="dashboard-grid" style="grid-template-columns: 2fr 1fr;">
-            <!-- Itens do Pedido -->
             <div class="chart-card">
                 <h2>Itens do Pedido</h2>
                 <div class="table-responsive">
@@ -72,7 +74,6 @@ $pedidoId = $_GET['id'] ?? '1234';
                 </div>
             </div>
 
-            <!-- Status do Pedido -->
             <div class="chart-card">
                 <h2>Status do Pedido</h2>
                 <div class="form-group">
@@ -98,7 +99,6 @@ $pedidoId = $_GET['id'] ?? '1234';
         </div>
 
         <div class="dashboard-grid">
-            <!-- Informações de Pagamento -->
             <div class="chart-card">
                 <h2>Informações de Pagamento</h2>
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -114,7 +114,6 @@ $pedidoId = $_GET['id'] ?? '1234';
                 </div>
             </div>
 
-            <!-- Endereço de Entrega -->
             <div class="chart-card">
                 <h2>Endereço de Entrega</h2>
                 <div style="display: flex; flex-direction: column; gap: 0.5rem;">
@@ -128,7 +127,6 @@ $pedidoId = $_GET['id'] ?? '1234';
                 </div>
             </div>
 
-            <!-- Dados do Entregador -->
             <div class="chart-card">
                 <h2>Dados do Entregador</h2>
                 <div class="form-group">
@@ -150,4 +148,5 @@ $pedidoId = $_GET['id'] ?? '1234';
 
     <script src="scripts/pedido-detalhe.js"></script>
 </body>
+
 </html>

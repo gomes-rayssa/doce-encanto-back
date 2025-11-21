@@ -12,7 +12,6 @@ if (!isset($_SESSION['usuario_logado']) || !isset($_SESSION['usuario_id'])) {
 
 $usuario_id = $_SESSION['usuario_id'];
 
-// Deleta o endereço primeiro (por causa da foreign key)
 $sql_endereco = "DELETE FROM enderecos WHERE usuario_id = ?";
 if ($stmt_endereco = $conn->prepare($sql_endereco)) {
     $stmt_endereco->bind_param("i", $usuario_id);
@@ -20,18 +19,16 @@ if ($stmt_endereco = $conn->prepare($sql_endereco)) {
     $stmt_endereco->close();
 }
 
-// Deleta o usuário
 $sql_usuario = "DELETE FROM usuarios WHERE id = ?";
 if ($stmt_usuario = $conn->prepare($sql_usuario)) {
     $stmt_usuario->bind_param("i", $usuario_id);
-    
+
     if ($stmt_usuario->execute()) {
         $stmt_usuario->close();
-        
-        // Destroi a sessão
+
         session_unset();
         session_destroy();
-        
+
         echo json_encode(['success' => true, 'message' => 'Conta apagada com sucesso.']);
     } else {
         $stmt_usuario->close();

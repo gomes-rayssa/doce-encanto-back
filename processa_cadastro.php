@@ -22,13 +22,12 @@ if (empty($data['nome']) || empty($data['email']) || empty($data['celular']) || 
     exit;
 }
 
-$nome           = trim($data['nome']);
-$email          = trim($data['email']);
-$celular        = trim($data['celular']);
+$nome = trim($data['nome']);
+$email = trim($data['email']);
+$celular = trim($data['celular']);
 $dataNascimento = $data['dataNascimento'] ?? null;
-$senha          = $data['senha'];
+$senha = $data['senha'];
 
-// Checagem de e-mail único
 $sql_check = "SELECT id FROM usuarios WHERE email = ?";
 if ($stmt_check = $conn->prepare($sql_check)) {
     $stmt_check->bind_param("s", $email);
@@ -86,8 +85,8 @@ if ($stmt_user = $conn->prepare($sql_user)) {
 
             if ($stmt_address = $conn->prepare($sql_address)) {
 
-                $cep    = $endereco['cep'] ?? '';
-                $rua    = $endereco['rua'] ?? '';
+                $cep = $endereco['cep'] ?? '';
+                $rua = $endereco['rua'] ?? '';
                 $numero = $endereco['numero'] ?? '';
                 $bairro = $endereco['bairro'] ?? '';
                 $cidade = $endereco['cidade'] ?? '';

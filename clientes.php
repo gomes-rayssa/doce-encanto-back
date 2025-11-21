@@ -3,6 +3,7 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +11,16 @@ session_start();
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <?php include 'components/header-adm.php'; ?>
     <?php include 'components/sidebar.php'; ?>
-    
+
     <main class="main-content">
         <div class="dashboard-header">
             <h1>Clientes</h1>
-            <input type="search" placeholder="Buscar cliente..." style="padding: 0.5rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; width: 300px;">
+            <input type="search" placeholder="Buscar cliente..."
+                style="padding: 0.5rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; width: 300px;">
         </div>
 
         <div class="recent-orders">
@@ -74,4 +77,5 @@ session_start();
         </div>
     </main>
 </body>
+
 </html>

@@ -1,9 +1,7 @@
 <?php
 session_start();
-// Inclusão da verificação de admin logado deve ser adicionada
 include 'db_config.php';
 
-// Fetch Config
 $config = [];
 $sql_config = "SELECT chave, valor FROM configuracoes";
 if ($result = $conn->query($sql_config)) {
@@ -13,7 +11,6 @@ if ($result = $conn->query($sql_config)) {
     $result->free();
 }
 
-// Fetch Promotions
 $promocoes = [];
 $sql_promocoes = "SELECT id, nome, desconto, data_termino, status FROM promocoes ORDER BY id DESC";
 if ($result = $conn->query($sql_promocoes)) {
@@ -23,7 +20,6 @@ if ($result = $conn->query($sql_promocoes)) {
     $result->free();
 }
 
-// Fetch Admins
 $admins = [];
 $sql_admins = "SELECT id, email, data_cadastro, isAdmin FROM usuarios WHERE isAdmin = TRUE ORDER BY data_cadastro";
 if ($result = $conn->query($sql_admins)) {
@@ -37,6 +33,7 @@ $conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,10 +41,11 @@ $conn->close();
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <?php include 'components/header-adm.php'; ?>
     <?php include 'components/sidebar.php'; ?>
-    
+
     <main class="main-content">
         <div class="dashboard-header">
             <h1>Configurações</h1>
@@ -71,17 +69,18 @@ $conn->close();
                     </thead>
                     <tbody>
                         <?php foreach ($admins as $a): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($a['email']); ?></td>
-                            <td><?php echo date('d/m/Y', strtotime($a['data_cadastro'])); ?></td>
-                            <td>
-                                <?php if ($a['email'] === 'admin@doces.com'): ?>
-                                    <span style="color: var(--text-light); font-size: 0.875rem;">Admin Principal</span>
-                                <?php else: ?>
-                                    <a href="#" onclick="deleteAdmin(<?php echo $a['id']; ?>)" class="btn-icon"><i class="fas fa-trash"></i></a>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td><?php echo htmlspecialchars($a['email']); ?></td>
+                                <td><?php echo date('d/m/Y', strtotime($a['data_cadastro'])); ?></td>
+                                <td>
+                                    <?php if ($a['email'] === 'admin@doces.com'): ?>
+                                        <span style="color: var(--text-light); font-size: 0.875rem;">Admin Principal</span>
+                                    <?php else: ?>
+                                        <a href="#" onclick="deleteAdmin(<?php echo $a['id']; ?>)" class="btn-icon"><i
+                                                class="fas fa-trash"></i></a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -94,11 +93,13 @@ $conn->close();
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Nome da Loja</label>
-                        <input type="text" name="store_name" value="<?php echo htmlspecialchars($config['store_name'] ?? ''); ?>">
+                        <input type="text" name="store_name"
+                            value="<?php echo htmlspecialchars($config['store_name'] ?? ''); ?>">
                     </div>
                     <div class="form-group">
                         <label>Email de Contato</label>
-                        <input type="email" name="contact_email" value="<?php echo htmlspecialchars($config['contact_email'] ?? ''); ?>">
+                        <input type="email" name="contact_email"
+                            value="<?php echo htmlspecialchars($config['contact_email'] ?? ''); ?>">
                     </div>
                     <div class="form-group">
                         <label>Telefone</label>
@@ -106,12 +107,14 @@ $conn->close();
                     </div>
                     <div class="form-group">
                         <label>Taxa de Entrega (R$)</label>
-                        <input type="number" name="delivery_fee" value="<?php echo htmlspecialchars($config['delivery_fee'] ?? '0.00'); ?>" step="0.01">
+                        <input type="number" name="delivery_fee"
+                            value="<?php echo htmlspecialchars($config['delivery_fee'] ?? '0.00'); ?>" step="0.01">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Endereço da Loja</label>
-                    <textarea name="store_address"><?php echo htmlspecialchars($config['store_address'] ?? ''); ?></textarea>
+                    <textarea
+                        name="store_address"><?php echo htmlspecialchars($config['store_address'] ?? ''); ?></textarea>
                 </div>
                 <button type="submit" class="btn-primary">Salvar Configurações</button>
             </form>
@@ -137,22 +140,27 @@ $conn->close();
                     </thead>
                     <tbody>
                         <?php foreach ($promocoes as $promo): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($promo['nome']); ?></td>
-                            <td><?php echo htmlspecialchars(number_format($promo['desconto'], 2, ',', '.')) . '%'; ?></td>
-                            <td><?php echo date('d/m/Y', strtotime($promo['data_termino'])); ?></td>
-                            <td><span class="badge badge-<?php echo ($promo['status'] === 'Ativa' ? 'approved' : 'pending'); ?>"><?php echo htmlspecialchars($promo['status']); ?></span></td>
-                            <td>
-                                <a href="#" onclick="editPromotion(<?php echo $promo['id']; ?>)" class="btn-icon"><i class="fas fa-edit"></i></a>
-                                <a href="#" onclick="deletePromotion(<?php echo $promo['id']; ?>)" class="btn-icon"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td><?php echo htmlspecialchars($promo['nome']); ?></td>
+                                <td><?php echo htmlspecialchars(number_format($promo['desconto'], 2, ',', '.')) . '%'; ?>
+                                </td>
+                                <td><?php echo date('d/m/Y', strtotime($promo['data_termino'])); ?></td>
+                                <td><span
+                                        class="badge badge-<?php echo ($promo['status'] === 'Ativa' ? 'approved' : 'pending'); ?>"><?php echo htmlspecialchars($promo['status']); ?></span>
+                                </td>
+                                <td>
+                                    <a href="#" onclick="editPromotion(<?php echo $promo['id']; ?>)" class="btn-icon"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" onclick="deletePromotion(<?php echo $promo['id']; ?>)" class="btn-icon"><i
+                                            class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-        
+
         <div id="adminModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -218,4 +226,5 @@ $conn->close();
 
     <script src="scripts/configuracoes.js"></script>
 </body>
+
 </html>

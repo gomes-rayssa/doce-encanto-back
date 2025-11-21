@@ -1,12 +1,10 @@
 <?php
 session_start();
-// Inclusão da verificação de admin logado deve ser adicionada
 include 'db_config.php';
 
 $entregadores = [];
 $funcionarios = [];
 
-// Busca entregadores
 $sql_entregadores = "SELECT id, nome, email, telefone, veiculo_tipo, placa FROM equipe WHERE tipo = 'entregador' ORDER BY id";
 if ($result = $conn->query($sql_entregadores)) {
     while ($row = $result->fetch_assoc()) {
@@ -16,7 +14,6 @@ if ($result = $conn->query($sql_entregadores)) {
     $result->free();
 }
 
-// Busca funcionários
 $sql_funcionarios = "SELECT id, nome, email, telefone, funcao FROM equipe WHERE tipo = 'funcionario' ORDER BY id";
 if ($result = $conn->query($sql_funcionarios)) {
     while ($row = $result->fetch_assoc()) {
@@ -29,6 +26,7 @@ $conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,10 +34,11 @@ $conn->close();
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <?php include 'components/header-adm.php'; ?>
     <?php include 'components/sidebar.php'; ?>
-    
+
     <main class="main-content">
         <div class="dashboard-header">
             <h1>Funcionários</h1>
@@ -64,17 +63,19 @@ $conn->close();
                     </thead>
                     <tbody>
                         <?php foreach ($entregadores as $e): ?>
-                        <tr>
-                            <td>#E<?php echo htmlspecialchars(str_pad($e['id'], 3, '0', STR_PAD_LEFT)); ?></td>
-                            <td><?php echo htmlspecialchars($e['nome']); ?></td>
-                            <td><?php echo htmlspecialchars($e['email']); ?></td>
-                            <td><?php echo htmlspecialchars($e['telefone']); ?></td>
-                            <td><?php echo htmlspecialchars($e['veiculo_info']); ?></td>
-                            <td>
-                                <a href="#" onclick="editEmployee(<?php echo $e['id']; ?>)" class="btn-icon"><i class="fas fa-edit"></i></a>
-                                <a href="#" onclick="deleteEmployee(<?php echo $e['id']; ?>)" class="btn-icon"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>#E<?php echo htmlspecialchars(str_pad($e['id'], 3, '0', STR_PAD_LEFT)); ?></td>
+                                <td><?php echo htmlspecialchars($e['nome']); ?></td>
+                                <td><?php echo htmlspecialchars($e['email']); ?></td>
+                                <td><?php echo htmlspecialchars($e['telefone']); ?></td>
+                                <td><?php echo htmlspecialchars($e['veiculo_info']); ?></td>
+                                <td>
+                                    <a href="#" onclick="editEmployee(<?php echo $e['id']; ?>)" class="btn-icon"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" onclick="deleteEmployee(<?php echo $e['id']; ?>)" class="btn-icon"><i
+                                            class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -97,17 +98,19 @@ $conn->close();
                     </thead>
                     <tbody>
                         <?php foreach ($funcionarios as $f): ?>
-                        <tr>
-                            <td>#F<?php echo htmlspecialchars(str_pad($f['id'], 3, '0', STR_PAD_LEFT)); ?></td>
-                            <td><?php echo htmlspecialchars($f['nome']); ?></td>
-                            <td><?php echo htmlspecialchars($f['email']); ?></td>
-                            <td><?php echo htmlspecialchars($f['telefone']); ?></td>
-                            <td><?php echo htmlspecialchars($f['funcao']); ?></td>
-                            <td>
-                                <a href="#" onclick="editStaff(<?php echo $f['id']; ?>)" class="btn-icon"><i class="fas fa-edit"></i></a>
-                                <a href="#" onclick="deleteStaff(<?php echo $f['id']; ?>)" class="btn-icon"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>#F<?php echo htmlspecialchars(str_pad($f['id'], 3, '0', STR_PAD_LEFT)); ?></td>
+                                <td><?php echo htmlspecialchars($f['nome']); ?></td>
+                                <td><?php echo htmlspecialchars($f['email']); ?></td>
+                                <td><?php echo htmlspecialchars($f['telefone']); ?></td>
+                                <td><?php echo htmlspecialchars($f['funcao']); ?></td>
+                                <td>
+                                    <a href="#" onclick="editStaff(<?php echo $f['id']; ?>)" class="btn-icon"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" onclick="deleteStaff(<?php echo $f['id']; ?>)" class="btn-icon"><i
+                                            class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -181,4 +184,5 @@ $conn->close();
 
     <script src="scripts/funcionarios.js"></script>
 </body>
+
 </html>

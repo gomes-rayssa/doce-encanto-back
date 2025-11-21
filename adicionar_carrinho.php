@@ -9,18 +9,15 @@ if (!isset($data['id']) || !isset($data['nome']) || !isset($data['preco'])) {
     exit;
 }
 
-// Inicializa o carrinho se não existir
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
 
 $id = $data['id'];
 
-// Se o item já existe no carrinho, incrementa a quantidade
 if (isset($_SESSION['carrinho'][$id])) {
     $_SESSION['carrinho'][$id]['quantidade']++;
 } else {
-    // Adiciona novo item
     $_SESSION['carrinho'][$id] = [
         'id' => $data['id'],
         'nome' => $data['nome'],
@@ -31,7 +28,6 @@ if (isset($_SESSION['carrinho'][$id])) {
     ];
 }
 
-// Calcula o total de itens
 $totalItens = 0;
 foreach ($_SESSION['carrinho'] as $item) {
     $totalItens += $item['quantidade'];

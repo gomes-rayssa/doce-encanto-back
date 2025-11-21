@@ -3,9 +3,8 @@ session_start();
 
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     $_SESSION['admin_logged_in'] = true;
-    $_SESSION['is_admin'] = true; // Chave crítica para o processa_admin.php
+    $_SESSION['is_admin'] = true;
 }
-// Inclusão da verificação de admin logado deve ser adicionada
 include 'db_config.php';
 
 $produtos = [];
@@ -22,6 +21,7 @@ $conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,10 +29,11 @@ $conn->close();
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <?php include 'components/header-adm.php'; ?>
     <?php include 'components/sidebar.php'; ?>
-    
+
     <main class="main-content">
         <div class="dashboard-header">
             <h1>Produtos</h1>
@@ -58,19 +59,24 @@ $conn->close();
                     </thead>
                     <tbody>
                         <?php foreach ($produtos as $p): ?>
-                        <tr>
-                            <td>#<?php echo htmlspecialchars(str_pad($p['id'], 3, '0', STR_PAD_LEFT)); ?></td>
-                            <td><img src="<?php echo htmlspecialchars($p['imagem_url'] ?? '/placeholder.svg?height=50&width=50'); ?>" alt="Produto" style="width: 50px; height: 50px; border-radius: 8px;"></td>
-                            <td><?php echo htmlspecialchars($p['nome']); ?></td>
-                            <td><?php echo htmlspecialchars($p['categoria']); ?></td>
-                            <td>R$ <?php echo number_format($p['preco'], 2, ',', '.'); ?></td>
-                            <td><?php echo htmlspecialchars($p['estoque']); ?></td>
-                            <td><span class="badge <?php echo htmlspecialchars($p['badge_class']); ?>"><?php echo htmlspecialchars($p['status']); ?></span></td>
-                            <td>
-                                <a href="#" onclick="editProduct(<?php echo $p['id']; ?>)" class="btn-icon"><i class="fas fa-edit"></i></a>
-                                <a href="#" onclick="deleteProduct(<?php echo $p['id']; ?>)" class="btn-icon"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>#<?php echo htmlspecialchars(str_pad($p['id'], 3, '0', STR_PAD_LEFT)); ?></td>
+                                <td><img src="<?php echo htmlspecialchars($p['imagem_url'] ?? '/placeholder.svg?height=50&width=50'); ?>"
+                                        alt="Produto" style="width: 50px; height: 50px; border-radius: 8px;"></td>
+                                <td><?php echo htmlspecialchars($p['nome']); ?></td>
+                                <td><?php echo htmlspecialchars($p['categoria']); ?></td>
+                                <td>R$ <?php echo number_format($p['preco'], 2, ',', '.'); ?></td>
+                                <td><?php echo htmlspecialchars($p['estoque']); ?></td>
+                                <td><span
+                                        class="badge <?php echo htmlspecialchars($p['badge_class']); ?>"><?php echo htmlspecialchars($p['status']); ?></span>
+                                </td>
+                                <td>
+                                    <a href="#" onclick="editProduct(<?php echo $p['id']; ?>)" class="btn-icon"><i
+                                            class="fas fa-edit"></i></a>
+                                    <a href="#" onclick="deleteProduct(<?php echo $p['id']; ?>)" class="btn-icon"><i
+                                            class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -130,4 +136,5 @@ $conn->close();
 
     <script src="scripts/produtos.js"></script>
 </body>
+
 </html>

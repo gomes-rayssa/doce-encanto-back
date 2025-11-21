@@ -21,24 +21,23 @@ if (!$data || !isset($data['action'])) {
 $action = $data['action'];
 $usuario_id = $_SESSION['usuario_id'];
 
-// Atualiza informações pessoais
 if ($action === 'save_personal') {
     $sql = "UPDATE usuarios SET nome = ?, celular = ?, dataNascimento = ? WHERE id = ?";
-    
+
     if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("sssi", 
+        $stmt->bind_param(
+            "sssi",
             $data['nome'],
             $data['celular'],
             $data['dataNascimento'],
             $usuario_id
         );
-        
+
         if ($stmt->execute()) {
-            // Atualiza os dados na sessão
             $_SESSION['usuario_data']['nome'] = $data['nome'];
             $_SESSION['usuario_data']['celular'] = $data['celular'];
             $_SESSION['usuario_data']['dataNascimento'] = $data['dataNascimento'];
-            
+
             $stmt->close();
             echo json_encode(['success' => true, 'message' => 'Informações pessoais atualizadas!']);
         } else {
@@ -52,14 +51,12 @@ if ($action === 'save_personal') {
     exit;
 }
 
-// Atualiza endereço
 if ($action === 'save_address') {
     $endereco = $data['endereco'];
-    
-    // Verifica se já existe endereço
+
     $sql_check = "SELECT id FROM enderecos WHERE usuario_id = ?";
     $endereco_existe = false;
-    
+
     if ($stmt_check = $conn->prepare($sql_check)) {
         $stmt_check->bind_param("i", $usuario_id);
         $stmt_check->execute();
@@ -67,12 +64,12 @@ if ($action === 'save_address') {
         $endereco_existe = $stmt_check->num_rows > 0;
         $stmt_check->close();
     }
-    
+
     if ($endereco_existe) {
-        // Atualiza endereço existente
         $sql = "UPDATE enderecos SET cep = ?, rua = ?, numero = ?, bairro = ?, cidade = ?, estado = ? WHERE usuario_id = ?";
         if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("ssssssi",
+            $stmt->bind_param(
+                "ssssssi",
                 $endereco['cep'],
                 $endereco['rua'],
                 $endereco['numero'],
@@ -81,7 +78,7 @@ if ($action === 'save_address') {
                 $endereco['estado'],
                 $usuario_id
             );
-            
+
             if ($stmt->execute()) {
                 $_SESSION['usuario_data']['endereco'] = $endereco;
                 $stmt->close();
@@ -92,10 +89,10 @@ if ($action === 'save_address') {
             }
         }
     } else {
-        // Insere novo endereço
         $sql = "INSERT INTO enderecos (usuario_id, cep, rua, numero, bairro, cidade, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("issssss",
+            $stmt->bind_param(
+                "issssss",
                 $usuario_id,
                 $endereco['cep'],
                 $endereco['rua'],
@@ -104,7 +101,7 @@ if ($action === 'save_address') {
                 $endereco['cidade'],
                 $endereco['estado']
             );
-            
+
             if ($stmt->execute()) {
                 $_SESSION['usuario_data']['endereco'] = $endereco;
                 $stmt->close();

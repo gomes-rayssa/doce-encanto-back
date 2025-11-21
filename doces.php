@@ -2,37 +2,34 @@
 include 'header.php';
 include 'db_config.php';
 
-// Busca todos os produtos Doces/Chocolates/Trufas
 $produtos = [];
 $sql = "SELECT id, nome, descricao, preco, imagem_url, categoria FROM produtos WHERE LOWER(categoria) IN ('doces', 'chocolates') ORDER BY nome";
 
 if ($result = $conn->query($sql)) {
-    while ($row = $result->fetch_assoc()) {
-        // Lógica de categorização para o filtro lateral (simulada com base no preço/nome, se necessário)
-        $cat_display = '';
-        if (str_contains($row['nome'], 'Trufa')) {
-            $cat_display = 'trufas';
-        } elseif ($row['preco'] > 15.00) {
-            $cat_display = 'gourmet';
-        } else {
-            $cat_display = 'tradicionais';
-        }
-
-        $produtos[] = [
-            'id' => $row['id'],
-            'nome' => $row['nome'],
-            'descricao' => $row['descricao'],
-            'preco' => (float)$row['preco'],
-            'imagem' => htmlspecialchars($row['imagem_url']),
-            'categoria_display' => $cat_display,
-        ];
+  while ($row = $result->fetch_assoc()) {
+    $cat_display = '';
+    if (str_contains($row['nome'], 'Trufa')) {
+      $cat_display = 'trufas';
+    } elseif ($row['preco'] > 15.00) {
+      $cat_display = 'gourmet';
+    } else {
+      $cat_display = 'tradicionais';
     }
-    $result->free();
+
+    $produtos[] = [
+      'id' => $row['id'],
+      'nome' => $row['nome'],
+      'descricao' => $row['descricao'],
+      'preco' => (float) $row['preco'],
+      'imagem' => htmlspecialchars($row['imagem_url']),
+      'categoria_display' => $cat_display,
+    ];
+  }
+  $result->free();
 }
 
 $conn->close();
 
-// Contagem para a sidebar
 $count_todos = count($produtos);
 $count_tradicionais = count(array_filter($produtos, fn($p) => $p['categoria_display'] == 'tradicionais'));
 $count_trufas = count(array_filter($produtos, fn($p) => $p['categoria_display'] == 'trufas'));
@@ -101,48 +98,50 @@ $count_gourmet = count(array_filter($produtos, fn($p) => $p['categoria_display']
             </li>
           </ul>
         </nav>
-        
-        </aside>
+
+      </aside>
 
       <section class="products-area">
         <div class="products-grid" id="productsGrid">
-            <?php if (empty($produtos)): ?>
-                <p>Nenhum doce encontrado no catálogo. Verifique a tabela `produtos`.</p>
-            <?php else: ?>
-                <?php foreach ($produtos as $doce): ?>
-                <div class="product-card" data-category="<?php echo $doce['categoria_display']; ?>" data-price="<?php echo $doce['preco']; ?>" data-name="<?php echo htmlspecialchars($doce['nome']); ?>">
-                    <div class="product-image">
-                        <img src="<?php echo htmlspecialchars($doce['imagem']); ?>" alt="<?php echo htmlspecialchars($doce['nome']); ?>" />
-                        <div class="product-actions">
-                            <button class="quick-view" title="Visualização Rápida">
-                            <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="add-to-cart"
-                            onclick="adicionarItem('<?php echo $doce['id']; ?>', '<?php echo htmlspecialchars($doce['nome'], ENT_QUOTES); ?>', <?php echo $doce['preco']; ?>, '<?php echo htmlspecialchars($doce['imagem'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($doce['categoria_display'], ENT_QUOTES); ?>')"
-                            title="Adicionar ao Carrinho">
-                            <i class="fas fa-shopping-cart"></i>
-                            </button>
-                            <button class="add-to-wishlist" title="Adicionar aos Favoritos">
-                            <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name"><?php echo htmlspecialchars($doce['nome']); ?></h3>
-                        <p class="product-description"><?php echo htmlspecialchars($doce['descricao']); ?></p>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>(4.9)</span>
-                        </div>
-                        <div class="product-price">R$ <?php echo number_format($doce['preco'], 2, ',', '.'); ?></div>
-                    </div>
+          <?php if (empty($produtos)): ?>
+            <p>Nenhum doce encontrado no catálogo. Verifique a tabela `produtos`.</p>
+          <?php else: ?>
+            <?php foreach ($produtos as $doce): ?>
+              <div class="product-card" data-category="<?php echo $doce['categoria_display']; ?>"
+                data-price="<?php echo $doce['preco']; ?>" data-name="<?php echo htmlspecialchars($doce['nome']); ?>">
+                <div class="product-image">
+                  <img src="<?php echo htmlspecialchars($doce['imagem']); ?>"
+                    alt="<?php echo htmlspecialchars($doce['nome']); ?>" />
+                  <div class="product-actions">
+                    <button class="quick-view" title="Visualização Rápida">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="add-to-cart"
+                      onclick="adicionarItem('<?php echo $doce['id']; ?>', '<?php echo htmlspecialchars($doce['nome'], ENT_QUOTES); ?>', <?php echo $doce['preco']; ?>, '<?php echo htmlspecialchars($doce['imagem'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($doce['categoria_display'], ENT_QUOTES); ?>')"
+                      title="Adicionar ao Carrinho">
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button class="add-to-wishlist" title="Adicionar aos Favoritos">
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
                 </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
+                <div class="product-info">
+                  <h3 class="product-name"><?php echo htmlspecialchars($doce['nome']); ?></h3>
+                  <p class="product-description"><?php echo htmlspecialchars($doce['descricao']); ?></p>
+                  <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(4.9)</span>
+                  </div>
+                  <div class="product-price">R$ <?php echo number_format($doce['preco'], 2, ',', '.'); ?></div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          <?php endif; ?>
         </div>
       </section>
     </div>

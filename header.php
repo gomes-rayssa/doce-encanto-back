@@ -7,16 +7,15 @@ session_start();
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Doce Encanto - Confeitaria Gourmet com bolos e doces artesanais de alta qualidade" />
+  <meta name="description"
+    content="Doce Encanto - Confeitaria Gourmet com bolos e doces artesanais de alta qualidade" />
   <meta name="keywords" content="confeitaria, bolos, doces, gourmet, artesanal" />
   <title>Doce Encanto - Confeitaria Gourmet</title>
-  
-  <!-- Estilos -->
+
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="accessibility.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  
-  <!-- Fontes -->
+
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap");
     @import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap");
@@ -25,7 +24,6 @@ session_start();
 </head>
 
 <body>
-  <!-- Header -->
   <header class="modern-header" role="banner">
     <nav class="modern-nav" role="navigation" aria-label="Navegação principal">
       <div class="nav-container">
@@ -70,7 +68,8 @@ session_start();
 
         <div class="nav-actions">
           <li class="nav-item dropdown" style="list-style: none;" role="none">
-            <a href="#" class="nav-link dropdown-toggle" title="Minha Conta" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-label="Menu da conta">
+            <a href="#" class="nav-link dropdown-toggle" title="Minha Conta" role="menuitem" aria-haspopup="true"
+              aria-expanded="false" aria-label="Menu da conta">
               <i class="fas fa-user" aria-hidden="true"></i>
               <i class="fas fa-chevron-down" aria-hidden="true"></i>
             </a>
@@ -105,12 +104,14 @@ session_start();
             }
           }
           ?>
-          <a href="carrinho.php" class="nav-action cart-action" title="Carrinho de compras" aria-label="Carrinho com <?php echo $total_itens_carrinho; ?> itens">
+          <a href="carrinho.php" class="nav-action cart-action" title="Carrinho de compras"
+            aria-label="Carrinho com <?php echo $total_itens_carrinho; ?> itens">
             <i class="fas fa-shopping-bag" aria-hidden="true"></i>
             <span class="cart-count" aria-live="polite"><?php echo $total_itens_carrinho; ?></span>
           </a>
 
-          <button class="mobile-menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="mobile-menu">
+          <button class="mobile-menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false"
+            aria-controls="mobile-menu">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -120,5 +121,4 @@ session_start();
     </nav>
   </header>
 
-  <!-- Main Content -->
   <main id="main-content" role="main">

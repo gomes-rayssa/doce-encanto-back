@@ -3,6 +3,7 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +11,11 @@ session_start();
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <?php include 'components/header-adm.php'; ?>
     <?php include 'components/sidebar.php'; ?>
-    
+
     <main class="main-content">
         <div class="dashboard-header">
             <h1>Relatórios e Estatísticas</h1>
@@ -26,7 +28,6 @@ session_start();
             </select>
         </div>
 
-        <!-- Relatório de Vendas -->
         <div class="chart-card" style="margin-bottom: 2rem;">
             <h2>Relatório de Vendas</h2>
             <div class="stats-grid" style="margin-top: 1rem;">
@@ -57,7 +58,6 @@ session_start();
             </div>
         </div>
 
-        <!-- Produtos Mais Vendidos -->
         <div class="chart-card" style="margin-bottom: 2rem;">
             <h2>Ranking de Produtos Mais Vendidos</h2>
             <div class="table-responsive">
@@ -112,7 +112,6 @@ session_start();
             </div>
         </div>
 
-        <!-- Relatório de Estoque -->
         <div class="chart-card">
             <h2>Relatório de Estoque - Produtos com Baixo Estoque</h2>
             <div class="table-responsive">
@@ -157,4 +156,5 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="scripts/relatorios.js"></script>
 </body>
+
 </html>
