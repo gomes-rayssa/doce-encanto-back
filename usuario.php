@@ -8,6 +8,22 @@ if (!isset($_SESSION['usuario_logado'])) {
 
 $usuario = $_SESSION['usuario_data'] ?? [];
 $endereco = $usuario['endereco'] ?? [];
+
+// --- [INÍCIO DO APRIMORAMENTO: SIMULAÇÃO DE DADOS DE PEDIDOS] ---
+// NOTA: Em um ambiente de produção real, este bloco PHP buscaria os dados
+// do banco de dados (tabelas pedidos, itens_pedido) usando o $usuario['id'].
+$pedidos_data = [
+    'total_compras' => 1234.50,
+    'total_pedidos' => 12,
+    'ticket_medio' => 102.87,
+    'historico' => [
+        // IDs fictícios de pedidos e status simulados (usando classes do admin.css)
+        ['id' => '1234', 'data' => '20/11/2024', 'valor' => 156.90, 'status' => 'Novo', 'badge' => 'badge-new'],
+        ['id' => '1180', 'data' => '15/11/2024', 'valor' => 98.50, 'status' => 'Em Preparação', 'badge' => 'badge-preparing'],
+        ['id' => '1120', 'data' => '08/11/2024', 'valor' => 234.50, 'status' => 'Entregue', 'badge' => 'badge-delivered'],
+    ],
+];
+// --- [FIM DO APRIMORAMENTO] ---
 ?>
 
 <link rel="stylesheet" href="usuario.css" />
@@ -184,15 +200,70 @@ $endereco = $usuario['endereco'] ?? [];
             </div>
 
             <div class="sidebar">
-                <div class="card">
+                <div class="card" style="margin-bottom: 1.5rem;">
                     <div class="card-header">
-                        <h2 class="card-title">Meus Pedidos</h2>
+                        <h2 class="card-title"><i class="fas fa-chart-line"></i> Estatísticas de Pedidos</h2>
                     </div>
                     <div class="card-content">
+                        <div class="stats-grid" style="grid-template-columns: 1fr;">
+                            <div class="stat-card" style="padding: 1rem; border: none; box-shadow: none;">
+                                <div class="stat-info">
+                                    <h3>Total em Compras</h3>
+                                    <p class="stat-value">R$ <?php echo number_format($pedidos_data['total_compras'], 2, ',', '.'); ?></p>
+                                </div>
+                            </div>
+                            <div class="stat-card" style="padding: 1rem; border: none; box-shadow: none;">
+                                <div class="stat-info">
+                                    <h3>Total de Pedidos</h3>
+                                    <p class="stat-value"><?php echo $pedidos_data['total_pedidos']; ?></p>
+                                </div>
+                            </div>
+                            <div class="stat-card" style="padding: 1rem; border: none; box-shadow: none;">
+                                <div class="stat-info">
+                                    <h3>Ticket Médio</h3>
+                                    <p class="stat-value">R$ <?php echo number_format($pedidos_data['ticket_medio'], 2, ',', '.'); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-box"></i> Meus Pedidos Recentes</h2>
+                        <a href="#" class="btn-outline btn-sm">Ver Todos</a>
+                    </div>
+                    <div class="card-content" style="padding: 0;">
+                         <div class="table-responsive">
+                            <table class="data-table" style="box-shadow: none; border-radius: 0;">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (!empty($pedidos_data['historico'])): ?>
+                                        <?php foreach ($pedidos_data['historico'] as $pedido): ?>
+                                        <tr>
+                                            <td>#<?php echo htmlspecialchars($pedido['id']); ?></td>
+                                            <td>R$ <?php echo number_format($pedido['valor'], 2, ',', '.'); ?></td>
+                                            <td><span class="badge <?php echo htmlspecialchars($pedido['badge']); ?>"><?php echo htmlspecialchars($pedido['status']); ?></span></td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="3" style="text-align: center; color: #6b7280; padding: 1.5rem;">Nenhum pedido encontrado.</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
     </div>
 </main>
 

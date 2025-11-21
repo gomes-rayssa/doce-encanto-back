@@ -25,11 +25,6 @@ session_start();
 </head>
 
 <body>
-  <!-- Skip to Content -->
-  <a href="#main-content" class="skip-to-content">
-    Pular para o conteúdo principal
-  </a>
-
   <!-- Header -->
   <header class="modern-header" role="banner">
     <nav class="modern-nav" role="navigation" aria-label="Navegação principal">

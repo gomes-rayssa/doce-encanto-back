@@ -82,6 +82,5 @@
   <!-- Scripts -->
   <script src="cart.js"></script>
   <script src="script.js"></script>
-  <script src="accessibility.js"></script>
 </body>
 </html>
