@@ -5,7 +5,6 @@ header('Content-Type: application/json');
 include 'db_config.php';
 
 // --- 1. Verificação de Segurança ---
-// Apenas administradores logados podem acessar este script
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     echo json_encode(['success' => false, 'message' => 'Acesso negado. Você precisa ser um administrador.']);
     $conn->close();
@@ -19,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Inicializa dados e ação de POST (para produtos/funcionários) ou JSON (para configurações)
+// Inicializa dados e ação de POST (para produtos/funcionários) ou JSON (para configurações/fetch)
 $action = $_POST['action'] ?? null;
 $data = [];
 
@@ -39,7 +38,6 @@ if (!$action) {
 }
 
 // --- Função de Upload de Imagem (Placeholder) ---
-// NOTA: Em produção, esta função deve ser robusta com validação real de arquivos e permissões.
 function handle_image_upload($file_key) {
     if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] === UPLOAD_ERR_OK) {
         // Retorna um caminho simulado. O código de salvar o arquivo no disco deve vir aqui.
@@ -53,6 +51,60 @@ function handle_image_upload($file_key) {
 // --- 2. Lógica de Ação ---
 try {
     switch ($action) {
+
+        // ==========================================
+        // FETCH DATA (NOVAS AÇÕES)
+        // ==========================================
+        case 'fetch_product':
+            $id = (int)($data['id'] ?? 0);
+            if ($id <= 0) {
+                throw new Exception('ID do produto inválido para busca.');
+            }
+
+            $sql = "SELECT id, nome, descricao, preco, categoria, estoque, imagem_url FROM produtos WHERE id = ?";
+            if ($stmt = $conn->prepare($sql)) {
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $product = $result->fetch_assoc();
+                $stmt->close();
+                
+                if ($product) {
+                    echo json_encode(['success' => true, 'data' => $product]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Produto não encontrado.']);
+                }
+            } else {
+                throw new Exception('Erro de preparação: ' . $conn->error);
+            }
+            $conn->close();
+            exit;
+
+        case 'fetch_employee':
+            $id = (int)($data['id'] ?? 0);
+            if ($id <= 0) {
+                throw new Exception('ID do funcionário inválido para busca.');
+            }
+
+            $sql = "SELECT id, nome, email, telefone, tipo, funcao, veiculo_tipo, placa, endereco FROM equipe WHERE id = ?";
+            if ($stmt = $conn->prepare($sql)) {
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $employee = $result->fetch_assoc();
+                $stmt->close();
+                
+                if ($employee) {
+                    echo json_encode(['success' => true, 'data' => $employee]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Funcionário não encontrado.']);
+                }
+            } else {
+                throw new Exception('Erro de preparação: ' . $conn->error);
+            }
+            $conn->close();
+            exit;
+
 
         // ==========================================
         // PRODUTOS

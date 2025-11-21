@@ -42,8 +42,29 @@ async function sendAdminAction(action, data) {
     }
 }
 
+// NOVO: Função para buscar dados do produto
+async function fetchProductData(id) {
+    try {
+        const response = await fetch("processa_admin.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: 'fetch_product', id: id }),
+        });
+        const result = await response.json();
+        if (result.success && result.data) {
+            return result.data;
+        } else {
+            showAdminNotification(result.message || 'Erro ao buscar dados do produto.', "error");
+            return null;
+        }
+    } catch (error) {
+        console.error("Erro no fetch:", error);
+        showAdminNotification("Erro de conexão ao buscar dados do produto.", "error");
+        return null;
+    }
+}
 
-function openProductModal(isEdit = false, id = null) {
+async function openProductModal(isEdit = false, id = null) {
     const modalTitle = document.getElementById('modalTitle');
     const form = document.getElementById('productForm');
     
@@ -53,8 +74,32 @@ function openProductModal(isEdit = false, id = null) {
     currentProductId = id;
 
     if (isEdit && id) {
-        modalTitle.textContent = 'Editar Produto #' + id;
-        // NOTA: Em um projeto real, você faria um FETCH para carregar os dados do produto pelo ID aqui.
+        modalTitle.textContent = 'Carregando Produto #' + id;
+        const productData = await fetchProductData(id); // CHAMA FETCH AQUI
+
+        if (productData) {
+            modalTitle.textContent = 'Editar Produto #' + id;
+            // Preencher campos
+            form.elements['nome'].value = productData.nome;
+            form.elements['descricao'].value = productData.descricao;
+            form.elements['preco'].value = parseFloat(productData.preco).toFixed(2);
+            form.elements['categoria'].value = productData.categoria;
+            form.elements['estoque'].value = productData.estoque;
+            
+            // Lógica de pré-visualização de imagem (se a URL existir)
+            if (productData.imagem_url && productData.imagem_url !== '../public/placeholder.svg') {
+                const preview = document.getElementById('imagePreview');
+                preview.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = productData.imagem_url;
+                img.alt = 'Preview do Produto';
+                preview.appendChild(img);
+            }
+        } else {
+            // Se falhar, fechar e notificar
+            closeProductModal();
+            return; 
+        }
     } else {
         modalTitle.textContent = 'Novo Produto';
     }

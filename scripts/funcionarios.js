@@ -40,8 +40,29 @@ async function sendAdminAction(action, data) {
     }
 }
 
+// NOVO: Função para buscar dados do funcionário
+async function fetchEmployeeData(id) {
+    try {
+        const response = await fetch("processa_admin.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: 'fetch_employee', id: id }),
+        });
+        const result = await response.json();
+        if (result.success && result.data) {
+            return result.data;
+        } else {
+            showAdminNotification(result.message || 'Erro ao buscar dados do funcionário.', "error");
+            return null;
+        }
+    } catch (error) {
+        console.error("Erro no fetch:", error);
+        showAdminNotification("Erro de conexão ao buscar dados do funcionário.", "error");
+        return null;
+    }
+}
 
-function openEmployeeModal(isEdit = false, id = null) {
+async function openEmployeeModal(isEdit = false, id = null) {
     const modalTitle = document.getElementById('modalTitle');
     const form = document.getElementById('employeeForm');
     
@@ -54,8 +75,38 @@ function openEmployeeModal(isEdit = false, id = null) {
 
 
     if (isEdit && id) {
-        modalTitle.textContent = 'Editar Funcionário #' + id;
-        // NOTA: Em um projeto real, faria-se um FETCH para carregar os dados aqui.
+        modalTitle.textContent = 'Carregando Funcionário #' + id;
+        const employeeData = await fetchEmployeeData(id); // CHAMA FETCH AQUI
+
+        if (employeeData) {
+            modalTitle.textContent = 'Editar Funcionário #' + id;
+            // Preencher campos comuns
+            form.elements['nome'].value = employeeData.nome;
+            form.elements['email'].value = employeeData.email;
+            form.elements['telefone'].value = employeeData.telefone;
+            form.elements['endereco'].value = employeeData.endereco;
+            
+            // Tipo de Funcionário
+            form.elements['tipo'].value = employeeData.tipo;
+            
+            // Chamar toggle para exibir campos corretos
+            toggleVehicleField(); 
+
+            // Preencher campos específicos após o toggle
+            if (employeeData.tipo === 'funcionario') {
+                // Preenche a função se for funcionário interno
+                form.elements['funcao'].value = employeeData.funcao;
+            } else if (employeeData.tipo === 'entregador') {
+                // Preenche veículo e placa se for entregador
+                form.elements['veiculo_tipo'].value = employeeData.veiculo_tipo;
+                form.elements['placa'].value = employeeData.placa;
+            }
+
+        } else {
+            // Se falhar, fechar e notificar
+            closeEmployeeModal();
+            return;
+        }
     } else {
         modalTitle.textContent = 'Novo Funcionário';
     }
@@ -88,7 +139,7 @@ function toggleVehicleField() {
     }
 }
 
-// Lógica de Submissão do Formulário de Funcionário
+// Lógica de Submissão do Formulário de Funcionário (MANTIDA)
 document.getElementById('employeeForm')?.addEventListener('submit', function(event) {
     event.preventDefault();
     
@@ -123,10 +174,9 @@ document.getElementById('employeeForm')?.addEventListener('submit', function(eve
 });
 
 
-// Funções de Ação para Entregadores
+// Funções de Ação para Entregadores (Atualizada para usar a nova lógica)
 function editEmployee(id) {
     openEmployeeModal(true, id);
-    // NOTA: O carregamento dos dados de tipo/veículo deve ser feito via AJAX aqui.
 }
 
 function deleteEmployee(id) {
@@ -135,10 +185,9 @@ function deleteEmployee(id) {
     }
 }
 
-// Funções de Ação para Funcionários Internos
+// Funções de Ação para Funcionários Internos (Atualizada para usar a nova lógica)
 function editStaff(id) {
     openEmployeeModal(true, id);
-    // NOTA: O carregamento dos dados de tipo/função deve ser feito via AJAX aqui.
 }
 
 function deleteStaff(id) {

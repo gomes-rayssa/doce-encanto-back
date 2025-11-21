@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    $_SESSION['admin_logged_in'] = true;
+    $_SESSION['is_admin'] = true; // Chave crítica para o processa_admin.php
+}
 // Inclusão da verificação de admin logado deve ser adicionada
 include 'db_config.php';
 

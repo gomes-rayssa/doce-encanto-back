@@ -2,30 +2,38 @@
 include 'header.php';
 include 'db_config.php';
 
-// Busca os produtos na tabela produtos
+// Busca todos os produtos com a categoria 'bolos' em minúsculas (Definitive Fix)
 $bolos = [];
-$sql = "SELECT id, nome, descricao, preco, imagem_url, categoria FROM produtos WHERE categoria = 'Bolos' ORDER BY nome";
+$sql = "SELECT id, nome, descricao, preco, imagem_url, categoria 
+        FROM produtos 
+        WHERE LOWER(categoria) = 'bolos' 
+        ORDER BY nome";
 
+// Tenta executar a consulta e verifica por erros (DEBUG)
 if ($result = $conn->query($sql)) {
+    // Se a consulta foi bem-sucedida, busca os dados
     while ($row = $result->fetch_assoc()) {
         $bolos[] = [
             'id' => $row['id'],
             'nome' => $row['nome'],
             'descricao' => $row['descricao'],
             'preco' => (float)$row['preco'],
-            'imagem' => htmlspecialchars($row['imagem_url']), // Usa o caminho da URL do DB
+            'imagem' => htmlspecialchars($row['imagem_url']), 
             'categoria' => htmlspecialchars(strtolower($row['categoria'])),
         ];
     }
     $result->free();
+} else {
+    // Se houver erro no SQL, exibe a mensagem de erro do MySQL (DEBUG)
+    echo "<h2>Erro na Consulta SQL: " . $conn->error . "</h2>";
+    // Define $bolos como vazio para evitar erros de loop
+    $bolos = [];
 }
 
 $conn->close();
 
 // Contagem para a sidebar
 $count_todos = count($bolos);
-$count_tradicionais = count(array_filter($bolos, fn($b) => $b['categoria'] == 'tradicionais'));
-$count_gourmet = count(array_filter($bolos, fn($b) => $b['categoria'] == 'gourmet'));
 ?>
 
 <link rel="stylesheet" href="style.css" />

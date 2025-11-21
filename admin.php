@@ -4,6 +4,7 @@ session_start();
 if (!isset($_SESSION['admin_logged_in'])) {
     $_SESSION['admin_logged_in'] = true;
     $_SESSION['admin_email'] = 'admin@doceencanto.com';
+    $_SESSION['is_admin'] = true;
 }
 ?>
 <!DOCTYPE html>
