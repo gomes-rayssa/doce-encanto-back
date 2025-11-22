@@ -43,7 +43,7 @@ $count_gourmet = count(array_filter($produtos, fn($p) => $p['categoria_display']
   <div class="container">
     <div class="page-header">
       <div class="breadcrumb">
-        <a href="index.html">Início</a>
+        <a href="index.php">Início</a>
         <i class="fas fa-chevron-right"></i>
         <span>Doces</span>
       </div>
