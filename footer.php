@@ -20,12 +20,6 @@
             <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram - abre em nova janela">
               <i class="fab fa-instagram" aria-hidden="true"></i>
             </a>
-            <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter - abre em nova janela">
-              <i class="fab fa-twitter" aria-hidden="true"></i>
-            </a>
-            <a href="https://youtube.com/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube - abre em nova janela">
-              <i class="fab fa-youtube" aria-hidden="true"></i>
-            </a>
           </div>
         </div>
 
@@ -36,19 +30,6 @@
               <li><a href="index.php">Página Inicial</a></li>
               <li><a href="bolos.php">Nossos Bolos</a></li>
               <li><a href="doces.php">Nossos Doces</a></li>
-              <li><a href="sobre.php">Sobre Nós</a></li>
-            </ul>
-          </nav>
-        </div>
-
-        <div class="footer-section">
-          <h4>Atendimento</h4>
-          <nav aria-label="Atendimento">
-            <ul class="footer-links">
-              <li><a href="#">Central de Ajuda</a></li>
-              <li><a href="#">Política de Privacidade</a></li>
-              <li><a href="#">Termos de Uso</a></li>
-              <li><a href="#">Trocas e Devoluções</a></li>
             </ul>
           </nav>
         </div>

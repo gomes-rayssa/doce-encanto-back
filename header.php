@@ -13,6 +13,7 @@ session_start();
   
   <!-- Estilos -->
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="sobre.css">
   <link rel="stylesheet" href="accessibility.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   
@@ -59,12 +60,6 @@ session_start();
                 <span>Doces</span>
               </a>
             </div>
-          </li>
-          <li class="nav-item" role="none">
-            <a href="sobre.php" class="nav-link" role="menuitem" aria-label="Sobre a Doce Encanto">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              <span>Sobre</span>
-            </a>
           </li>
         </ul>
 

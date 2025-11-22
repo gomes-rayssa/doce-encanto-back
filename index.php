@@ -42,192 +42,186 @@ $produtos_destaque = [
 ?>
 
 <main id="main-content">
-<section class="hero-section" aria-labelledby="hero-title">
-  <div class="hero-background">
-    <div class="hero-overlay"></div>
-  </div>
-  <div class="hero-content">
-    <div class="hero-text">
-      <h1 class="hero-title" id="hero-title">
-        <span class="title-line">Confeitaria</span>
-        <span class="title-line highlight">Gourmet</span>
-      </h1>
-      <p class="hero-subtitle">
-        Sabores únicos que despertam emoções e criam memórias inesquecíveis
-      </p>
-      <div class="hero-buttons">
-        <a href="paginas/bolos.php" class="btn btn-primary">
-          <i class="fas fa-birthday-cake" aria-hidden="true"></i>
-          Ver Bolos
-        </a>
-        <a href="paginas/doces.php" class="btn btn-secondary">
-          <i class="fas fa-candy-cane" aria-hidden="true"></i>
-          Ver Doces
-        </a>
-      </div>
+  <section class="hero-section" aria-labelledby="hero-title">
+    <div class="hero-background">
+      <div class="hero-overlay"></div>
     </div>
-    <div class="hero-stats" role="region" aria-label="Estatísticas da empresa">
-      <div class="stat-item">
-        <span class="stat-number">1000+</span>
-        <span class="stat-label">Clientes Felizes</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">30+</span>
-        <span class="stat-label">Sabores Únicos</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">5</span>
-        <span class="stat-label">Anos de Experiência</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="categories-section" aria-labelledby="categories-title">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title" id="categories-title">Nossas Especialidades</h2>
-      <p class="section-subtitle">
-        Descubra nossos produtos artesanais feitos com amor e ingredientes
-        selecionados
-      </p>
-    </div>
-    <div class="categories-grid">
-      <div class="category-card" data-category="bolos">
-        <div class="category-image">
-          <img src="../assets/bolos/bolo-chocolate.png" alt="Bolo de chocolate - Categoria Bolos" />
-          <div class="category-overlay" aria-hidden="true">
-            <i class="fas fa-birthday-cake"></i>
-          </div>
-        </div>
-        <div class="category-content">
-          <h3>Bolos</h3>
-          <p>Bolos únicos para momentos especiais</p>
-          <a href="paginas/bolos.php" class="category-link">
-            Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title" id="hero-title">
+          <span class="title-line">Confeitaria</span>
+          <span class="title-line highlight">Gourmet</span>
+        </h1>
+        <p class="hero-subtitle">
+          Sabores únicos que despertam emoções e criam memórias inesquecíveis
+        </p>
+        <div class="hero-buttons">
+          <a href="bolos.php" class="btn btn-primary">
+            <i class="fas fa-birthday-cake" aria-hidden="true"></i>
+            Ver Bolos
+          </a>
+          <a href="doces.php" class="btn btn-secondary">
+            <i class="fas fa-candy-cane" aria-hidden="true"></i>
+            Ver Doces
           </a>
         </div>
       </div>
-      <div class="category-card" data-category="doces">
-        <div class="category-image">
-          <img src="../assets/doces/brigadeiro.png" alt="Brigadeiro - Categoria Doces" />
-          <div class="category-overlay" aria-hidden="true">
-            <i class="fas fa-candy-cane"></i>
-          </div>
+      <div class="hero-stats" role="region" aria-label="Estatísticas da empresa">
+        <div class="stat-item">
+          <span class="stat-number">1000+</span>
+          <span class="stat-label">Clientes Felizes</span>
         </div>
-        <div class="category-content">
-          <h3>Doces</h3>
-          <p>Pequenos prazeres da vida</p>
-          <a href="paginas/doces.php" class="category-link">
-            Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
-          </a>
+        <div class="stat-item">
+          <span class="stat-number">30+</span>
+          <span class="stat-label">Sabores Únicos</span>
         </div>
-      </div>
-      <div class="category-card" data-category="trufas">
-        <div class="category-image">
-          <img src="../assets/doces-trufas/brigadeiro.png" alt="Trufa de brigadeiro - Categoria Trufas" />
-          <div class="category-overlay" aria-hidden="true">
-            <i class="fas fa-gem"></i>
-          </div>
-        </div>
-        <div class="category-content">
-          <h3>Trufas</h3>
-          <p>Sofisticação em cada mordida</p>
-          <a href="paginas/doces.php#trufas" class="category-link">
-            Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
-          </a>
+        <div class="stat-item">
+          <span class="stat-number">5</span>
+          <span class="stat-label">Anos de Experiência</span>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="featured-products" aria-labelledby="featured-title">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title" id="featured-title">Mais Vendidos</h2>
-      <p class="section-subtitle">Os favoritos dos nossos clientes</p>
+  <section class="categories-section" aria-labelledby="categories-title">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" id="categories-title">Nossas Especialidades</h2>
+        <p class="section-subtitle">
+          Descubra nossos produtos artesanais feitos com amor e ingredientes
+          selecionados
+        </p>
+      </div>
+      <div class="categories-grid">
+        <div class="category-card" data-category="bolos">
+          <div class="category-image">
+            <img src="../assets/bolos/bolo-chocolate.png" alt="Bolo de chocolate - Categoria Bolos" />
+            <div class="category-overlay" aria-hidden="true">
+              <i class="fas fa-birthday-cake"></i>
+            </div>
+          </div>
+          <div class="category-content">
+            <h3>Bolos</h3>
+            <p>Bolos únicos para momentos especiais</p>
+            <a href="paginas/bolos.php" class="category-link">
+              Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div class="category-card" data-category="doces">
+          <div class="category-image">
+            <img src="../assets/doces/brigadeiro.png" alt="Brigadeiro - Categoria Doces" />
+            <div class="category-overlay" aria-hidden="true">
+              <i class="fas fa-candy-cane"></i>
+            </div>
+          </div>
+          <div class="category-content">
+            <h3>Doces</h3>
+            <p>Pequenos prazeres da vida</p>
+            <a href="paginas/doces.php" class="category-link">
+              Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div class="category-card" data-category="trufas">
+          <div class="category-image">
+            <img src="../assets/doces-trufas/brigadeiro.png" alt="Trufa de brigadeiro - Categoria Trufas" />
+            <div class="category-overlay" aria-hidden="true">
+              <i class="fas fa-gem"></i>
+            </div>
+          </div>
+          <div class="category-content">
+            <h3>Trufas</h3>
+            <p>Sofisticação em cada mordida</p>
+            <a href="paginas/doces.php#trufas" class="category-link">
+              Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="products-grid">
+  </section>
 
-      <?php foreach ($produtos_destaque as $produto): ?>
+  <section class="featured-products" aria-labelledby="featured-title">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" id="featured-title">Mais Vendidos</h2>
+        <p class="section-subtitle">Os favoritos dos nossos clientes</p>
+      </div>
+      <div class="products-grid">
 
-        <article class="product-card">
-          <div class="product-image">
-            <img src="<?php echo htmlspecialchars($produto['imagem']); ?>"
-              alt="<?php echo htmlspecialchars($produto['nome']); ?> - <?php echo htmlspecialchars($produto['descricao']); ?>" />
+        <?php foreach ($produtos_destaque as $produto): ?>
 
-            <?php if (!empty($produto['badge'])): ?>
-              <div class="product-badge <?php echo strtolower(htmlspecialchars($produto['badge'])); ?>" aria-label="<?php echo htmlspecialchars($produto['badge']); ?>">
-                <?php echo htmlspecialchars($produto['badge']); ?>
-              </div>
-            <?php endif; ?>
+          <article class="product-card">
+            <div class="product-image">
+              <img src="<?php echo htmlspecialchars($produto['imagem']); ?>"
+                alt="<?php echo htmlspecialchars($produto['nome']); ?> - <?php echo htmlspecialchars($produto['descricao']); ?>" />
 
-            <div class="product-actions">
-              <button class="quick-view" aria-label="Visualização rápida de <?php echo htmlspecialchars($produto['nome']); ?>">
-                <i class="fas fa-eye" aria-hidden="true"></i>
-              </button>
+              <?php if (!empty($produto['badge'])): ?>
+                <div class="product-badge <?php echo strtolower(htmlspecialchars($produto['badge'])); ?>"
+                  aria-label="<?php echo htmlspecialchars($produto['badge']); ?>">
+                  <?php echo htmlspecialchars($produto['badge']); ?>
+                </div>
+              <?php endif; ?>
 
-              <button class="add-to-cart" aria-label="Adicionar <?php echo htmlspecialchars($produto['nome']); ?> ao carrinho" onclick="adicionarItem(
+              <div class="product-actions">
+                <button class="quick-view"
+                  aria-label="Visualização rápida de <?php echo htmlspecialchars($produto['nome']); ?>">
+                  <i class="fas fa-eye" aria-hidden="true"></i>
+                </button>
+
+                <button class="add-to-cart"
+                  aria-label="Adicionar <?php echo htmlspecialchars($produto['nome']); ?> ao carrinho" onclick="adicionarItem(
                   '<?php echo $produto['id']; ?>',
                   '<?php echo htmlspecialchars($produto['nome'], ENT_QUOTES); ?>',
                   <?php echo $produto['preco']; ?>,
                   '<?php echo htmlspecialchars($produto['imagem'], ENT_QUOTES); ?>',
                   '<?php echo htmlspecialchars($produto['categoria'], ENT_QUOTES); ?>'
                 )">
-                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
-              </button>
+                  <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
-          </div>
-          <div class="product-info">
-            <h3 class="product-name"><?php echo htmlspecialchars($produto['nome']); ?></h3>
-            <p class="product-description"><?php echo htmlspecialchars($produto['descricao']); ?></p>
-            <div class="product-rating" role="img" aria-label="Avaliação: 4.9 de 5 estrelas">
-              <i class="fas fa-star" aria-hidden="true"></i>
-              <i class="fas fa-star" aria-hidden="true"></i>
-              <i class="fas fa-star" aria-hidden="true"></i>
-              <i class="fas fa-star" aria-hidden="true"></i>
-              <i class="fas fa-star" aria-hidden="true"></i>
-              <span>(4.9)</span>
+            <div class="product-info">
+              <h3 class="product-name"><?php echo htmlspecialchars($produto['nome']); ?></h3>
+              <p class="product-description"><?php echo htmlspecialchars($produto['descricao']); ?></p>
+              <div class="product-rating" role="img" aria-label="Avaliação: 4.9 de 5 estrelas">
+                <i class="fas fa-star" aria-hidden="true"></i>
+                <i class="fas fa-star" aria-hidden="true"></i>
+                <i class="fas fa-star" aria-hidden="true"></i>
+                <i class="fas fa-star" aria-hidden="true"></i>
+                <i class="fas fa-star" aria-hidden="true"></i>
+                <span>(4.9)</span>
+              </div>
+              <div class="product-price"
+                aria-label="Preço: R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?>">
+                R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?>
+              </div>
             </div>
-            <div class="product-price" aria-label="Preço: R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?>">
-              R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?>
-            </div>
-          </div>
-        </article>
+          </article>
 
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-
-<section class="newsletter-section" aria-labelledby="newsletter-title">
-  <div class="container">
-    <div class="newsletter-content">
-      <div class="newsletter-text">
-        <h2 id="newsletter-title">Fique por dentro das novidades!</h2>
-        <p>
-          Receba ofertas exclusivas, novos sabores e promoções especiais
-          diretamente no seu email
-        </p>
+        <?php endforeach; ?>
       </div>
-      <form id="newsletter-form" class="newsletter-form" aria-labelledby="newsletter-title">
-        <div class="form-group">
-          <label for="newsletter-nome" class="sr-only">Seu nome</label>
-          <input type="text" id="newsletter-nome" name="nome" placeholder="Seu nome" required aria-required="true" />
-          
-          <label for="newsletter-email" class="sr-only">Seu email</label>
-          <input type="email" id="newsletter-email" name="email" placeholder="seu@email.com" required aria-required="true" />
-          
-          <button type="submit" class="btn btn-primary" aria-label="Inscrever-se na newsletter">
-            <i class="fas fa-paper-plane" aria-hidden="true"></i>
-            Inscrever-se
-          </button>
-        </div>
-      </form>
     </div>
-  </div>
-</section>
+  </section>
+
+  <section class="sobre-section" aria-labelledby="sobre-title">
+    <div class="container">
+      <div class="sobre-content">
+        <div class="sobre-text">
+          <h2 id="sobre-title">Sobre nós</h2>
+          <p>Bem-vindo(a) à Doce Encanto, onde cada criação é feita com paixão para adoçar a sua vida! Desde a nossa
+            fundação em 2020, temos o prazer de levar sabor e alegria para as mesas e corações dos nossos clientes.
+            Aqui na Doce Encanto, somos apaixonados por bolos e doces. Acreditamos que momentos especiais merecem ser
+            celebrados com algo realmente delicioso, e é por isso que cada receita é preparada com ingredientes de alta
+            qualidade e um toque artesanal que você sente em cada mordida.
+            Seja para um aniversário inesquecível, um evento especial ou simplesmente para tornar o seu dia um pouco
+            mais
+            doce, a Doce Encanto está aqui para te encantar. Venha descobrir a magia dos nossos sabores!</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <?php

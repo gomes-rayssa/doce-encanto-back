@@ -6,7 +6,7 @@ include 'db_config.php';
 $bolos = [];
 $sql = "SELECT id, nome, descricao, preco, imagem_url, categoria 
         FROM produtos 
-        WHERE LOWER(categoria) = 'bolos' 
+        WHERE LOWER(categoria) = 'bolos' AND estoque > 0
         ORDER BY nome";
 
 // Tenta executar a consulta e verifica por erros (DEBUG)
@@ -43,7 +43,7 @@ $count_todos = count($bolos);
   <div class="container">
     <div class="page-header">
       <div class="breadcrumb">
-        <a href="../index.php">Início</a>
+        <a href="index.php">Início</a>
         <i class="fas fa-chevron-right"></i>
         <span>Bolos</span>
       </div>

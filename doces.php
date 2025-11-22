@@ -4,7 +4,7 @@ include 'db_config.php';
 
 // Busca todos os produtos Doces/Chocolates/Trufas
 $produtos = [];
-$sql = "SELECT id, nome, descricao, preco, imagem_url, categoria FROM produtos WHERE LOWER(categoria) IN ('doces', 'chocolates') ORDER BY nome";
+$sql = "SELECT id, nome, descricao, preco, imagem_url, categoria FROM produtos WHERE LOWER(categoria) IN ('doces', 'chocolates') AND estoque > 0 ORDER BY nome";
 
 if ($result = $conn->query($sql)) {
     while ($row = $result->fetch_assoc()) {
@@ -46,7 +46,7 @@ $count_gourmet = count(array_filter($produtos, fn($p) => $p['categoria_display']
   <div class="container">
     <div class="page-header">
       <div class="breadcrumb">
-        <a href="../index.html">Início</a>
+        <a href="index.html">Início</a>
         <i class="fas fa-chevron-right"></i>
         <span>Doces</span>
       </div>
