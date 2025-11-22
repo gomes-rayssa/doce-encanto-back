@@ -3,7 +3,7 @@ include 'header.php';
 include 'db_config.php';
 
 $produtos = [];
-$sql = "SELECT id, nome, descricao, preco, imagem_url, categoria FROM produtos WHERE LOWER(categoria) IN ('doces', 'chocolates') AND estoque > 0 ORDER BY nome";
+$sql = "SELECT id, nome, descricao, preco, imagem_url, categoria FROM produtos WHERE (categoria LIKE '%doce%' OR categoria LIKE '%chocolate%' OR categoria LIKE '%brigadeiro%' OR categoria LIKE '%beijinho%' OR categoria LIKE '%trufa%') AND estoque > 0 ORDER BY nome";
 
 if ($result = $conn->query($sql)) {
   while ($row = $result->fetch_assoc()) {

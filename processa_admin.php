@@ -362,6 +362,48 @@ try {
             break;
 
 
+        case 'update_pedido_status':
+            $pedido_id = (int) ($data['pedido_id'] ?? 0);
+            $status = trim($data['status'] ?? '');
+
+            if ($pedido_id <= 0 || empty($status)) {
+                throw new Exception('Dados inválidos para atualizar status do pedido.');
+            }
+
+            $sql = "UPDATE pedidos SET status = ? WHERE id = ?";
+            if ($stmt = $conn->prepare($sql)) {
+                $stmt->bind_param("si", $status, $pedido_id);
+                if (!$stmt->execute()) {
+                    throw new Exception('Erro ao atualizar status do pedido: ' . $stmt->error);
+                }
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Status do pedido atualizado com sucesso!']);
+            } else {
+                throw new Exception('Erro de preparação: ' . $conn->error);
+            }
+            break;
+
+        case 'update_pedido_entregador':
+            $pedido_id = (int) ($data['pedido_id'] ?? 0);
+            $entregador_id = isset($data['entregador_id']) && $data['entregador_id'] !== '' ? (int) $data['entregador_id'] : null;
+
+            if ($pedido_id <= 0) {
+                throw new Exception('ID do pedido inválido.');
+            }
+
+            $sql = "UPDATE pedidos SET entregador_id = ? WHERE id = ?";
+            if ($stmt = $conn->prepare($sql)) {
+                $stmt->bind_param("ii", $entregador_id, $pedido_id);
+                if (!$stmt->execute()) {
+                    throw new Exception('Erro ao atualizar entregador do pedido: ' . $stmt->error);
+                }
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Entregador atualizado com sucesso!']);
+            } else {
+                throw new Exception('Erro de preparação: ' . $conn->error);
+            }
+            break;
+
         default:
             echo json_encode(['success' => false, 'message' => 'Ação desconhecida.']);
             break;

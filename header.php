@@ -14,6 +14,7 @@ session_start();
 
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="sobre.css">
+  <link rel="stylesheet" href="accessibility.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
   <style>
@@ -24,6 +25,7 @@ session_start();
 </head>
 
 <body>
+  <a href="#main-content" class="skip-to-main">Pular para o conteúdo principal</a>
   <header class="modern-header" role="banner">
     <nav class="modern-nav" role="navigation" aria-label="Navegação principal">
       <div class="nav-container">

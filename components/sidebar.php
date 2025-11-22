@@ -1,4 +1,4 @@
-<aside class="sidebar">
+<aside class="admin-sidebar">
     <nav>
         <ul>
             <?php $current_page = basename($_SERVER['PHP_SELF']); ?>

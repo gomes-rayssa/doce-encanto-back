@@ -28,8 +28,7 @@ $pedidos_data = [
 <div id="notification" class="notification hidden">
     <span id="notification-message"></span>
 </div>
-<link rel="stylesheet" href="usuario.css" />
-<link rel="stylesheet" href="admin.css" /> <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+<link rel="stylesheet" href="usuario.css" /> <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
     <div class="admin-link-container container">
         <a href="admin.php" class="btn-admin-link">
             <i class="fas fa-shield-alt"></i>

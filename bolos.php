@@ -5,7 +5,7 @@ include 'db_config.php';
 $bolos = [];
 $sql = "SELECT id, nome, descricao, preco, imagem_url, categoria 
         FROM produtos 
-        WHERE LOWER(categoria) = 'bolos' AND estoque > 0
+        WHERE categoria LIKE '%bolo%' AND estoque > 0
         ORDER BY nome";
 
 if ($result = $conn->query($sql)) {

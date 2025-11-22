@@ -1,38 +1,72 @@
 document.addEventListener("DOMContentLoaded", function () {
-  function updateStatus() {
+  
+  async function updateStatus(pedidoId) {
     const newStatus = document.getElementById("orderStatus").value;
-    alert("Status do pedido alterado para: " + newStatus);
-    console.log("Status do pedido alterado para: " + newStatus);
-  }
+    
+    if (!confirm(`Deseja alterar o status do pedido para "${newStatus}"?`)) {
+      return;
+    }
 
-  function sendInvoice() {
-    alert("Nota fiscal enviada!");
-    console.log("Nota fiscal enviada.");
-  }
+    try {
+      const response = await fetch("processa_admin.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "update_pedido_status",
+          pedido_id: pedidoId,
+          status: newStatus,
+        }),
+      });
 
-  window.updateStatus = updateStatus;
-  window.sendInvoice = sendInvoice;
+      const result = await response.json();
 
-  const deliverySelect = document.querySelector(
-    ".chart-card:nth-child(3) select"
-  );
-  const deliveryInfo = document.getElementById("deliveryInfo");
-
-  if (deliverySelect && deliveryInfo) {
-    deliverySelect.addEventListener("change", function () {
-      if (this.value) {
-        deliveryInfo.innerHTML = `
-                    <div><strong>Nome:</strong> ${
-                      this.options[this.selectedIndex].text.split(" - ")[0]
-                    }</div>
-                    <div><strong>Veículo:</strong> ${
-                      this.options[this.selectedIndex].text.split(" - ")[1]
-                    } - ABC-1234 (Simulado)</div>
-                `;
-        deliveryInfo.style.display = "block";
+      if (result.success) {
+        alert("Status do pedido atualizado com sucesso!");
+        window.location.reload();
       } else {
-        deliveryInfo.style.display = "none";
+        alert("Erro: " + (result.message || "Não foi possível atualizar o status."));
       }
-    });
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro de conexão. Tente novamente.");
+    }
   }
+
+  async function updateEntregador(pedidoId) {
+    const entregadorId = document.getElementById("entregadorSelect").value;
+    
+    if (!entregadorId) {
+      if (!confirm("Deseja remover o entregador deste pedido?")) {
+        return;
+      }
+    }
+
+    try {
+      const response = await fetch("processa_admin.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "update_pedido_entregador",
+          pedido_id: pedidoId,
+          entregador_id: entregadorId || null,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert("Entregador atualizado com sucesso!");
+        window.location.reload();
+      } else {
+        alert("Erro: " + (result.message || "Não foi possível atualizar o entregador."));
+      }
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro de conexão. Tente novamente.");
+    }
+  }
+
+  // Expor funções globalmente
+  window.updateStatus = updateStatus;
+  window.updateEntregador = updateEntregador;
 });

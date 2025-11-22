@@ -1,5 +1,39 @@
 <?php
 session_start();
+include 'db_config.php';
+
+if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    header('Location: login.php');
+    exit;
+}
+
+// Buscar todos os pedidos com informações do cliente
+$sql = "SELECT p.*, u.nome as cliente_nome, u.email as cliente_email
+        FROM pedidos p
+        LEFT JOIN usuarios u ON p.usuario_id = u.id
+        ORDER BY p.data_pedido DESC";
+
+$result = $conn->query($sql);
+$pedidos = [];
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $pedidos[] = $row;
+    }
+}
+
+$conn->close();
+
+// Função para mapear status para classe de badge
+function getBadgeClass($status) {
+    $map = [
+        'Novo' => 'badge-new',
+        'Em Preparação' => 'badge-preparing',
+        'Enviado' => 'badge-sent',
+        'Entregue' => 'badge-delivered',
+        'Cancelado' => 'badge-cancelled'
+    ];
+    return $map[$status] ?? 'badge-new';
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -9,6 +43,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de Pedidos</title>
     <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="accessibility.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -20,13 +55,13 @@ session_start();
         <div class="dashboard-header">
             <h1>Pedidos</h1>
             <div style="display: flex; gap: 1rem;">
-                <select id="status-filter">
+                <select id="status-filter" onchange="filterByStatus()">
                     <option value="">Todos os Status</option>
-                    <option value="novo">Novo</option>
-                    <option value="preparacao">Em Preparação</option>
-                    <option value="enviado">Enviado</option>
-                    <option value="entregue">Entregue</option>
-                    <option value="cancelado">Cancelado</option>
+                    <option value="Novo">Novo</option>
+                    <option value="Em Preparação">Em Preparação</option>
+                    <option value="Enviado">Enviado</option>
+                    <option value="Entregue">Entregue</option>
+                    <option value="Cancelado">Cancelado</option>
                 </select>
             </div>
         </div>
@@ -44,62 +79,55 @@ session_start();
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>#1234</td>
-                            <td>20/11/2024 14:30</td>
-                            <td>Maria Silva</td>
-                            <td>R$ 156,90</td>
-                            <td><span class="badge badge-new">Novo</span></td>
-                            <td>
-                                <a href="pedido-detalhe.php?id=1234" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#1233</td>
-                            <td>20/11/2024 13:15</td>
-                            <td>João Santos</td>
-                            <td>R$ 89,90</td>
-                            <td><span class="badge badge-preparing">Em Preparação</span></td>
-                            <td>
-                                <a href="pedido-detalhe.php?id=1233" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#1232</td>
-                            <td>20/11/2024 12:45</td>
-                            <td>Ana Costa</td>
-                            <td>R$ 234,50</td>
-                            <td><span class="badge badge-sent">Enviado</span></td>
-                            <td>
-                                <a href="pedido-detalhe.php?id=1232" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#1231</td>
-                            <td>19/11/2024 18:20</td>
-                            <td>Pedro Oliveira</td>
-                            <td>R$ 178,00</td>
-                            <td><span class="badge badge-delivered">Entregue</span></td>
-                            <td>
-                                <a href="pedido-detalhe.php?id=1231" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#1230</td>
-                            <td>19/11/2024 16:45</td>
-                            <td>Carla Mendes</td>
-                            <td>R$ 95,00</td>
-                            <td><span class="badge badge-cancelled">Cancelado</span></td>
-                            <td>
-                                <a href="pedido-detalhe.php?id=1230" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
+                    <tbody id="pedidos-tbody">
+                        <?php if (empty($pedidos)): ?>
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 2rem;">
+                                    Nenhum pedido encontrado.
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($pedidos as $pedido): ?>
+                                <tr data-status="<?php echo htmlspecialchars($pedido['status']); ?>">
+                                    <td>#<?php echo $pedido['id']; ?></td>
+                                    <td><?php echo date('d/m/Y H:i', strtotime($pedido['data_pedido'])); ?></td>
+                                    <td><?php echo htmlspecialchars($pedido['cliente_nome']); ?></td>
+                                    <td>R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></td>
+                                    <td>
+                                        <span class="badge <?php echo getBadgeClass($pedido['status']); ?>">
+                                            <?php echo htmlspecialchars($pedido['status']); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="pedido-detalhe.php?id=<?php echo $pedido['id']; ?>" 
+                                           class="btn-icon" 
+                                           title="Ver detalhes do pedido">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
+
+    <script>
+        function filterByStatus() {
+            const filter = document.getElementById('status-filter').value;
+            const rows = document.querySelectorAll('#pedidos-tbody tr[data-status]');
+            
+            rows.forEach(row => {
+                if (filter === '' || row.dataset.status === filter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

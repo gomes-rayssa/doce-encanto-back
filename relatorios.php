@@ -1,5 +1,93 @@
 <?php
 session_start();
+include 'db_config.php';
+
+if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    header('Location: login.php');
+    exit;
+}
+
+// Período padrão: este mês
+$periodo = $_GET['periodo'] ?? 'month';
+
+// Definir datas baseadas no período
+$data_inicio = '';
+$data_fim = date('Y-m-d 23:59:59');
+
+switch ($periodo) {
+    case 'today':
+        $data_inicio = date('Y-m-d 00:00:00');
+        break;
+    case 'week':
+        $data_inicio = date('Y-m-d 00:00:00', strtotime('-7 days'));
+        break;
+    case 'month':
+        $data_inicio = date('Y-m-01 00:00:00');
+        break;
+    case 'year':
+        $data_inicio = date('Y-01-01 00:00:00');
+        break;
+    default:
+        $data_inicio = date('Y-m-01 00:00:00');
+}
+
+// Calcular estatísticas de vendas
+$sql_vendas = "SELECT 
+                COUNT(*) as total_pedidos,
+                SUM(valor_total) as total_vendas
+               FROM pedidos 
+               WHERE data_pedido BETWEEN ? AND ?
+               AND status != 'Cancelado'";
+
+$stmt = $conn->prepare($sql_vendas);
+$stmt->bind_param("ss", $data_inicio, $data_fim);
+$stmt->execute();
+$result = $stmt->get_result();
+$vendas = $result->fetch_assoc();
+$stmt->close();
+
+$total_vendas = $vendas['total_vendas'] ?? 0;
+$total_pedidos = $vendas['total_pedidos'] ?? 0;
+$ticket_medio = $total_pedidos > 0 ? $total_vendas / $total_pedidos : 0;
+
+// Ranking de produtos mais vendidos
+$sql_ranking = "SELECT 
+                    pr.nome as produto_nome,
+                    pr.categoria,
+                    SUM(ip.quantidade) as quantidade_vendida,
+                    SUM(ip.quantidade * ip.preco_unitario) as receita_total
+                FROM itens_pedido ip
+                INNER JOIN produtos pr ON ip.produto_id = pr.id
+                INNER JOIN pedidos p ON ip.pedido_id = p.id
+                WHERE p.data_pedido BETWEEN ? AND ?
+                AND p.status != 'Cancelado'
+                GROUP BY ip.produto_id
+                ORDER BY quantidade_vendida DESC
+                LIMIT 10";
+
+$stmt_ranking = $conn->prepare($sql_ranking);
+$stmt_ranking->bind_param("ss", $data_inicio, $data_fim);
+$stmt_ranking->execute();
+$result_ranking = $stmt_ranking->get_result();
+$ranking = [];
+while ($row = $result_ranking->fetch_assoc()) {
+    $ranking[] = $row;
+}
+$stmt_ranking->close();
+
+// Produtos com baixo estoque (estoque < 10)
+$sql_estoque = "SELECT nome, categoria, estoque 
+                FROM produtos 
+                WHERE estoque < 10
+                ORDER BY estoque ASC";
+
+$result_estoque = $conn->query($sql_estoque);
+$baixo_estoque = [];
+while ($row = $result_estoque->fetch_assoc()) {
+    $baixo_estoque[] = $row;
+}
+
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -9,6 +97,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatórios e Estatísticas</title>
     <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="accessibility.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -19,12 +108,11 @@ session_start();
     <main class="main-content">
         <div class="dashboard-header">
             <h1>Relatórios e Estatísticas</h1>
-            <select id="period-filter-reports">
-                <option value="today">Hoje</option>
-                <option value="week">Esta Semana</option>
-                <option value="month" selected>Este Mês</option>
-                <option value="year">Este Ano</option>
-                <option value="custom">Período Personalizado</option>
+            <select id="period-filter-reports" onchange="changePeriod(this.value)">
+                <option value="today" <?php echo $periodo === 'today' ? 'selected' : ''; ?>>Hoje</option>
+                <option value="week" <?php echo $periodo === 'week' ? 'selected' : ''; ?>>Esta Semana</option>
+                <option value="month" <?php echo $periodo === 'month' ? 'selected' : ''; ?>>Este Mês</option>
+                <option value="year" <?php echo $periodo === 'year' ? 'selected' : ''; ?>>Este Ano</option>
             </select>
         </div>
 
@@ -34,27 +122,21 @@ session_start();
                 <div class="stat-card">
                     <div class="stat-info">
                         <h3>Total de Vendas</h3>
-                        <p class="stat-value">R$ 45.890,00</p>
-                        <span class="stat-change positive">+12% vs período anterior</span>
+                        <p class="stat-value">R$ <?php echo number_format($total_vendas, 2, ',', '.'); ?></p>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-info">
                         <h3>Número de Pedidos</h3>
-                        <p class="stat-value">328</p>
-                        <span class="stat-change positive">+8% vs período anterior</span>
+                        <p class="stat-value"><?php echo $total_pedidos; ?></p>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-info">
                         <h3>Ticket Médio</h3>
-                        <p class="stat-value">R$ 139,90</p>
-                        <span class="stat-change negative">-3% vs período anterior</span>
+                        <p class="stat-value">R$ <?php echo number_format($ticket_medio, 2, ',', '.'); ?></p>
                     </div>
                 </div>
-            </div>
-            <div style="margin-top: 2rem;">
-                <canvas id="salesTrendChart"></canvas>
             </div>
         </div>
 
@@ -72,41 +154,23 @@ session_start();
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><span class="rank">1</span></td>
-                            <td>Brigadeiro Gourmet</td>
-                            <td>Chocolates</td>
-                            <td>234 unidades</td>
-                            <td>R$ 819,00</td>
-                        </tr>
-                        <tr>
-                            <td><span class="rank">2</span></td>
-                            <td>Beijinho</td>
-                            <td>Chocolates</td>
-                            <td>198 unidades</td>
-                            <td>R$ 594,00</td>
-                        </tr>
-                        <tr>
-                            <td><span class="rank">3</span></td>
-                            <td>Trufas Sortidas</td>
-                            <td>Chocolates</td>
-                            <td>167 caixas</td>
-                            <td>R$ 7.515,00</td>
-                        </tr>
-                        <tr>
-                            <td><span class="rank">4</span></td>
-                            <td>Cajuzinho</td>
-                            <td>Chocolates</td>
-                            <td>143 unidades</td>
-                            <td>R$ 500,50</td>
-                        </tr>
-                        <tr>
-                            <td><span class="rank">5</span></td>
-                            <td>Brigadeiro de Colher</td>
-                            <td>Chocolates</td>
-                            <td>129 potes</td>
-                            <td>R$ 1.806,00</td>
-                        </tr>
+                        <?php if (empty($ranking)): ?>
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 2rem;">
+                                    Nenhuma venda registrada no período selecionado.
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($ranking as $index => $produto): ?>
+                                <tr>
+                                    <td><span class="rank"><?php echo $index + 1; ?></span></td>
+                                    <td><?php echo htmlspecialchars($produto['produto_nome']); ?></td>
+                                    <td><?php echo htmlspecialchars($produto['categoria']); ?></td>
+                                    <td><?php echo $produto['quantidade_vendida']; ?> unidades</td>
+                                    <td>R$ <?php echo number_format($produto['receita_total'], 2, ',', '.'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -121,40 +185,43 @@ session_start();
                             <th>Produto</th>
                             <th>Categoria</th>
                             <th>Quantidade Atual</th>
-                            <th>Estoque Mínimo</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Trufas Sortidas</td>
-                            <td>Chocolates</td>
-                            <td>0</td>
-                            <td>20</td>
-                            <td><span class="badge badge-out-of-stock">Esgotado</span></td>
-                        </tr>
-                        <tr>
-                            <td>Bolo de Chocolate</td>
-                            <td>Bolos</td>
-                            <td>5</td>
-                            <td>15</td>
-                            <td><span class="badge badge-pending">Baixo</span></td>
-                        </tr>
-                        <tr>
-                            <td>Torta de Limão</td>
-                            <td>Tortas</td>
-                            <td>8</td>
-                            <td>20</td>
-                            <td><span class="badge badge-pending">Baixo</span></td>
-                        </tr>
+                        <?php if (empty($baixo_estoque)): ?>
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 2rem;">
+                                    Todos os produtos estão com estoque adequado.
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($baixo_estoque as $produto): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($produto['nome']); ?></td>
+                                    <td><?php echo htmlspecialchars($produto['categoria']); ?></td>
+                                    <td><?php echo $produto['estoque']; ?></td>
+                                    <td>
+                                        <?php if ($produto['estoque'] == 0): ?>
+                                            <span class="badge badge-out-of-stock">Esgotado</span>
+                                        <?php else: ?>
+                                            <span class="badge badge-pending">Baixo</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="scripts/relatorios.js"></script>
+    <script>
+        function changePeriod(periodo) {
+            window.location.href = 'relatorios.php?periodo=' + periodo;
+        }
+    </script>
 </body>
 
 </html>
