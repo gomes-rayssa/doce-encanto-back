@@ -1,6 +1,5 @@
 <?php
 session_start();
-// Simulação de autenticação - em produção, use um sistema real
 if (!isset($_SESSION['admin_logged_in'])) {
     $_SESSION['admin_logged_in'] = true;
     $_SESSION['admin_email'] = 'admin@doceencanto.com';

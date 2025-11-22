@@ -2,16 +2,13 @@
 include 'header.php';
 include 'db_config.php';
 
-// Busca todos os produtos com a categoria 'bolos' em minúsculas (Definitive Fix)
 $bolos = [];
 $sql = "SELECT id, nome, descricao, preco, imagem_url, categoria 
         FROM produtos 
         WHERE LOWER(categoria) = 'bolos' AND estoque > 0
         ORDER BY nome";
 
-// Tenta executar a consulta e verifica por erros (DEBUG)
 if ($result = $conn->query($sql)) {
-    // Se a consulta foi bem-sucedida, busca os dados
     while ($row = $result->fetch_assoc()) {
         $bolos[] = [
             'id' => $row['id'],
@@ -24,15 +21,12 @@ if ($result = $conn->query($sql)) {
     }
     $result->free();
 } else {
-    // Se houver erro no SQL, exibe a mensagem de erro do MySQL (DEBUG)
     echo "<h2>Erro na Consulta SQL: " . $conn->error . "</h2>";
-    // Define $bolos como vazio para evitar erros de loop
     $bolos = [];
 }
 
 $conn->close();
 
-// Contagem para a sidebar
 $count_todos = count($bolos);
 ?>
 
