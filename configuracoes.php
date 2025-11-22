@@ -44,7 +44,7 @@ $conn->close();
 
 <body>
     <?php include 'components/header-adm.php'; ?>
-    <?php include 'components/sidebar-adm.php'; ?>
+    <?php include 'components/sidebar.php'; ?>
 
     <main class="main-content">
         <div class="dashboard-header">
