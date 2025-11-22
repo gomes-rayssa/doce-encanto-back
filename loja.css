@@ -609,19 +609,6 @@
   color: var(--primary-color);
 }
 
-/* Melhorias de Acessibilidade */
-.category-link:focus,
-.view-btn:focus,
-.sort-select:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-.product-actions button:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
 /* Transições Suaves */
 * {
   transition: color 0.3s ease, background-color 0.3s ease,

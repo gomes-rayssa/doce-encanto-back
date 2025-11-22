@@ -290,7 +290,7 @@ body {
 
 .hero-title {
   font-family: "Playfair Display", serif;
-  font-size: inherit;
+  font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 700;
   margin-bottom: 1.5rem;
   line-height: 1.1;
@@ -308,7 +308,7 @@ body {
 }
 
 .hero-subtitle {
-  font-size: inherit;
+  font-size: 1.25rem;
   margin-bottom: 3rem;
   max-width: 600px;
   margin-left: auto;

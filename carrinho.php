@@ -26,7 +26,7 @@ $total = 0;
                     ?>
                     <li class="item-carrinho" data-id="<?php echo $id; ?>" role="listitem">
                         <div class="item-imagem">
-                            <img src="<?php echo htmlspecialchars($item['imagem'] ?? '../assets/logos/logo-navbar.jpg'); ?>"
+                            <img src="<?php echo htmlspecialchars($item['imagem'] ?? 'assets/logos/logo-navbar.jpg'); ?>"
                                 alt="<?php echo htmlspecialchars($item['nome']); ?>" />
                         </div>
                         <div class="item-info">

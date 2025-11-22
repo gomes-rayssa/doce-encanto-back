@@ -24,7 +24,7 @@ include 'header.php';
               autocomplete="current-password" />
             <button type="button" class="toggle-password" data-target="senha" aria-label="Mostrar senha"
               aria-pressed="false">
-              <img src="../assets/logos/olho.png" alt="" aria-hidden="true" />
+              <img src="assets/logos/olho.png" alt="" aria-hidden="true" />
             </button>
           </div>
           <span class="error-message" id="senha-error" role="alert" aria-live="polite"></span>

@@ -71,11 +71,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (targetInput.type === "password") {
         targetInput.type = "text";
-        this.src = "../assets/logos/olho-x.png";
+        this.src = "assets/logos/olho-x.png";
         this.alt = "Ocultar Senha";
       } else {
         targetInput.type = "password";
-        this.src = "../assets/logos/olho.png";
+        this.src = "assets/logos/olho.png";
         this.alt = "Mostrar Senha";
       }
     });

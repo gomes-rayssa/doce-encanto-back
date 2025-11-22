@@ -7,7 +7,7 @@ $produtos_destaque = [
     'nome' => 'Bolo de Chocolate',
     'descricao' => 'Bolo de massa de chocolate, recheio de trufado de chocolate ao leite, cobertura de mousse de chocolate, raspas de chocolate ao leite e cerejas.',
     'preco' => 100.00,
-    'imagem' => '../assets/bolos/bolo-chocolate.png',
+    'imagem' => 'assets/bolos/bolo-chocolate.png',
     'categoria' => 'bolo',
     'badge' => 'Bestseller'
   ],
@@ -16,7 +16,7 @@ $produtos_destaque = [
     'nome' => 'Bolo Red Velvet',
     'descricao' => 'Bolo de massa red velvet, recheios de Leite Moça®, mousse de cream cheese, cobertura de mousse branca, Leite Moça®, massa red velvet e cerejas decorativas.',
     'preco' => 120.00,
-    'imagem' => '../assets/bolos/bolo-red velvet.png',
+    'imagem' => 'assets/bolos/bolo-red velvet.png',
     'categoria' => 'bolo',
     'badge' => 'Novo'
   ],
@@ -25,7 +25,7 @@ $produtos_destaque = [
     'nome' => 'Bolo de Pistache',
     'descricao' => 'Bolo de massa branca, recheios de trufado e aerado de pistache, cobertura de trufado de pistache e pistache granulado.',
     'preco' => 150.00,
-    'imagem' => '../assets/bolos/bolo-pistache.png',
+    'imagem' => 'assets/bolos/bolo-pistache.png',
     'categoria' => 'bolo',
     'badge' => 'Premium'
   ],
@@ -34,7 +34,7 @@ $produtos_destaque = [
     'nome' => 'Doce de Pistache',
     'descricao' => 'Brigadeiro feito com chocolate branco belga e pistache.',
     'preco' => 12.00,
-    'imagem' => '../assets/doces-gourmet/pistache.png',
+    'imagem' => 'assets/doces-gourmet/pistache.png',
     'categoria' => 'doce gourmet',
     'badge' => ''
   ]
@@ -66,19 +66,6 @@ $produtos_destaque = [
           </a>
         </div>
       </div>
-      <div class="hero-stats" role="region" aria-label="Estatísticas da empresa">
-        <div class="stat-item">
-          <span class="stat-number">1000+</span>
-          <span class="stat-label">Clientes Felizes</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">30+</span>
-          <span class="stat-label">Sabores Únicos</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">5</span>
-          <span class="stat-label">Anos de Experiência</span>
-        </div>
       </div>
     </div>
   </section>
@@ -95,7 +82,7 @@ $produtos_destaque = [
       <div class="categories-grid">
         <div class="category-card" data-category="bolos">
           <div class="category-image">
-            <img src="../assets/bolos/bolo-chocolate.png" alt="Bolo de chocolate - Categoria Bolos" />
+            <img src="assets/bolos/bolo-chocolate.png" alt="Bolo de chocolate - Categoria Bolos" />
             <div class="category-overlay" aria-hidden="true">
               <i class="fas fa-birthday-cake"></i>
             </div>
@@ -110,7 +97,7 @@ $produtos_destaque = [
         </div>
         <div class="category-card" data-category="doces">
           <div class="category-image">
-            <img src="../assets/doces/brigadeiro.png" alt="Brigadeiro - Categoria Doces" />
+            <img src="assets/doces/brigadeiro.png" alt="Brigadeiro - Categoria Doces" />
             <div class="category-overlay" aria-hidden="true">
               <i class="fas fa-candy-cane"></i>
             </div>
@@ -125,7 +112,7 @@ $produtos_destaque = [
         </div>
         <div class="category-card" data-category="trufas">
           <div class="category-image">
-            <img src="../assets/doces-trufas/brigadeiro.png" alt="Trufa de brigadeiro - Categoria Trufas" />
+            <img src="assets/doces-trufas/brigadeiro.png" alt="Trufa de brigadeiro - Categoria Trufas" />
             <div class="category-overlay" aria-hidden="true">
               <i class="fas fa-gem"></i>
             </div>

@@ -56,7 +56,7 @@ include 'header.php';
                 aria-describedby="senha-error senha-help" autocomplete="new-password" />
               <button type="button" class="toggle-password" data-target="senha" aria-label="Mostrar senha"
                 aria-pressed="false">
-                <img src="../assets/logos/olho.png" alt="" aria-hidden="true" />
+                <img src="assets/logos/olho.png" alt="" aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -68,7 +68,7 @@ include 'header.php';
                 aria-describedby="confirmar-senha-error" autocomplete="new-password" />
               <button type="button" class="toggle-password" data-target="confirmar-senha"
                 aria-label="Mostrar confirmação de senha" aria-pressed="false">
-                <img src="../assets/logos/olho.png" alt="" aria-hidden="true" />
+                <img src="assets/logos/olho.png" alt="" aria-hidden="true" />
               </button>
             </div>
             <span class="error-message" id="confirmar-senha-error" role="alert" aria-live="polite"></span>

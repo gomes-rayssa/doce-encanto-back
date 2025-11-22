@@ -38,7 +38,7 @@ function handle_image_upload($file_key)
     if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] === UPLOAD_ERR_OK) {
 
         $filename = basename($_FILES[$file_key]['name']);
-        return "../assets/produtos/" . $filename;
+        return "assets/produtos/" . $filename;
     }
     return '../public/placeholder.svg';
 }

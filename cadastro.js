@@ -359,10 +359,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const targetInput = document.getElementById(targetId);
       if (targetInput.type === "password") {
         targetInput.type = "text";
-        this.src = "../assets/logos/olho-x.png";
+        this.src = "assets/logos/olho-x.png";
       } else {
         targetInput.type = "password";
-        this.src = "../assets/logos/olho.png";
+        this.src = "assets/logos/olho.png";
       }
     });
   });
