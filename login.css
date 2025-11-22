@@ -52,6 +52,7 @@ h2 {
 /* inputs - labels */
 .form-group {
   margin-bottom: 25px;
+  position: relative;
 }
 
 label {
@@ -160,14 +161,15 @@ select {
   box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
 }
 
-/* icone senha */
+/* icone senha - CORRIGIDO */
 .password-container {
   position: relative;
   width: 100%;
 }
 
 .password-container input {
-  padding-right: 45px;
+  padding-right: 50px !important;
+  width: 100%;
 }
 
 .toggle-password {
@@ -181,9 +183,19 @@ select {
   opacity: 0.7;
   transition: opacity 0.3s ease;
   user-select: none;
-  border: none; /* Adicionado */
-  background: transparent; /* Adicionado */
-  padding: 0; /* Adicionado */
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.toggle-password img {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
 }
 
 .toggle-password:hover {
@@ -230,6 +242,18 @@ select {
 .toast.show {
   opacity: 1;
   transform: translate(-50%, 0);
+}
+
+/* animações */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* RESPONSIVIDADE */

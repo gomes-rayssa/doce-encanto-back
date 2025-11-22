@@ -103,12 +103,22 @@ document.addEventListener("DOMContentLoaded", function () {
     errorElement.textContent = "";
   }
 
+  // Adicionar validação apenas no blur (quando o campo perde o foco)
   Object.keys(campos).forEach((key) => {
     const campo = campos[key];
-    campo.addEventListener("blur", () => validarCampo(key, campo.value));
+    campo.addEventListener("blur", () => {
+      // Só valida se o campo tiver algum valor
+      if (campo.value.trim()) {
+        validarCampo(key, campo.value);
+      }
+    });
+    
+    // No input, apenas remove o erro se estiver válido
     campo.addEventListener("input", () => {
-      // Valida o campo sempre que o usuário digita, para remover o erro imediatamente
-      validarCampo(key, campo.value);
+      const formGroup = campo.closest(".form-group");
+      if (formGroup.classList.contains("error") && campo.value.trim()) {
+        validarCampo(key, campo.value);
+      }
     });
   });
 
@@ -178,10 +188,6 @@ document.addEventListener("DOMContentLoaded", function () {
       case "numero":
         if (!valor.trim())
           return mostrarErro(campo, "Número é obrigatório"), false;
-        if (isNaN(valor))
-          return (
-            mostrarErro(campo, "O número deve conter apenas dígitos"), false
-          );
         mostrarSucesso(campo);
         return true;
       case "rua":
@@ -319,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } catch (error) {
         console.error("Erro no fetch:", error);
-        showToast("Erro de conexão.", "error");
+        showToast("Erro de conexão.", null, "error");
       } finally {
         submitBtn.textContent = "Finalizar Cadastro";
         submitBtn.disabled = false;

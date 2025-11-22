@@ -136,14 +136,6 @@ $count_todos = count($bolos);
               <div class="product-info">
                 <h3 class="product-name"><?php echo htmlspecialchars($bolo['nome']); ?></h3>
                 <p class="product-description"><?php echo htmlspecialchars($bolo['descricao']); ?></p>
-                <div class="product-rating">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <span>(4.9)</span>
-                </div>
                 <div class="product-price">R$ <?php echo number_format($bolo['preco'], 2, ',', '.'); ?></div>
               </div>
             </div>
