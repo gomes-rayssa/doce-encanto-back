@@ -293,12 +293,29 @@ select {
 
 /* validação campos */
 .form-group.error input,
+.form-group.error .password-container input input,
 .form-group.error select {
   border-color: #dc3545;
   box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
 }
 
+.form-group.error .error-message {
+  display: block;
+}
+
+.form-group.error .error-message::before {
+  content: "⚠"; /* Ícone de alerta */
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.form-group.success .error-message,
+.form-group:not(.error) .error-message {
+  display: none; /* Oculta o span de erro no sucesso e quando não há erro */
+}
+
 .form-group.success input,
+.form-group.success .password-container input,
 .form-group.success select {
   border-color: #28a745;
   box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
@@ -325,6 +342,9 @@ select {
   opacity: 0.7;
   transition: opacity 0.3s ease;
   user-select: none;
+  border: none; /* Adicionado */
+  background: transparent; /* Adicionado */
+  padding: 0; /* Adicionado */
 }
 
 .toggle-password:hover {

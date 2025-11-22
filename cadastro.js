@@ -107,9 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const campo = campos[key];
     campo.addEventListener("blur", () => validarCampo(key, campo.value));
     campo.addEventListener("input", () => {
-      if (campo.closest(".form-group").classList.contains("error")) {
-        validarCampo(key, campo.value);
-      }
+      // Valida o campo sempre que o usuário digita, para remover o erro imediatamente
+      validarCampo(key, campo.value);
     });
   });
 

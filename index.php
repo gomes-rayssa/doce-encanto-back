@@ -132,8 +132,8 @@ $produtos_destaque = [
   <section class="featured-products" aria-labelledby="featured-title">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title" id="featured-title">Mais Vendidos</h2>
-        <p class="section-subtitle">Os favoritos dos nossos clientes</p>
+        <h2 class="section-title" id="featured-title">Lançamentos</h2>
+        <p class="section-subtitle">Novos doces disponíveis!</p>
       </div>
       <div class="products-grid">
 
@@ -172,14 +172,6 @@ $produtos_destaque = [
             <div class="product-info">
               <h3 class="product-name"><?php echo htmlspecialchars($produto['nome']); ?></h3>
               <p class="product-description"><?php echo htmlspecialchars($produto['descricao']); ?></p>
-              <div class="product-rating" role="img" aria-label="Avaliação: 4.9 de 5 estrelas">
-                <i class="fas fa-star" aria-hidden="true"></i>
-                <i class="fas fa-star" aria-hidden="true"></i>
-                <i class="fas fa-star" aria-hidden="true"></i>
-                <i class="fas fa-star" aria-hidden="true"></i>
-                <i class="fas fa-star" aria-hidden="true"></i>
-                <span>(4.9)</span>
-              </div>
               <div class="product-price"
                 aria-label="Preço: R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?>">
                 R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?>

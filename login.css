@@ -133,8 +133,18 @@ select {
   color: #dc3545;
   font-size: 12px;
   margin-top: 5px;
-  display: block;
+  display: none; /* Oculta por padrão */
   min-height: 16px;
+}
+
+.form-group.error .error-message {
+  display: block; /* Mostra se houver erro */
+}
+
+.form-group.error .error-message::before {
+  content: "⚠"; /* Ícone de alerta */
+  margin-right: 5px;
+  font-size: 14px;
 }
 
 /* validação campos */
@@ -171,6 +181,9 @@ select {
   opacity: 0.7;
   transition: opacity 0.3s ease;
   user-select: none;
+  border: none; /* Adicionado */
+  background: transparent; /* Adicionado */
+  padding: 0; /* Adicionado */
 }
 
 .toggle-password:hover {

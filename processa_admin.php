@@ -25,6 +25,18 @@ if (!$action) {
     $data = $json_data;
 } else {
     $data = $_POST;
+    // Se a requisição for multipart/form-data (upload de arquivo), os dados estão em $_POST
+    // Se for JSON, os dados estão em $json_data (já tratado acima)
+}
+
+if ($action === 'add_product' || $action === 'edit_product') {
+    // Para garantir que a categoria seja tratada como string e não como 0 se vazia
+    $categoria = trim($data['categoria'] ?? '');
+    if (empty($categoria)) {
+        // Se a categoria estiver vazia, pode ser um erro de formulário, mas vamos forçar uma string vazia
+        // para evitar que o banco de dados insira 0 se o campo for numérico
+        $data['categoria'] = '';
+    }
 }
 
 if (!$action) {
@@ -38,9 +50,9 @@ function handle_image_upload($file_key)
     if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] === UPLOAD_ERR_OK) {
 
         $filename = basename($_FILES[$file_key]['name']);
-        return "assets/produtos/" . $filename;
+        return "./assets/produtos/" . $filename;
     }
-    return '../public/placeholder.svg';
+    return './public/placeholder.svg';
 }
 
 
@@ -112,7 +124,7 @@ try {
 
             $sql = "INSERT INTO produtos (nome, descricao, preco, categoria, estoque, imagem_url) VALUES (?, ?, ?, ?, ?, ?)";
             if ($stmt = $conn->prepare($sql)) {
-                $stmt->bind_param("ssdiss", $nome, $descricao, $preco, $categoria, $estoque, $imagem_url);
+                $stmt->bind_param("ssdsis", $nome, $descricao, $preco, $categoria, $estoque, $imagem_url);
                 if (!$stmt->execute()) {
                     throw new Exception('Erro ao adicionar produto: ' . $stmt->error);
                 }
@@ -137,7 +149,7 @@ try {
 
             $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, categoria = ?, estoque = ? WHERE id = ?";
             if ($stmt = $conn->prepare($sql)) {
-                $stmt->bind_param("ssdisi", $nome, $descricao, $preco, $categoria, $estoque, $id);
+                $stmt->bind_param("ssdsii", $nome, $descricao, $preco, $categoria, $estoque, $id);
                 if (!$stmt->execute()) {
                     throw new Exception('Erro ao editar produto: ' . $stmt->error);
                 }
