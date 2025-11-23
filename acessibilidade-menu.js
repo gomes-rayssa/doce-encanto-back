@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     lineHeight: "normal",
     contrast: false,
     grayscale: false,
-    inverted: false,
+    darkMode: false,
     largeCursor: false,
     highlightLinks: false,
     readingMask: false,
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   setupToggle("toggle-contrast", "contrast", "high-contrast");
   setupToggle("toggle-grayscale", "grayscale", "grayscale");
-  setupToggle("toggle-invert", "inverted", "inverted");
+  setupToggle("toggle-dark-mode", "darkMode", "dark-mode");
   setupToggle("toggle-cursor", "largeCursor", "large-cursor");
   setupToggle("toggle-links", "highlightLinks", "highlight-links");
   setupToggle("toggle-reading-mask", "readingMask", "reading-mask");
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (settings.contrast) document.body.classList.add("high-contrast");
     if (settings.grayscale) document.body.classList.add("grayscale");
-    if (settings.inverted) document.body.classList.add("inverted");
+    if (settings.darkMode) document.body.classList.add("dark-mode");
     if (settings.largeCursor) document.body.classList.add("large-cursor");
     if (settings.highlightLinks) document.body.classList.add("highlight-links");
     if (settings.readingMask) {
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const toggleMap = {
           contrast: "toggle-contrast",
           grayscale: "toggle-grayscale",
-          inverted: "toggle-invert",
+          darkMode: "toggle-dark-mode",
           largeCursor: "toggle-cursor",
           highlightLinks: "toggle-links",
           readingMask: "toggle-reading-mask",
@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.body.classList.remove(
         "high-contrast",
         "grayscale",
-        "inverted",
+        "dark-mode",
         "large-cursor",
         "highlight-links",
         "reading-mask"
