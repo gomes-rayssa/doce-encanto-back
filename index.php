@@ -186,7 +186,7 @@ $produtos_destaque = [
             qualidade e um toque artesanal que você sente em cada mordida.
             Seja para um aniversário inesquecível, um evento especial ou simplesmente para tornar o seu dia um pouco
             mais
-            doce, a Doce Encanto está aqui para te encantar. Venha descobrir a magia dos nossos sabores!</p>
+            doce. Venha descobrir a magia dos nossos sabores!</p>
         </div>
       </div>
     </div>

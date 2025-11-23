@@ -22,8 +22,17 @@ body {
 
 /* Main */
 .main {
-  padding: 2rem 0;
-  min-height: calc(100vh - 70px);
+  padding-top: 70px;
+    padding-bottom: 2rem;
+    min-height: calc(100vh - 70px);
+}
+
+.page-title {
+    font-size: 2.5rem; 
+    color: #990053;
+    margin: 0;
+    font-weight: 700; 
+    text-align: left;
 }
 
 /* Grid Layout */
@@ -795,8 +804,6 @@ body {
 .btn:disabled:hover {
   transform: none;
 }
-
-
 
 /* Tabela sem padding extra no card */
 .sidebar .table-responsive {

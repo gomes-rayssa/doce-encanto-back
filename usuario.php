@@ -57,11 +57,18 @@ $conn->close();
 
 <link rel="stylesheet" href="usuario.css" />
 
+
+
 <div id="notification" class="notification hidden">
     <span id="notification-message"></span>
 </div>
 
 <main class="main">
+    <div class="page-title-wrapper">
+        <div class="container">
+             <h1 class="page-title">Minha Conta</h1> 
+        </div>
+    </div>
     <div class="container">
         <div class="grid">
             <div class="main-column">
