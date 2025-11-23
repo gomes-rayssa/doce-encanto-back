@@ -14,7 +14,7 @@ if ($pedidoId <= 0) {
     exit;
 }
 
-// Buscar dados do pedido
+// Buscar dados do pedido incluindo método de pagamento
 $sql_pedido = "SELECT p.*, u.nome as cliente_nome, u.email as cliente_email, u.celular as cliente_celular,
                e.nome as entregador_nome, e.veiculo_tipo, e.placa
                FROM pedidos p
@@ -77,6 +77,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Pedido #<?php echo $pedidoId; ?></title>
     <link rel="stylesheet" href="admin.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -135,7 +136,24 @@ $conn->close();
             </div>
 
             <div class="chart-card">
-                <h2>Status do Pedido</h2>
+                <h2>Informações do Pedido</h2>
+                <div style="margin-bottom: 1.5rem; padding: 1rem; background-color: var(--bg-gray); border-radius: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div>
+                            <strong>Método de Pagamento:</strong>
+                            <span style="color: var(--primary-color); font-weight: 600;">
+                                <?php echo htmlspecialchars($pedido['metodo_pagamento'] ?? 'Não informado'); ?>
+                            </span>
+                        </div>
+                        <div>
+                            <strong>Valor Total:</strong>
+                            <span style="color: var(--success-color); font-weight: 600; font-size: 1.125rem;">
+                                R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <h3 style="font-size: 1rem; margin-top: 1.5rem; margin-bottom: 1rem;">Status do Pedido</h3>
                 <div class="form-group">
                     <label for="orderStatus">Alterar Status</label>
                     <select id="orderStatus" onchange="updateStatus(<?php echo $pedidoId; ?>)">

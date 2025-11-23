@@ -7,7 +7,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     exit;
 }
 
-// Buscar todos os pedidos com informações do cliente
+// Buscar todos os pedidos com informações do cliente e método de pagamento
 $sql = "SELECT p.*, u.nome as cliente_nome, u.email as cliente_email
         FROM pedidos p
         LEFT JOIN usuarios u ON p.usuario_id = u.id
@@ -43,6 +43,7 @@ function getBadgeClass($status) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de Pedidos</title>
     <link rel="stylesheet" href="admin.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -74,6 +75,7 @@ function getBadgeClass($status) {
                             <th>Data</th>
                             <th>Cliente</th>
                             <th>Valor Total</th>
+                            <th>Método de Pagamento</th>
                             <th>Status</th>
                             <th>Ações</th>
                         </tr>
@@ -81,7 +83,7 @@ function getBadgeClass($status) {
                     <tbody id="pedidos-tbody">
                         <?php if (empty($pedidos)): ?>
                             <tr>
-                                <td colspan="6" style="text-align: center; padding: 2rem;">
+                                <td colspan="7" style="text-align: center; padding: 2rem;">
                                     Nenhum pedido encontrado.
                                 </td>
                             </tr>
@@ -92,6 +94,7 @@ function getBadgeClass($status) {
                                     <td><?php echo date('d/m/Y H:i', strtotime($pedido['data_pedido'])); ?></td>
                                     <td><?php echo htmlspecialchars($pedido['cliente_nome']); ?></td>
                                     <td>R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></td>
+                                    <td><?php echo htmlspecialchars($pedido['metodo_pagamento'] ?? 'Não informado'); ?></td>
                                     <td>
                                         <span class="badge <?php echo getBadgeClass($pedido['status']); ?>">
                                             <?php echo htmlspecialchars($pedido['status']); ?>

@@ -69,11 +69,34 @@ try {
             $conn->begin_transaction();
 
             try {
-                // Inserir pedido
+                // Inserir pedido com método de pagamento
                 $status = 'Novo';
-                $sql_pedido = "INSERT INTO pedidos (usuario_id, data_pedido, status, valor_total) VALUES (?, NOW(), ?, ?)";
+                
+                // Formatar método de pagamento para exibição
+                $metodo_pagamento_formatado = '';
+                switch ($metodo_pagamento) {
+                    case 'credito':
+                        $metodo_pagamento_formatado = 'Cartão de Crédito';
+                        if ($parcelas > 1) {
+                            $metodo_pagamento_formatado .= " ({$parcelas}x)";
+                        }
+                        break;
+                    case 'debito':
+                        $metodo_pagamento_formatado = 'Cartão de Débito';
+                        break;
+                    case 'pix':
+                        $metodo_pagamento_formatado = 'PIX';
+                        break;
+                    case 'dinheiro':
+                        $metodo_pagamento_formatado = 'Dinheiro';
+                        break;
+                    default:
+                        $metodo_pagamento_formatado = 'Não informado';
+                }
+                
+                $sql_pedido = "INSERT INTO pedidos (usuario_id, data_pedido, status, valor_total, metodo_pagamento) VALUES (?, NOW(), ?, ?, ?)";
                 $stmt_pedido = $conn->prepare($sql_pedido);
-                $stmt_pedido->bind_param("isd", $usuario_id, $status, $valor_total);
+                $stmt_pedido->bind_param("isds", $usuario_id, $status, $valor_total, $metodo_pagamento_formatado);
                 
                 if (!$stmt_pedido->execute()) {
                     throw new Exception('Erro ao criar pedido: ' . $stmt_pedido->error);

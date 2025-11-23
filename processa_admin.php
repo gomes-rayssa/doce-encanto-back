@@ -48,11 +48,32 @@ if (!$action) {
 function handle_image_upload($file_key)
 {
     if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] === UPLOAD_ERR_OK) {
-
-        $filename = basename($_FILES[$file_key]['name']);
-        return "./assets/produtos/" . $filename;
+        $upload_dir = __DIR__ . '/assets/produtos/';
+        
+        // Criar diretório se não existir
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+        
+        // Gerar nome único para evitar conflitos
+        $file_extension = strtolower(pathinfo($_FILES[$file_key]['name'], PATHINFO_EXTENSION));
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        
+        if (!in_array($file_extension, $allowed_extensions)) {
+            throw new Exception('Formato de imagem não permitido. Use: JPG, PNG, GIF ou WEBP.');
+        }
+        
+        $filename = uniqid('produto_', true) . '.' . $file_extension;
+        $target_path = $upload_dir . $filename;
+        
+        // Mover arquivo para o diretório de destino
+        if (move_uploaded_file($_FILES[$file_key]['tmp_name'], $target_path)) {
+            return './assets/produtos/' . $filename;
+        } else {
+            throw new Exception('Erro ao fazer upload da imagem.');
+        }
     }
-    return './public/placeholder.svg';
+    return './assets/produtos/placeholder.png';
 }
 
 
@@ -147,17 +168,35 @@ try {
                 throw new Exception('Dados obrigatórios para edição ausentes.');
             }
 
-            $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, categoria = ?, estoque = ? WHERE id = ?";
-            if ($stmt = $conn->prepare($sql)) {
-                $stmt->bind_param("ssdsii", $nome, $descricao, $preco, $categoria, $estoque, $id);
-                if (!$stmt->execute()) {
-                    throw new Exception('Erro ao editar produto: ' . $stmt->error);
-                }
-                $stmt->close();
-                echo json_encode(['success' => true, 'message' => 'Produto atualizado com sucesso!']);
-            } else {
-                throw new Exception('Erro de preparação: ' . $conn->error);
+            // Verificar se há nova imagem para upload
+            $update_image = false;
+            $imagem_url = null;
+            if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
+                $imagem_url = handle_image_upload('imagem');
+                $update_image = true;
             }
+
+            if ($update_image) {
+                $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, categoria = ?, estoque = ?, imagem_url = ? WHERE id = ?";
+                if ($stmt = $conn->prepare($sql)) {
+                    $stmt->bind_param("ssdsissi", $nome, $descricao, $preco, $categoria, $estoque, $imagem_url, $id);
+                    if (!$stmt->execute()) {
+                        throw new Exception('Erro ao editar produto: ' . $stmt->error);
+                    }
+                    $stmt->close();
+                }
+            } else {
+                $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, categoria = ?, estoque = ? WHERE id = ?";
+                if ($stmt = $conn->prepare($sql)) {
+                    $stmt->bind_param("ssdsii", $nome, $descricao, $preco, $categoria, $estoque, $id);
+                    if (!$stmt->execute()) {
+                        throw new Exception('Erro ao editar produto: ' . $stmt->error);
+                    }
+                    $stmt->close();
+                }
+            }
+            
+            echo json_encode(['success' => true, 'message' => 'Produto atualizado com sucesso!']);
             break;
 
         case 'delete_product':

@@ -37,13 +37,6 @@ $pedidos_data = [
     </div>
 <?php endif; ?>
 
-<header class="header">
-    <div class="container">
-        <div class="header-content">
-            <h1 class="header-title">Minha Conta</h1>
-        </div>
-    </div>
-</header>
 
 <main class="main">
     <div class="container">

@@ -14,6 +14,7 @@ session_start();
 
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="sobre.css">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
   <style>
@@ -25,35 +26,35 @@ session_start();
 
 <body>
   <a href="#main-content" class="skip-to-main">Pular para o conteúdo principal</a>
-  <header class="modern-header" role="banner">
-    <nav class="modern-nav" role="navigation" aria-label="Navegação principal">
+	  <header class="modern-header">
+    <nav class="modern-nav">
       <div class="nav-container">
         <div class="nav-logo">
-          <a href="index.php" class="logo-link" aria-label="Doce Encanto - Página inicial">
+          <a href="index.php" class="logo-link">
             <i class="fas fa-birthday-cake" aria-hidden="true"></i>
             <span class="logo-text">Doce Encanto</span>
           </a>
         </div>
 
-        <ul class="nav-menu" role="menubar">
-          <li class="nav-item" role="none">
-            <a href="index.php" class="nav-link" role="menuitem" aria-label="Ir para página inicial">
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="index.php" class="nav-link">
               <i class="fas fa-home" aria-hidden="true"></i>
               <span>Início</span>
             </a>
           </li>
-          <li class="nav-item dropdown" role="none">
-            <a href="#" class="nav-link dropdown-toggle" role="menuitem" aria-haspopup="true" aria-expanded="false">
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle">
               <i class="fas fa-store" aria-hidden="true"></i>
               <span>Produtos</span>
               <i class="fas fa-chevron-down" aria-hidden="true"></i>
             </a>
-            <div class="dropdown-menu" role="menu" aria-label="Submenu de produtos">
-              <a href="bolos.php" class="dropdown-item" role="menuitem">
+            <div class="dropdown-menu">
+              <a href="bolos.php" class="dropdown-item">
                 <i class="fas fa-birthday-cake" aria-hidden="true"></i>
                 <span>Bolos</span>
               </a>
-              <a href="doces.php" class="dropdown-item" role="menuitem">
+              <a href="doces.php" class="dropdown-item">
                 <i class="fas fa-candy-cane" aria-hidden="true"></i>
                 <span>Doces</span>
               </a>
@@ -62,28 +63,27 @@ session_start();
         </ul>
 
         <div class="nav-actions">
-          <li class="nav-item dropdown" style="list-style: none;" role="none">
-            <a href="#" class="nav-link dropdown-toggle" title="Minha Conta" role="menuitem" aria-haspopup="true"
-              aria-expanded="false" aria-label="Menu da conta">
+          <li class="nav-item dropdown" style="list-style: none;">
+            <a href="#" class="nav-link dropdown-toggle" title="Minha Conta">
               <i class="fas fa-user" aria-hidden="true"></i>
               <i class="fas fa-chevron-down" aria-hidden="true"></i>
             </a>
-            <div class="dropdown-menu" role="menu" aria-label="Submenu da conta">
+            <div class="dropdown-menu">
               <?php if (isset($_SESSION['usuario_logado'])): ?>
-                <a href="usuario.php" class="dropdown-item" role="menuitem">
+                <a href="usuario.php" class="dropdown-item">
                   <i class="fas fa-id-card" aria-hidden="true"></i>
                   <span>Minha Conta</span>
                 </a>
-                <a href="logout.php" class="dropdown-item" role="menuitem">
+                <a href="logout.php" class="dropdown-item">
                   <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
                   <span>Sair</span>
                 </a>
               <?php else: ?>
-                <a href="login.php" class="dropdown-item" role="menuitem">
+                <a href="login.php" class="dropdown-item">
                   <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
                   <span>Login</span>
                 </a>
-                <a href="cadastro.php" class="dropdown-item" role="menuitem">
+                <a href="cadastro.php" class="dropdown-item">
                   <i class="fas fa-user-plus" aria-hidden="true"></i>
                   <span>Cadastro</span>
                 </a>
@@ -99,21 +99,28 @@ session_start();
             }
           }
           ?>
-          <a href="carrinho.php" class="nav-action cart-action" title="Carrinho de compras"
-            aria-label="Carrinho com <?php echo $total_itens_carrinho; ?> itens">
+          <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+          <a href="admin.php" class="nav-action" title="Voltar para Área Administrativa" 
+             aria-label="Voltar para área administrativa"
+             style="background-color: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+            <i class="fas fa-user-shield" aria-hidden="true"></i>
+            <span style="display: none;">Admin</span>
+          </a>
+          <?php endif; ?>
+          
+          <a href="carrinho.php" class="nav-action cart-action" title="Carrinho de compras">
             <i class="fas fa-shopping-bag" aria-hidden="true"></i>
-            <span class="cart-count" aria-live="polite"><?php echo $total_itens_carrinho; ?></span>
+            <span class="cart-count"><?php echo $total_itens_carrinho; ?></span>
           </a>
 
-          <button class="mobile-menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false"
-            aria-controls="mobile-menu">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
+          <button class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
         </div>
       </div>
     </nav>
   </header>
 
-  <main id="main-content" role="main">
+	  <main id="main-content">

@@ -27,6 +27,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de Produtos</title>
     <link rel="stylesheet" href="admin.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -90,13 +91,13 @@ $conn->close();
                 </div>
                 <form id="productForm">
                     <div class="form-grid">
-                        <div class="form-group">
-                            <label>Nome *</label>
-                            <input type="text" name="nome" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Categoria *</label>
-                            <select name="categoria" required>
+                    <div class="form-group">
+                        <label>Nome *</label>
+                        <input type="text" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria *</label>
+                        <select name="categoria" required>
                                 <option value="">Selecione</option>
                                 <option value="chocolates">Chocolates</option>
                                 <option value="bolos">Bolos</option>
@@ -104,14 +105,14 @@ $conn->close();
                                 <option value="salgados">Salgados</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Preço (R$) *</label>
-                            <input type="number" name="preco" step="0.01" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Quantidade em Estoque *</label>
-                            <input type="number" name="estoque" required>
-                        </div>
+                    <div class="form-group">
+                        <label>Preço (R$) *</label>
+                        <input type="number" name="preco" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantidade em Estoque *</label>
+                        <input type="number" name="estoque" required>
+                    </div>
                     </div>
                     <div class="form-group">
                         <label>Descrição</label>
