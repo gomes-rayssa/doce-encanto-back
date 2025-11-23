@@ -25,18 +25,6 @@ if (!$action) {
     $data = $json_data;
 } else {
     $data = $_POST;
-    // Se a requisição for multipart/form-data (upload de arquivo), os dados estão em $_POST
-    // Se for JSON, os dados estão em $json_data (já tratado acima)
-}
-
-if ($action === 'add_product' || $action === 'edit_product') {
-    // Para garantir que a categoria seja tratada como string e não como 0 se vazia
-    $categoria = trim($data['categoria'] ?? '');
-    if (empty($categoria)) {
-        // Se a categoria estiver vazia, pode ser um erro de formulário, mas vamos forçar uma string vazia
-        // para evitar que o banco de dados insira 0 se o campo for numérico
-        $data['categoria'] = '';
-    }
 }
 
 if (!$action) {
@@ -50,12 +38,10 @@ function handle_image_upload($file_key)
     if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] === UPLOAD_ERR_OK) {
         $upload_dir = __DIR__ . '/assets/produtos/';
         
-        // Criar diretório se não existir
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0777, true);
         }
         
-        // Gerar nome único para evitar conflitos
         $file_extension = strtolower(pathinfo($_FILES[$file_key]['name'], PATHINFO_EXTENSION));
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
         
@@ -66,16 +52,14 @@ function handle_image_upload($file_key)
         $filename = uniqid('produto_', true) . '.' . $file_extension;
         $target_path = $upload_dir . $filename;
         
-        // Mover arquivo para o diretório de destino
         if (move_uploaded_file($_FILES[$file_key]['tmp_name'], $target_path)) {
-            return './assets/produtos/' . $filename;
+            return 'assets/produtos/' . $filename;
         } else {
             throw new Exception('Erro ao fazer upload da imagem.');
         }
     }
-    return './assets/produtos/placeholder.png';
+    return 'assets/produtos/placeholder.png';
 }
-
 
 try {
     switch ($action) {
@@ -129,15 +113,20 @@ try {
             $conn->close();
             exit;
 
-
-
         case 'add_product':
             $nome = trim($data['nome'] ?? '');
             $descricao = trim($data['descricao'] ?? '');
             $preco = (float) ($data['preco'] ?? 0);
             $categoria = trim($data['categoria'] ?? '');
             $estoque = (int) ($data['estoque'] ?? 0);
-            $imagem_url = handle_image_upload('imagem');
+            
+            // Tentar fazer upload da imagem
+            try {
+                $imagem_url = handle_image_upload('imagem');
+            } catch (Exception $e) {
+                // Se não houver imagem, usar placeholder
+                $imagem_url = 'assets/produtos/placeholder.png';
+            }
 
             if (empty($nome) || $preco <= 0 || empty($categoria)) {
                 throw new Exception('Dados obrigatórios do produto ausentes.');
@@ -145,7 +134,7 @@ try {
 
             $sql = "INSERT INTO produtos (nome, descricao, preco, categoria, estoque, imagem_url) VALUES (?, ?, ?, ?, ?, ?)";
             if ($stmt = $conn->prepare($sql)) {
-                $stmt->bind_param("ssdsis", $nome, $descricao, $preco, $categoria, $estoque, $imagem_url);
+                $stmt->bind_param("ssdsIs", $nome, $descricao, $preco, $categoria, $estoque, $imagem_url);
                 if (!$stmt->execute()) {
                     throw new Exception('Erro ao adicionar produto: ' . $stmt->error);
                 }
@@ -168,7 +157,6 @@ try {
                 throw new Exception('Dados obrigatórios para edição ausentes.');
             }
 
-            // Verificar se há nova imagem para upload
             $update_image = false;
             $imagem_url = null;
             if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
@@ -179,7 +167,7 @@ try {
             if ($update_image) {
                 $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, categoria = ?, estoque = ?, imagem_url = ? WHERE id = ?";
                 if ($stmt = $conn->prepare($sql)) {
-                    $stmt->bind_param("ssdsissi", $nome, $descricao, $preco, $categoria, $estoque, $imagem_url, $id);
+                    $stmt->bind_param("ssdsisi", $nome, $descricao, $preco, $categoria, $estoque, $imagem_url, $id);
                     if (!$stmt->execute()) {
                         throw new Exception('Erro ao editar produto: ' . $stmt->error);
                     }
@@ -291,7 +279,6 @@ try {
                 throw new Exception('Nenhuma configuração para atualizar.');
             }
 
-
             $conn->begin_transaction();
             try {
                 $sql_delete = "DELETE FROM configuracoes WHERE chave IN ('store_name', 'contact_email', 'phone', 'delivery_fee', 'store_address')";
@@ -370,7 +357,6 @@ try {
                 throw new Exception('Email do administrador é obrigatório.');
             }
 
-
             $sql = "INSERT INTO usuarios (nome, email, senha_hash, isAdmin) 
                     VALUES (?, ?, ?, ?)
                     ON DUPLICATE KEY UPDATE isAdmin = VALUES(isAdmin)";
@@ -411,7 +397,6 @@ try {
                 throw new Exception('Erro de preparação: ' . $conn->error);
             }
             break;
-
 
         case 'update_pedido_status':
             $pedido_id = (int) ($data['pedido_id'] ?? 0);

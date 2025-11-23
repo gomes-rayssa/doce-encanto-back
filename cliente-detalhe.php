@@ -1,6 +1,76 @@
 <?php
 session_start();
-$clienteId = $_GET['id'] ?? '1';
+include 'db_config.php';
+
+$clienteId = (int) ($_GET['id'] ?? 0);
+
+if ($clienteId <= 0) {
+    header('Location: clientes.php');
+    exit;
+}
+
+// Buscar dados do cliente
+$sql_cliente = "SELECT u.*, e.cep, e.rua, e.numero, e.bairro, e.cidade, e.estado
+                FROM usuarios u
+                LEFT JOIN enderecos e ON u.id = e.usuario_id
+                WHERE u.id = ?";
+
+$stmt = $conn->prepare($sql_cliente);
+$stmt->bind_param("i", $clienteId);
+$stmt->execute();
+$result = $stmt->get_result();
+$cliente = $result->fetch_assoc();
+$stmt->close();
+
+if (!$cliente) {
+    header('Location: clientes.php');
+    exit;
+}
+
+// Calcular estatísticas
+$sql_stats = "SELECT 
+    COUNT(*) as total_pedidos,
+    SUM(valor_total) as total_compras
+    FROM pedidos 
+    WHERE usuario_id = ? AND status != 'Cancelado'";
+
+$stmt = $conn->prepare($sql_stats);
+$stmt->bind_param("i", $clienteId);
+$stmt->execute();
+$result = $stmt->get_result();
+$stats = $result->fetch_assoc();
+$stmt->close();
+
+$total_pedidos = $stats['total_pedidos'] ?? 0;
+$total_compras = $stats['total_compras'] ?? 0;
+$ticket_medio = $total_pedidos > 0 ? $total_compras / $total_pedidos : 0;
+
+// Buscar histórico de pedidos
+$sql_historico = "SELECT id, data_pedido, valor_total, status
+    FROM pedidos
+    WHERE usuario_id = ?
+    ORDER BY data_pedido DESC
+    LIMIT 10";
+
+$stmt = $conn->prepare($sql_historico);
+$stmt->bind_param("i", $clienteId);
+$stmt->execute();
+$result = $stmt->get_result();
+$pedidos = [];
+while ($row = $result->fetch_assoc()) {
+    $badge_map = [
+        'Novo' => 'badge-new',
+        'Em Preparação' => 'badge-preparing',
+        'Enviado' => 'badge-sent',
+        'Entregue' => 'badge-delivered',
+        'Cancelado' => 'badge-cancelled'
+    ];
+    $row['badge'] = $badge_map[$row['status']] ?? 'badge-new';
+    $pedidos[] = $row;
+}
+$stmt->close();
+
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -24,7 +94,7 @@ $clienteId = $_GET['id'] ?? '1';
                     style="color: var(--text-light); text-decoration: none; margin-bottom: 0.5rem; display: block;">
                     <i class="fas fa-arrow-left"></i> Voltar
                 </a>
-                <h1>Maria Silva</h1>
+                <h1><?php echo htmlspecialchars($cliente['nome']); ?></h1>
             </div>
         </div>
 
@@ -32,19 +102,19 @@ $clienteId = $_GET['id'] ?? '1';
             <div class="stat-card">
                 <div class="stat-info">
                     <h3>Total em Compras</h3>
-                    <p class="stat-value">R$ 1.234,50</p>
+                    <p class="stat-value">R$ <?php echo number_format($total_compras, 2, ',', '.'); ?></p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-info">
                     <h3>Total de Pedidos</h3>
-                    <p class="stat-value">12</p>
+                    <p class="stat-value"><?php echo $total_pedidos; ?></p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-info">
                     <h3>Ticket Médio</h3>
-                    <p class="stat-value">R$ 102,87</p>
+                    <p class="stat-value">R$ <?php echo number_format($ticket_medio, 2, ',', '.'); ?></p>
                 </div>
             </div>
         </div>
@@ -53,12 +123,21 @@ $clienteId = $_GET['id'] ?? '1';
             <div class="chart-card">
                 <h2>Informações do Cliente</h2>
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div><strong>Email:</strong> maria@email.com</div>
-                    <div><strong>Telefone:</strong> (11) 98765-4321</div>
-                    <div><strong>CPF:</strong> 123.456.789-00</div>
-                    <div><strong>Data de Cadastro:</strong> 15/01/2024</div>
-                    <div><strong>Endereço:</strong> Rua das Flores, 123 - Centro - São Paulo/SP</div>
-                    <div><strong>CEP:</strong> 12345-678</div>
+                    <div><strong>Email:</strong> <?php echo htmlspecialchars($cliente['email']); ?></div>
+                    <div><strong>Telefone:</strong> <?php echo htmlspecialchars($cliente['celular'] ?? 'Não informado'); ?></div>
+                    <div><strong>Data de Nascimento:</strong> <?php echo $cliente['dataNascimento'] ? date('d/m/Y', strtotime($cliente['dataNascimento'])) : 'Não informado'; ?></div>
+                    <div><strong>Data de Cadastro:</strong> <?php echo date('d/m/Y', strtotime($cliente['data_cadastro'])); ?></div>
+                    <?php if ($cliente['cep']): ?>
+                        <div><strong>Endereço:</strong> 
+                            <?php echo htmlspecialchars($cliente['rua']); ?>, 
+                            <?php echo htmlspecialchars($cliente['numero']); ?> - 
+                            <?php echo htmlspecialchars($cliente['bairro']); ?> - 
+                            <?php echo htmlspecialchars($cliente['cidade']); ?>/<?php echo htmlspecialchars($cliente['estado']); ?>
+                        </div>
+                        <div><strong>CEP:</strong> <?php echo htmlspecialchars($cliente['cep']); ?></div>
+                    <?php else: ?>
+                        <div><strong>Endereço:</strong> Não cadastrado</div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -77,33 +156,27 @@ $clienteId = $_GET['id'] ?? '1';
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#1234</td>
-                            <td>20/11/2024</td>
-                            <td>R$ 156,90</td>
-                            <td><span class="badge badge-new">Novo</span></td>
-                            <td>
-                                <a href="pedido-detalhe.php?id=1234" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#1180</td>
-                            <td>15/11/2024</td>
-                            <td>R$ 98,50</td>
-                            <td><span class="badge badge-delivered">Entregue</span></td>
-                            <td>
-                                <a href="pedido-detalhe.php?id=1180" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#1120</td>
-                            <td>08/11/2024</td>
-                            <td>R$ 234,50</td>
-                            <td><span class="badge badge-delivered">Entregue</span></td>
-                            <td>
-                                <a href="pedido-detalhe.php?id=1120" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
+                        <?php if (empty($pedidos)): ?>
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 2rem;">
+                                    Nenhum pedido encontrado para este cliente.
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($pedidos as $pedido): ?>
+                                <tr>
+                                    <td>#<?php echo $pedido['id']; ?></td>
+                                    <td><?php echo date('d/m/Y H:i', strtotime($pedido['data_pedido'])); ?></td>
+                                    <td>R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></td>
+                                    <td><span class="badge <?php echo $pedido['badge']; ?>"><?php echo $pedido['status']; ?></span></td>
+                                    <td>
+                                        <a href="pedido-detalhe.php?id=<?php echo $pedido['id']; ?>" class="btn-icon">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

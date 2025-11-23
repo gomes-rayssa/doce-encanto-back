@@ -1,5 +1,23 @@
 <?php
 session_start();
+include 'db_config.php';
+
+// Buscar todos os clientes (não admins)
+$sql = "SELECT u.id, u.nome, u.email, u.celular, u.data_cadastro,
+        (SELECT SUM(valor_total) FROM pedidos WHERE usuario_id = u.id AND status != 'Cancelado') as total_compras
+        FROM usuarios u
+        WHERE u.isAdmin = 0
+        ORDER BY u.data_cadastro DESC";
+
+$result = $conn->query($sql);
+$clientes = [];
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $clientes[] = $row;
+    }
+}
+
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -19,7 +37,7 @@ session_start();
     <main class="main-content">
         <div class="dashboard-header">
             <h1>Clientes</h1>
-            <input type="search" placeholder="Buscar cliente..."
+            <input type="search" id="searchCliente" placeholder="Buscar cliente..." onkeyup="filtrarClientes()"
                 style="padding: 0.5rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; width: 300px;">
         </div>
 
@@ -37,45 +55,60 @@ session_start();
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>#C001</td>
-                            <td>Maria Silva</td>
-                            <td>maria@email.com</td>
-                            <td>(11) 98765-4321</td>
-                            <td>15/01/2024</td>
-                            <td>R$ 1.234,50</td>
-                            <td>
-                                <a href="cliente-detalhe.php?id=1" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#C002</td>
-                            <td>João Santos</td>
-                            <td>joao@email.com</td>
-                            <td>(11) 98765-1234</td>
-                            <td>20/02/2024</td>
-                            <td>R$ 856,00</td>
-                            <td>
-                                <a href="cliente-detalhe.php?id=2" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#C003</td>
-                            <td>Ana Costa</td>
-                            <td>ana@email.com</td>
-                            <td>(11) 98765-5678</td>
-                            <td>10/03/2024</td>
-                            <td>R$ 2.145,80</td>
-                            <td>
-                                <a href="cliente-detalhe.php?id=3" class="btn-icon"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
+                    <tbody id="clientesTable">
+                        <?php if (empty($clientes)): ?>
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 2rem;">
+                                    Nenhum cliente cadastrado ainda.
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($clientes as $cliente): ?>
+                                <tr>
+                                    <td>#C<?php echo str_pad($cliente['id'], 3, '0', STR_PAD_LEFT); ?></td>
+                                    <td><?php echo htmlspecialchars($cliente['nome']); ?></td>
+                                    <td><?php echo htmlspecialchars($cliente['email']); ?></td>
+                                    <td><?php echo htmlspecialchars($cliente['celular'] ?? 'Não informado'); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($cliente['data_cadastro'])); ?></td>
+                                    <td>R$ <?php echo number_format($cliente['total_compras'] ?? 0, 2, ',', '.'); ?></td>
+                                    <td>
+                                        <a href="cliente-detalhe.php?id=<?php echo $cliente['id']; ?>" class="btn-icon">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
+
+    <script>
+        function filtrarClientes() {
+            const input = document.getElementById('searchCliente');
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById('clientesTable');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < tr.length; i++) {
+                const tdNome = tr[i].getElementsByTagName('td')[1];
+                const tdEmail = tr[i].getElementsByTagName('td')[2];
+                
+                if (tdNome || tdEmail) {
+                    const txtNome = tdNome ? tdNome.textContent || tdNome.innerText : '';
+                    const txtEmail = tdEmail ? tdEmail.textContent || tdEmail.innerText : '';
+                    
+                    if (txtNome.toUpperCase().indexOf(filter) > -1 || txtEmail.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = '';
+                    } else {
+                        tr[i].style.display = 'none';
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

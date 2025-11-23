@@ -1,5 +1,6 @@
 <?php
 include 'header.php';
+include 'db_config.php';
 
 if (!isset($_SESSION['usuario_logado'])) {
     header('Location: login.php');
@@ -7,20 +8,53 @@ if (!isset($_SESSION['usuario_logado'])) {
 }
 
 $usuario = $_SESSION['usuario_data'] ?? [];
+$usuario_id = $usuario['id'] ?? 0;
 $endereco = $usuario['endereco'] ?? [];
 
-$pedidos_data = [
-    'total_compras' => 1234.50,
-    'total_pedidos' => 12,
-    'ticket_medio' => 102.87,
-    'historico' => [
+// Buscar estatísticas reais do usuário
+$sql_stats = "SELECT 
+    COUNT(*) as total_pedidos,
+    SUM(valor_total) as total_compras
+    FROM pedidos 
+    WHERE usuario_id = ? AND status != 'Cancelado'";
 
-        ['id' => '1234', 'data' => '20/11/2024', 'valor' => 156.90, 'status' => 'Novo', 'badge' => 'badge-new'],
-        ['id' => '1180', 'data' => '15/11/2024', 'valor' => 98.50, 'status' => 'Em Preparação', 'badge' => 'badge-preparing'],
-        ['id' => '1120', 'data' => '08/11/2024', 'valor' => 234.50, 'status' => 'Entregue', 'badge' => 'badge-delivered'],
-    ],
-];
+$stmt = $conn->prepare($sql_stats);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$stats = $result->fetch_assoc();
+$stmt->close();
 
+$total_pedidos = $stats['total_pedidos'] ?? 0;
+$total_compras = $stats['total_compras'] ?? 0;
+$ticket_medio = $total_pedidos > 0 ? $total_compras / $total_pedidos : 0;
+
+// Buscar histórico de pedidos
+$sql_historico = "SELECT id, data_pedido, valor_total, status
+    FROM pedidos
+    WHERE usuario_id = ?
+    ORDER BY data_pedido DESC
+    LIMIT 5";
+
+$stmt = $conn->prepare($sql_historico);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$pedidos_recentes = [];
+while ($row = $result->fetch_assoc()) {
+    $badge_map = [
+        'Novo' => 'badge-new',
+        'Em Preparação' => 'badge-preparing',
+        'Enviado' => 'badge-sent',
+        'Entregue' => 'badge-delivered',
+        'Cancelado' => 'badge-cancelled'
+    ];
+    $row['badge'] = $badge_map[$row['status']] ?? 'badge-new';
+    $pedidos_recentes[] = $row;
+}
+$stmt->close();
+
+$conn->close();
 ?>
 
 <link rel="stylesheet" href="usuario.css" />
@@ -28,15 +62,6 @@ $pedidos_data = [
 <div id="notification" class="notification hidden">
     <span id="notification-message"></span>
 </div>
-<link rel="stylesheet" href="usuario.css" /> <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
-    <div class="admin-link-container container">
-        <a href="admin.php" class="btn-admin-link">
-            <i class="fas fa-shield-alt"></i>
-            Acessar Painel Administrativo
-        </a>
-    </div>
-<?php endif; ?>
-
 
 <main class="main">
     <div class="container">
@@ -54,7 +79,7 @@ $pedidos_data = [
                             </p>
                         </div>
                         <div class="card-actions">
-                            <a id="logout-btn" href="../logout.php" class="btn btn-outline btn-sm">
+                            <a id="logout-btn" href="logout.php" class="btn btn-outline btn-sm">
                                 <i class="fas fa-sign-out-alt"></i>
                                 Sair
                             </a>
@@ -94,7 +119,6 @@ $pedidos_data = [
                                     value="<?php echo htmlspecialchars($usuario['celular'] ?? ''); ?>"
                                     placeholder="(00) 00000-0000" />
                             </div>
-
 
                             <div class="form-group">
                                 <label for="data-nascimento">Data de Nascimento</label>
@@ -198,21 +222,13 @@ $pedidos_data = [
                             <div class="stat-card" style="padding: 1rem; border: none; box-shadow: none;">
                                 <div class="stat-info">
                                     <h3>Total em Compras</h3>
-                                    <p class="stat-value">R$
-                                        <?php echo number_format($pedidos_data['total_compras'], 2, ',', '.'); ?></p>
+                                    <p class="stat-value">R$ <?php echo number_format($total_compras, 2, ',', '.'); ?></p>
                                 </div>
                             </div>
                             <div class="stat-card" style="padding: 1rem; border: none; box-shadow: none;">
                                 <div class="stat-info">
                                     <h3>Total de Pedidos</h3>
-                                    <p class="stat-value"><?php echo $pedidos_data['total_pedidos']; ?></p>
-                                </div>
-                            </div>
-                            <div class="stat-card" style="padding: 1rem; border: none; box-shadow: none;">
-                                <div class="stat-info">
-                                    <h3>Ticket Médio</h3>
-                                    <p class="stat-value">R$
-                                        <?php echo number_format($pedidos_data['ticket_medio'], 2, ',', '.'); ?></p>
+                                    <p class="stat-value"><?php echo $total_pedidos; ?></p>
                                 </div>
                             </div>
                         </div>
@@ -222,7 +238,6 @@ $pedidos_data = [
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-box"></i> Meus Pedidos Recentes</h2>
-                        <a href="#" class="btn-outline btn-sm">Ver Todos</a>
                     </div>
                     <div class="card-content" style="padding: 0;">
                         <div class="table-responsive">
@@ -235,14 +250,14 @@ $pedidos_data = [
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php if (!empty($pedidos_data['historico'])): ?>
-                                        <?php foreach ($pedidos_data['historico'] as $pedido): ?>
+                                    <?php if (!empty($pedidos_recentes)): ?>
+                                        <?php foreach ($pedidos_recentes as $pedido): ?>
                                             <tr>
                                                 <td>#<?php echo htmlspecialchars($pedido['id']); ?></td>
-                                                <td>R$ <?php echo number_format($pedido['valor'], 2, ',', '.'); ?></td>
-                                                <td><span
-                                                        class="badge <?php echo htmlspecialchars($pedido['badge']); ?>"><?php echo htmlspecialchars($pedido['status']); ?></span>
-                                                </td>
+                                                <td>R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></td>
+                                                <td><span class="badge <?php echo htmlspecialchars($pedido['badge']); ?>">
+                                                    <?php echo htmlspecialchars($pedido['status']); ?>
+                                                </span></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>

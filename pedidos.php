@@ -7,7 +7,6 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     exit;
 }
 
-// Buscar todos os pedidos com informações do cliente e método de pagamento
 $sql = "SELECT p.*, u.nome as cliente_nome, u.email as cliente_email
         FROM pedidos p
         LEFT JOIN usuarios u ON p.usuario_id = u.id
@@ -23,7 +22,6 @@ if ($result) {
 
 $conn->close();
 
-// Função para mapear status para classe de badge
 function getBadgeClass($status) {
     $map = [
         'Novo' => 'badge-new',
@@ -43,7 +41,6 @@ function getBadgeClass($status) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de Pedidos</title>
     <link rel="stylesheet" href="admin.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -94,7 +91,11 @@ function getBadgeClass($status) {
                                     <td><?php echo date('d/m/Y H:i', strtotime($pedido['data_pedido'])); ?></td>
                                     <td><?php echo htmlspecialchars($pedido['cliente_nome']); ?></td>
                                     <td>R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></td>
-                                    <td><?php echo htmlspecialchars($pedido['metodo_pagamento'] ?? 'Não informado'); ?></td>
+                                    <td>
+                                        <span style="color: var(--primary-color); font-weight: 600;">
+                                            <?php echo htmlspecialchars($pedido['metodo_pagamento'] ?? 'Não informado'); ?>
+                                        </span>
+                                    </td>
                                     <td>
                                         <span class="badge <?php echo getBadgeClass($pedido['status']); ?>">
                                             <?php echo htmlspecialchars($pedido['status']); ?>
