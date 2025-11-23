@@ -68,7 +68,7 @@ try {
 
                 $metodo_pagamento_formatado = '';
                 switch ($metodo_pagamento) {
-                    case 'credito':
+                    case 'cartao': // <-- CORREÇÃO: Agora corresponde ao valor enviado pelo carrinho.php
                         $metodo_pagamento_formatado = 'Cartão de Crédito';
                         if ($parcelas > 1) {
                             $metodo_pagamento_formatado .= " ({$parcelas}x)";

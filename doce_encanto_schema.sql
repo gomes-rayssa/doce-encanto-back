@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR(50) DEFAULT 'Pendente',
     valor_total DECIMAL(10, 2) NOT NULL,
+    metodo_pagamento VARCHAR(50) DEFAULT 'Não informado',
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
