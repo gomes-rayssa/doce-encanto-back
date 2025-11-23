@@ -87,7 +87,7 @@ ADD COLUMN entregador_id INT NULL,
 ADD FOREIGN KEY (entregador_id) REFERENCES equipe(id) ON DELETE SET NULL;
 
 
-SET @admin_senha_hash = '$2b$12$l3Y7E5t9R87To17HaM1W8uwCOqxArLxaP6RGKuWPxFM1r/BkLQOmm'; 
+SET @admin_senha_hash = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'; 
 
 INSERT INTO usuarios (nome, email, senha_hash, isAdmin, data_cadastro) VALUES
 ('Admin Principal', 'admin@doces.com', @admin_senha_hash, TRUE, '2024-01-01 10:00:00'), 
