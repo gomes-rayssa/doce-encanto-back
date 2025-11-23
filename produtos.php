@@ -99,10 +99,8 @@ $conn->close();
                         <label>Categoria *</label>
                         <select name="categoria" required>
                                 <option value="">Selecione</option>
-                                <option value="chocolates">Chocolates</option>
+                                <option value="chocolates">Doces</option>
                                 <option value="bolos">Bolos</option>
-                                <option value="tortas">Tortas</option>
-                                <option value="salgados">Salgados</option>
                             </select>
                         </div>
                     <div class="form-group">

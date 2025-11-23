@@ -132,7 +132,7 @@ try {
 
             $sql = "INSERT INTO produtos (nome, descricao, preco, categoria, estoque, imagem_url) VALUES (?, ?, ?, ?, ?, ?)";
             if ($stmt = $conn->prepare($sql)) {
-                $stmt->bind_param("ssdsIs", $nome, $descricao, $preco, $categoria, $estoque, $imagem_url);
+                $stmt->bind_param("ssdsis", $nome, $descricao, $preco, $categoria, $estoque, $imagem_url);
                 if (!$stmt->execute()) {
                     throw new Exception('Erro ao adicionar produto: ' . $stmt->error);
                 }

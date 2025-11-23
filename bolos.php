@@ -8,25 +8,37 @@ $sql = "SELECT id, nome, descricao, preco, imagem_url, categoria
         WHERE categoria LIKE '%bolo%' AND estoque > 0
         ORDER BY nome";
 
+$bolos_filtrados = [];
+$count_tradicionais = 0;
+$count_gourmet = 0;
+
 if ($result = $conn->query($sql)) {
     while ($row = $result->fetch_assoc()) {
-        $bolos[] = [
+        // Lógica de subcategoria:
+        // Se o preço for maior que R$ 64.99, é Gourmet. Caso contrário, é Tradicional.
+        $subcategoria = ((float)$row['preco'] > 64.99) ? 'gourmet' : 'tradicionais';
+
+        if ($subcategoria === 'gourmet') {
+            $count_gourmet++;
+        } else {
+            $count_tradicionais++;
+        }
+
+        $bolos_filtrados[] = [
             'id' => $row['id'],
             'nome' => $row['nome'],
             'descricao' => $row['descricao'],
             'preco' => (float)$row['preco'],
             'imagem' => htmlspecialchars($row['imagem_url']), 
-            'categoria' => htmlspecialchars(strtolower($row['categoria'])),
+            'categoria' => htmlspecialchars($subcategoria), // Usar a subcategoria para o filtro JS
         ];
     }
     $result->free();
 } else {
     echo "<h2>Erro na Consulta SQL: " . $conn->error . "</h2>";
-    $bolos = [];
 }
 
-$conn->close();
-
+$bolos = $bolos_filtrados;
 $count_todos = count($bolos);
 ?>
 

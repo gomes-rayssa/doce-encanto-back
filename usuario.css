@@ -258,6 +258,44 @@ body {
   top: 2rem;
 }
 
+.sidebar .card {
+  background: linear-gradient(135deg, #ffffff 0%, #fdfcfb 50%, #f9f7f4 100%);
+  border: 2px solid #f0ebe3;
+  box-shadow: 0 8px 32px rgba(153, 0, 83, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.sidebar .card::before {
+  height: 6px;
+  background: linear-gradient(90deg, #990053 0%, #c91067 50%, #990053 100%);
+  box-shadow: 0 2px 8px rgba(153, 0, 83, 0.3);
+}
+
+.sidebar .card:hover {
+  box-shadow: 0 12px 40px rgba(153, 0, 83, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-color: #e8dfd0;
+}
+
+.sidebar .card-header {
+  background: linear-gradient(135deg, #fdfcfb 0%, #f9f7f4 50%, #f5f1ea 100%);
+  padding: 1.8rem;
+  border-bottom: 2px solid #f0ebe3;
+}
+
+.sidebar .card-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  background: linear-gradient(135deg, #990053 0%, #c91067 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sidebar .card-content {
+  padding: 0;
+  background: linear-gradient(135deg, #ffffff 0%, #fdfcfb 100%);
+}
+
 /* Estatísticas Melhoradas */
 .stats-grid {
   display: flex;
@@ -266,22 +304,43 @@ body {
 }
 
 .stat-card {
-  padding: 1.5rem;
+  padding: 1.8rem 2rem;
   border: none;
   box-shadow: none;
-  background: transparent;
-  border-bottom: 2px solid #f3f4f6;
-  transition: all 0.3s ease;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(153, 0, 83, 0.02) 100%);
+  border-bottom: 2px solid #f0ebe3;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  overflow: hidden;
 }
 
 .stat-card:last-child {
   border-bottom: none;
 }
 
+.stat-card::after {
+  content: '';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(153, 0, 83, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  transition: all 0.4s ease;
+}
+
 .stat-card:hover {
-  background: linear-gradient(90deg, rgba(153, 0, 83, 0.05) 0%, transparent 100%);
-  transform: translateX(8px);
+  background: linear-gradient(90deg, rgba(153, 0, 83, 0.06) 0%, rgba(201, 16, 103, 0.04) 100%);
+  transform: translateX(10px);
+  padding-left: 2.5rem;
+}
+
+.stat-card:hover::after {
+  width: 80px;
+  height: 80px;
+  opacity: 0.8;
 }
 
 .stat-card::before {
@@ -290,33 +349,41 @@ body {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 4px;
-  height: 50%;
-  background: linear-gradient(180deg, #990053, #c91067);
-  border-radius: 0 2px 2px 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  width: 5px;
+  height: 0;
+  background: linear-gradient(180deg, #990053 0%, #c91067 50%, #990053 100%);
+  border-radius: 0 3px 3px 0;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px rgba(153, 0, 83, 0.4);
 }
 
 .stat-card:hover::before {
-  opacity: 1;
+  height: 65%;
 }
 
 .stat-info h3 {
-  font-size: 0.85rem;
-  color: #6b7280;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  color: #8b7355;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
 }
 
 .stat-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #990053;
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #990053 0%, #c91067 50%, #990053 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   line-height: 1;
-  text-shadow: 0 2px 4px rgba(153, 0, 83, 0.1);
+  text-shadow: 0 4px 8px rgba(153, 0, 83, 0.15);
+  position: relative;
+  z-index: 1;
+  letter-spacing: -1px;
 }
 
 /* Pedidos Recentes Melhorados */
@@ -327,38 +394,72 @@ body {
 }
 
 .data-table thead {
-  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  background: linear-gradient(135deg, #fdfcfb 0%, #f9f7f4 50%, #f5f1ea 100%);
+  position: relative;
+}
+
+.data-table thead::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #990053 0%, #c91067 50%, #990053 100%);
+  opacity: 0.3;
 }
 
 .data-table th {
-  padding: 1rem;
+  padding: 1.2rem 1rem;
   text-align: left;
-  font-weight: 700;
+  font-weight: 800;
   color: #990053;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid #e5e7eb;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #f0ebe3;
+  position: relative;
 }
 
 .data-table td {
-  padding: 1rem;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid #f7f3ed;
   font-size: 0.9rem;
-  color: #374151;
+  color: #4a4a4a;
+  font-weight: 500;
 }
 
 .data-table tbody tr {
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(153, 0, 83, 0.01) 100%);
 }
 
 .data-table tbody tr:hover {
-  background: linear-gradient(90deg, rgba(153, 0, 83, 0.03) 0%, transparent 100%);
-  transform: scale(1.01);
+  background: linear-gradient(90deg, rgba(153, 0, 83, 0.05) 0%, rgba(201, 16, 103, 0.03) 100%);
+  transform: translateX(5px);
 }
 
 .data-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.data-table tbody tr::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 0;
+  background: linear-gradient(180deg, #990053, #c91067);
+  border-radius: 0 2px 2px 0;
+  transition: height 0.3s ease;
+  box-shadow: 0 0 8px rgba(153, 0, 83, 0.4);
+}
+
+.data-table tbody tr:hover::before {
+  height: 70%;
 }
 
 /* Badges Melhorados */
@@ -372,36 +473,53 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.badge:hover::before {
+  left: 100%;
 }
 
 .badge-new {
   background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.35);
 }
 
 .badge-preparing {
   background: linear-gradient(135deg, #f59e0b, #d97706);
   color: white;
-  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.35);
 }
 
 .badge-sent {
   background: linear-gradient(135deg, #10b981, #059669);
   color: white;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.35);
 }
 
 .badge-delivered {
   background: linear-gradient(135deg, #10b981, #059669);
   color: white;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.35);
 }
 
 .badge-cancelled {
   background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 3px 10px rgba(239, 68, 68, 0.35);
 }
 
 /* Danger Actions */
@@ -611,11 +729,25 @@ body {
   }
 
   .stat-card {
-    padding: 1.2rem 1rem;
+    padding: 1.5rem 1.2rem;
+  }
+
+  .stat-card:hover {
+    transform: translateX(5px);
+    padding-left: 1.7rem;
   }
 
   .stat-value {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
+  }
+
+  .sidebar .card-header {
+    padding: 1.5rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 1rem 0.8rem;
   }
 }
 
@@ -664,59 +796,18 @@ body {
   transform: none;
 }
 
-/* Melhorias visuais específicas para sidebar */
-.sidebar .card {
-  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-  border: 2px solid #f3f4f6;
-}
 
-.sidebar .card::before {
-  height: 5px;
-}
-
-.sidebar .card-header {
-  background: linear-gradient(135deg, #fafafa 0%, #f3f4f6 100%);
-  padding: 1.5rem;
-}
-
-.sidebar .card-title {
-  font-size: 1.15rem;
-}
-
-.sidebar .card-content {
-  padding: 0;
-}
 
 /* Tabela sem padding extra no card */
 .sidebar .table-responsive {
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 18px 18px;
   overflow: hidden;
 }
 
 /* Melhorias nos badges dentro da tabela */
 .data-table .badge {
   font-size: 0.7rem;
-  padding: 0.3rem 0.7rem;
-}
-
-/* Hover effect melhorado para linhas da tabela */
-.data-table tbody tr {
-  position: relative;
-}
-
-.data-table tbody tr::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 0;
-  background: linear-gradient(180deg, #990053, #c91067);
-  border-radius: 0 2px 2px 0;
-  transition: height 0.3s ease;
-}
-
-.data-table tbody tr:hover::before {
-  height: 70%;
+  padding: 0.35rem 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
 }

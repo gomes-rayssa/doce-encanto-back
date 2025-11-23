@@ -8,10 +8,14 @@ $sql = "SELECT id, nome, descricao, preco, imagem_url, categoria FROM produtos W
 if ($result = $conn->query($sql)) {
   while ($row = $result->fetch_assoc()) {
     $cat_display = '';
-    if (str_contains($row['nome'], 'Trufa')) {
+    // Lógica de subcategoria:
+    // 1. Trufas Premium (prioridade)
+    if (str_contains($row['nome'], 'Trufa') || str_contains($row['nome'], 'Premium')) {
       $cat_display = 'trufas';
-    } elseif ($row['preco'] > 15.00) {
+    // 2. Doces Gourmet (preço > R$ 4.49)
+    } elseif ((float) $row['preco'] > 4.49) {
       $cat_display = 'gourmet';
+    // 3. Doces Tradicionais (default)
     } else {
       $cat_display = 'tradicionais';
     }
@@ -83,25 +87,46 @@ $count_gourmet = count(array_filter($produtos, fn($p) => $p['categoria_display']
               </a>
             </li>
             <li class="category-item">
-              <a href="#trufas" class="category-link" data-category="trufas">
-                <i class="fas fa-gem"></i>
-                <span>Trufas Premium</span>
-                <span class="count"><?php echo $count_trufas; ?></span>
-              </a>
-            </li>
-            <li class="category-item">
               <a href="#gourmet" class="category-link" data-category="gourmet">
                 <i class="fas fa-star"></i>
                 <span>Doces Gourmet</span>
                 <span class="count"><?php echo $count_gourmet; ?></span>
               </a>
             </li>
+            <li class="category-item">
+              <a href="#trufas" class="category-link" data-category="trufas">
+                <i class="fas fa-gem"></i>
+                <span>Trufas Premium</span>
+                <span class="count"><?php echo $count_trufas; ?></span>
+              </a>
+            </li>
           </ul>
-        </nav>
-
-      </aside>
+	        </nav>
+	
+	        <div class="sidebar-section">
+	          <h4>Ordenar por</h4>
+	          <select class="sort-select" id="sortSelect">
+	            <option value="name">Nome A-Z</option>
+	            <option value="price-low">Menor Preço</option>
+	            <option value="price-high">Maior Preço</option>
+	          </select>
+	        </div>
+	      </aside>
 
       <section class="products-area">
+        <div class="products-header">
+          <div class="results-info">
+            <span id="resultsCount">Mostrando <?php echo $count_todos; ?> produtos</span>
+          </div>
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid" title="Visualização em Grade">
+              <i class="fas fa-th"></i>
+            </button>
+            <button class="view-btn" data-view="list" title="Visualização em Lista">
+              <i class="fas fa-list"></i>
+            </button>
+          </div>
+        </div>
         <div class="products-grid" id="productsGrid">
           <?php if (empty($produtos)): ?>
             <p>Nenhum doce encontrado no catálogo. Verifique a tabela `produtos`.</p>
