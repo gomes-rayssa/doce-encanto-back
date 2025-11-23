@@ -20,9 +20,6 @@
             <li><a href="configuracoes.php"
                     class="<?php echo ($current_page == 'configuracoes.php') ? 'active' : ''; ?>"><i
                         class="fas fa-cogs"></i> Configurações</a></li>
-            <li><a href="index.php"
-                    class="<?php echo ($current_page == 'index.php') ? 'active' : ''; ?>"><i
-                        class="fas fa-birthday-cake"></i> Pagina inicial</a></li>
         </ul>
     </nav>
 </aside>
