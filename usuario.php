@@ -11,10 +11,10 @@ $usuario = $_SESSION['usuario_data'] ?? [];
 $usuario_id = $usuario['id'] ?? 0;
 $endereco = $usuario['endereco'] ?? [];
 
-$sql_stats = "SELECT 
+$sql_stats = "SELECT
     COUNT(*) as total_pedidos,
     SUM(valor_total) as total_compras
-    FROM pedidos 
+    FROM pedidos
     WHERE usuario_id = ? AND status != 'Cancelado'";
 
 $stmt = $conn->prepare($sql_stats);
@@ -57,8 +57,6 @@ $conn->close();
 
 <link rel="stylesheet" href="usuario.css" />
 
-
-
 <div id="notification" class="notification hidden">
     <span id="notification-message"></span>
 </div>
@@ -66,7 +64,7 @@ $conn->close();
 <main class="main">
     <div class="page-title-wrapper">
         <div class="container">
-             <h1 class="page-title">Minha Conta</h1> 
+             <h1 class="page-title">Minha Conta</h1>
         </div>
     </div>
     <div class="container">
@@ -259,7 +257,7 @@ $conn->close();
                                     <?php if (!empty($pedidos_recentes)): ?>
                                         <?php foreach ($pedidos_recentes as $pedido): ?>
                                             <tr>
-                                                <td>#<?php echo htmlspecialchars($pedido['id']); ?></td>
+                                                <td>
                                                 <td>R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></td>
                                                 <td><span class="badge <?php echo htmlspecialchars($pedido['badge']); ?>">
                                                         <?php echo htmlspecialchars($pedido['status']); ?>
@@ -268,7 +266,7 @@ $conn->close();
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="3" style="text-align: center; color: #6b7280; padding: 1.5rem;">
+                                            <td colspan="3" style="text-align: center; color:
                                                 Nenhum pedido encontrado.</td>
                                         </tr>
                                     <?php endif; ?>
