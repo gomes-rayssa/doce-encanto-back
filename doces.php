@@ -146,22 +146,11 @@ $count_gourmet = count(array_filter($produtos, fn($p) => $p['categoria_display']
                       title="Adicionar ao Carrinho">
                       <i class="fas fa-shopping-cart"></i>
                     </button>
-                    <button class="add-to-wishlist" title="Adicionar aos Favoritos">
-                      <i class="fas fa-heart"></i>
-                    </button>
                   </div>
                 </div>
                 <div class="product-info">
                   <h3 class="product-name"><?php echo htmlspecialchars($doce['nome']); ?></h3>
                   <p class="product-description"><?php echo htmlspecialchars($doce['descricao']); ?></p>
-                  <div class="product-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>(4.9)</span>
-                  </div>
                   <div class="product-price">R$ <?php echo number_format($doce['preco'], 2, ',', '.'); ?></div>
                 </div>
               </div>

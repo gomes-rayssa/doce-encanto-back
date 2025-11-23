@@ -6,37 +6,37 @@ $produtos_destaque = [
     'id' => 'bolo_chocolate',
     'nome' => 'Bolo de Chocolate',
     'descricao' => 'Bolo de massa de chocolate, recheio de trufado de chocolate ao leite, cobertura de mousse de chocolate, raspas de chocolate ao leite e cerejas.',
-    'preco' => 100.00,
+    'preco' => 55.00,
     'imagem' => 'assets/bolos/bolo-chocolate.png',
     'categoria' => 'bolo',
-    'badge' => 'Bestseller'
+    'badge' => 'Tradicional'
   ],
   [
     'id' => 'bolo_red_velvet',
     'nome' => 'Bolo Red Velvet',
     'descricao' => 'Bolo de massa red velvet, recheios de Leite Moça®, mousse de cream cheese, cobertura de mousse branca, Leite Moça®, massa red velvet e cerejas decorativas.',
-    'preco' => 120.00,
+    'preco' => 68.00,
     'imagem' => 'assets/bolos/bolo-red velvet.png',
     'categoria' => 'bolo',
-    'badge' => 'Novo'
+    'badge' => 'Gourmet'
   ],
   [
     'id' => 'bolo_pistache',
     'nome' => 'Bolo de Pistache',
     'descricao' => 'Bolo de massa branca, recheios de trufado e aerado de pistache, cobertura de trufado de pistache e pistache granulado.',
-    'preco' => 150.00,
+    'preco' => 70.00,
     'imagem' => 'assets/bolos/bolo-pistache.png',
     'categoria' => 'bolo',
-    'badge' => 'Premium'
+    'badge' => 'Novo!'
   ],
   [
     'id' => 'doce_pistache',
-    'nome' => 'Doce de Pistache',
-    'descricao' => 'Brigadeiro feito com chocolate branco belga e pistache.',
-    'preco' => 12.00,
+    'nome' => 'Pistache',
+    'descricao' => 'Brigadeiro feito com chocolate belga e pistache.',
+    'preco' => 5.50,
     'imagem' => 'assets/doces-gourmet/pistache.png',
     'categoria' => 'doce gourmet',
-    'badge' => ''
+    'badge' => 'Novo!'
   ]
 ];
 ?>
@@ -90,7 +90,7 @@ $produtos_destaque = [
           <div class="category-content">
             <h3>Bolos</h3>
             <p>Bolos únicos para momentos especiais</p>
-            <a href="paginas/bolos.php" class="category-link">
+            <a href="bolos.php" class="category-link">
               Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
             </a>
           </div>
@@ -105,7 +105,7 @@ $produtos_destaque = [
           <div class="category-content">
             <h3>Doces</h3>
             <p>Pequenos prazeres da vida</p>
-            <a href="paginas/doces.php" class="category-link">
+            <a href="doces.php" class="category-link">
               Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
             </a>
           </div>
@@ -120,7 +120,7 @@ $produtos_destaque = [
           <div class="category-content">
             <h3>Trufas</h3>
             <p>Sofisticação em cada mordida</p>
-            <a href="paginas/doces.php#trufas" class="category-link">
+            <a href="doces.php#trufas" class="category-link">
               Ver Coleção <i class="fas fa-arrow-right" aria-hidden="true"></i>
             </a>
           </div>
@@ -132,8 +132,8 @@ $produtos_destaque = [
   <section class="featured-products" aria-labelledby="featured-title">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title" id="featured-title">Lançamentos</h2>
-        <p class="section-subtitle">Novos doces disponíveis!</p>
+        <h2 class="section-title" id="featured-title">Destaques</h2>
+        <p class="section-subtitle">Uma prévia dos nossos doces irresistíves!</p>
       </div>
       <div class="products-grid">
 
@@ -152,21 +152,11 @@ $produtos_destaque = [
               <?php endif; ?>
 
               <div class="product-actions">
-                <button class="quick-view"
-                  aria-label="Visualização rápida de <?php echo htmlspecialchars($produto['nome']); ?>">
-                  <i class="fas fa-eye" aria-hidden="true"></i>
-                </button>
-
-                <button class="add-to-cart"
-                  aria-label="Adicionar <?php echo htmlspecialchars($produto['nome']); ?> ao carrinho" onclick="adicionarItem(
-                  '<?php echo $produto['id']; ?>',
-                  '<?php echo htmlspecialchars($produto['nome'], ENT_QUOTES); ?>',
-                  <?php echo $produto['preco']; ?>,
-                  '<?php echo htmlspecialchars($produto['imagem'], ENT_QUOTES); ?>',
-                  '<?php echo htmlspecialchars($produto['categoria'], ENT_QUOTES); ?>'
-                )">
-                  <i class="fas fa-shopping-cart" aria-hidden="true"></i>
-                </button>
+                <<button class="add-to-cart"
+                      onclick="adicionarItem('<?php echo $doce['id']; ?>', '<?php echo htmlspecialchars($doce['nome'], ENT_QUOTES); ?>', <?php echo $doce['preco']; ?>, '<?php echo htmlspecialchars($doce['imagem'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($doce['categoria_display'], ENT_QUOTES); ?>')"
+                      title="Adicionar ao Carrinho">
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
               </div>
             </div>
             <div class="product-info">
