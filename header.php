@@ -14,6 +14,7 @@ session_start();
 
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="sobre.css">
+  <link rel="stylesheet" href="acessibilidade-menu.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
@@ -26,7 +27,7 @@ session_start();
 
 <body>
   <a href="#main-content" class="skip-to-main">Pular para o conteúdo principal</a>
-	  <header class="modern-header">
+  <header class="modern-header">
     <nav class="modern-nav">
       <div class="nav-container">
         <div class="nav-logo">
@@ -100,14 +101,14 @@ session_start();
           }
           ?>
           <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
-          <a href="admin.php" class="nav-action" title="Voltar para Área Administrativa" 
-             aria-label="Voltar para área administrativa"
-             style="background-color: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
-            <i class="fas fa-user-shield" aria-hidden="true"></i>
-            <span style="display: none;">Admin</span>
-          </a>
+            <a href="admin.php" class="nav-action" title="Voltar para Área Administrativa"
+              aria-label="Voltar para área administrativa"
+              style="background-color: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+              <i class="fas fa-user-shield" aria-hidden="true"></i>
+              <span style="display: none;">Admin</span>
+            </a>
           <?php endif; ?>
-          
+
           <a href="carrinho.php" class="nav-action cart-action" title="Carrinho de compras">
             <i class="fas fa-shopping-bag" aria-hidden="true"></i>
             <span class="cart-count"><?php echo $total_itens_carrinho; ?></span>
@@ -123,4 +124,4 @@ session_start();
     </nav>
   </header>
 
-	  <main id="main-content">
+  <main id="main-content">

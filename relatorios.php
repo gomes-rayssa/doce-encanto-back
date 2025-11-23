@@ -7,10 +7,8 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     exit;
 }
 
-// Período padrão: este mês
 $periodo = $_GET['periodo'] ?? 'month';
 
-// Definir datas baseadas no período
 $data_inicio = '';
 $data_fim = date('Y-m-d 23:59:59');
 
@@ -31,7 +29,6 @@ switch ($periodo) {
         $data_inicio = date('Y-m-01 00:00:00');
 }
 
-// Calcular estatísticas de vendas
 $sql_vendas = "SELECT 
                 COUNT(*) as total_pedidos,
                 SUM(valor_total) as total_vendas
@@ -50,7 +47,6 @@ $total_vendas = $vendas['total_vendas'] ?? 0;
 $total_pedidos = $vendas['total_pedidos'] ?? 0;
 $ticket_medio = $total_pedidos > 0 ? $total_vendas / $total_pedidos : 0;
 
-// Ranking de produtos mais vendidos
 $sql_ranking = "SELECT 
                     pr.nome as produto_nome,
                     pr.categoria,
@@ -75,7 +71,6 @@ while ($row = $result_ranking->fetch_assoc()) {
 }
 $stmt_ranking->close();
 
-// Produtos com baixo estoque (estoque < 10)
 $sql_estoque = "SELECT nome, categoria, estoque 
                 FROM produtos 
                 WHERE estoque < 10

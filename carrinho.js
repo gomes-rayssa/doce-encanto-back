@@ -32,14 +32,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Alterar quantidade de um item
   window.alterarQuantidade = function (itemId, delta) {
-    const quantidadeAtual = parseInt(document.querySelectorAll('.quantidade-valor')[itemId].textContent);
+    const quantidadeAtual = parseInt(
+      document.querySelectorAll(".quantidade-valor")[itemId].textContent
+    );
     const novaQuantidade = quantidadeAtual + delta;
-    
+
     if (novaQuantidade < 1) {
       removerItem(itemId);
       return;
     }
-    
+
     enviarAcaoCarrinho({
       action: "update",
       id: itemId,
@@ -57,25 +59,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  // Sistema de Pagamento
   const modalPagamento = document.getElementById("modal-pagamento");
   const modalSucesso = document.getElementById("modal-compra-sucesso");
   const formPagamento = document.getElementById("form-pagamento");
-  const btnCancelarPagamento = document.querySelector(".btn-cancelar-pagamento");
+  const btnCancelarPagamento = document.querySelector(
+    ".btn-cancelar-pagamento"
+  );
   const btnFecharSucesso = document.querySelector(".btn-fechar-sucesso");
   const modalClose = document.querySelector(".modal-close");
 
-  // Função para abrir modal de pagamento (chamada pelo botão no HTML)
-  window.abrirModalPagamento = function() {
+  window.abrirModalPagamento = function () {
     if (modalPagamento) {
       modalPagamento.style.display = "flex";
       modalPagamento.classList.add("show");
       modalPagamento.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden"; // Prevenir scroll da página
+      document.body.style.overflow = "hidden";
     }
   };
 
-  // Fechar modal de pagamento
   function fecharModalPagamento() {
     if (modalPagamento) {
       modalPagamento.style.display = "none";
@@ -93,15 +94,16 @@ document.addEventListener("DOMContentLoaded", function () {
     btnCancelarPagamento.addEventListener("click", fecharModalPagamento);
   }
 
-  // Alternar entre métodos de pagamento
-  const metodosPagamento = document.querySelectorAll('input[name="metodo-pagamento"]');
+  const metodosPagamento = document.querySelectorAll(
+    'input[name="metodo-pagamento"]'
+  );
   const pixSection = document.getElementById("pix-section");
   const cartaoSection = document.getElementById("cartao-section");
-  
+
   metodosPagamento.forEach((metodo) => {
     metodo.addEventListener("change", (e) => {
       const metodoPagamento = e.target.value;
-      
+
       if (metodoPagamento === "pix") {
         if (pixSection) {
           pixSection.style.display = "block";
@@ -110,8 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cartaoSection) {
           cartaoSection.style.display = "none";
           cartaoSection.setAttribute("aria-hidden", "true");
-          // Remover required dos campos de cartão
-          cartaoSection.querySelectorAll("input").forEach(input => {
+          cartaoSection.querySelectorAll("input").forEach((input) => {
             input.removeAttribute("required");
           });
         }
@@ -119,10 +120,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cartaoSection) {
           cartaoSection.style.display = "block";
           cartaoSection.setAttribute("aria-hidden", "false");
-          // Adicionar required aos campos de cartão
-          cartaoSection.querySelectorAll("input[type='text']").forEach(input => {
-            input.setAttribute("required", "true");
-          });
+          cartaoSection
+            .querySelectorAll("input[type='text']")
+            .forEach((input) => {
+              input.setAttribute("required", "true");
+            });
         }
         if (pixSection) {
           pixSection.style.display = "none";
@@ -132,7 +134,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Formatar número do cartão
   const numeroCartaoInput = document.getElementById("numero-cartao");
   if (numeroCartaoInput) {
     numeroCartaoInput.addEventListener("input", (e) => {
@@ -142,7 +143,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Formatar validade
   const validadeInput = document.getElementById("validade");
   if (validadeInput) {
     validadeInput.addEventListener("input", (e) => {
@@ -154,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Apenas números no CVV
   const cvvInput = document.getElementById("cvv");
   if (cvvInput) {
     cvvInput.addEventListener("input", (e) => {
@@ -162,7 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Processar pagamento
   if (formPagamento) {
     formPagamento.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -171,7 +169,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const metodoPagamento = formData.get("metodo-pagamento");
       const parcelas = formData.get("parcelas") || "1";
 
-      // Validar campos de cartão se necessário
       if (metodoPagamento === "cartao") {
         const numeroCartao = formData.get("numero-cartao");
         const nomeCartao = formData.get("nome-cartao");
@@ -183,33 +180,29 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        // Validação básica do número do cartão
         const numeroLimpo = numeroCartao.replace(/\s/g, "");
         if (numeroLimpo.length < 13 || numeroLimpo.length > 19) {
           alert("Número do cartão inválido.");
           return;
         }
 
-        // Validação da validade
         if (!/^\d{2}\/\d{2}$/.test(validade)) {
           alert("Validade inválida. Use o formato MM/AA.");
           return;
         }
 
-        // Validação do CVV
         if (cvv.length < 3 || cvv.length > 4) {
           alert("CVV inválido.");
           return;
         }
       }
 
-      // Desabilitar botão de confirmação
       const btnConfirmar = document.querySelector(".btn-confirmar-pagamento");
       const btnTextoOriginal = btnConfirmar.innerHTML;
       btnConfirmar.disabled = true;
-      btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+      btnConfirmar.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Processando...';
 
-      // Enviar dados para o servidor
       try {
         const response = await fetch("processa_carrinho.php", {
           method: "POST",
@@ -224,23 +217,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const result = await response.json();
 
         if (result.success) {
-          // Fechar modal de pagamento
           fecharModalPagamento();
 
-          // Atualizar número do pedido no modal de sucesso
           const pedidoNumero = document.querySelector(".pedido-numero strong");
           if (pedidoNumero && result.pedido_id) {
             pedidoNumero.textContent = "#" + result.pedido_id;
           }
 
-          // Exibir modal de sucesso
           if (modalSucesso) {
             modalSucesso.style.display = "flex";
             modalSucesso.classList.add("show");
             modalSucesso.setAttribute("aria-hidden", "false");
           }
 
-          // Atualizar contador do carrinho
           const cartCountElement = document.querySelector(".cart-count");
           if (cartCountElement) cartCountElement.textContent = "0";
         } else {
@@ -257,14 +246,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Fechar modal de sucesso
   if (btnFecharSucesso) {
     btnFecharSucesso.addEventListener("click", () => {
       window.location.href = "index.php";
     });
   }
 
-  // Fechar modal ao clicar fora
   window.addEventListener("click", (event) => {
     if (event.target === modalPagamento) {
       fecharModalPagamento();
@@ -274,7 +261,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Fechar modal com tecla ESC
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       if (modalPagamento && modalPagamento.style.display === "flex") {

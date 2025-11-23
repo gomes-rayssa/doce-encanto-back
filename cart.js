@@ -63,8 +63,7 @@ function showCartNotification(message, type = "success") {
   notification.className = "cart-notification";
   notification.textContent = message;
 
-  const backgroundColor = type === "error" ? "#dc3545" : "#28a745"; // Vermelho para erro, verde para sucesso
-
+  const backgroundColor = type === "error" ? "#dc3545" : "#28a745";
   notification.style.cssText = `
         position: fixed;
         top: 20px;

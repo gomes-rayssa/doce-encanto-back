@@ -8,11 +8,9 @@ if (!isset($_SESSION['admin_logged_in'])) {
     $_SESSION['is_admin'] = true;
 }
 
-// Calcular estatísticas do mês atual
 $mes_atual = date('Y-m-01 00:00:00');
 $mes_fim = date('Y-m-t 23:59:59');
 
-// Total de vendas do mês
 $sql_vendas = "SELECT SUM(valor_total) as total FROM pedidos WHERE data_pedido BETWEEN ? AND ? AND status != 'Cancelado'";
 $stmt = $conn->prepare($sql_vendas);
 $stmt->bind_param("ss", $mes_atual, $mes_fim);
@@ -21,7 +19,6 @@ $result = $stmt->get_result();
 $total_vendas = $result->fetch_assoc()['total'] ?? 0;
 $stmt->close();
 
-// Total de pedidos do mês
 $sql_pedidos = "SELECT COUNT(*) as total FROM pedidos WHERE data_pedido BETWEEN ? AND ?";
 $stmt = $conn->prepare($sql_pedidos);
 $stmt->bind_param("ss", $mes_atual, $mes_fim);
@@ -30,15 +27,12 @@ $result = $stmt->get_result();
 $total_pedidos = $result->fetch_assoc()['total'] ?? 0;
 $stmt->close();
 
-// Total de clientes
 $sql_clientes = "SELECT COUNT(*) as total FROM usuarios WHERE isAdmin = 0";
 $result = $conn->query($sql_clientes);
 $total_clientes = $result->fetch_assoc()['total'] ?? 0;
 
-// Ticket médio
 $ticket_medio = $total_pedidos > 0 ? $total_vendas / $total_pedidos : 0;
 
-// Produtos mais vendidos do mês
 $sql_produtos = "SELECT p.nome, SUM(ip.quantidade) as total_vendido 
                  FROM itens_pedido ip
                  JOIN produtos p ON ip.produto_id = p.id
@@ -57,7 +51,6 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
-// Pedidos recentes
 $sql_recentes = "SELECT p.id, p.data_pedido, p.valor_total, p.status, u.nome as cliente_nome
                  FROM pedidos p
                  LEFT JOIN usuarios u ON p.usuario_id = u.id
@@ -71,7 +64,8 @@ while ($row = $result->fetch_assoc()) {
 
 $conn->close();
 
-function getBadgeClass($status) {
+function getBadgeClass($status)
+{
     $map = [
         'Novo' => 'badge-new',
         'Em Preparação' => 'badge-preparing',
@@ -84,6 +78,7 @@ function getBadgeClass($status) {
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,10 +86,11 @@ function getBadgeClass($status) {
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <?php include 'components/header-adm.php'; ?>
     <?php include 'components/sidebar.php'; ?>
-    
+
     <main class="main-content">
         <div class="dashboard-header">
             <h1>Dashboard</h1>
@@ -203,7 +199,9 @@ function getBadgeClass($status) {
                                     <td><?php echo htmlspecialchars($pedido['cliente_nome']); ?></td>
                                     <td><?php echo date('d/m/Y H:i', strtotime($pedido['data_pedido'])); ?></td>
                                     <td>R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></td>
-                                    <td><span class="badge <?php echo getBadgeClass($pedido['status']); ?>"><?php echo $pedido['status']; ?></span></td>
+                                    <td><span
+                                            class="badge <?php echo getBadgeClass($pedido['status']); ?>"><?php echo $pedido['status']; ?></span>
+                                    </td>
                                     <td>
                                         <a href="pedido-detalhe.php?id=<?php echo $pedido['id']; ?>" class="btn-icon">
                                             <i class="fas fa-eye"></i>
@@ -220,4 +218,5 @@ function getBadgeClass($status) {
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
+
 </html>

@@ -2,12 +2,10 @@
 session_start();
 include 'db_config.php';
 
-// Inicializar o carrinho se não existir
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
 
-// Calcular total
 $total = 0;
 if (!empty($_SESSION['carrinho'])) {
     foreach ($_SESSION['carrinho'] as $item) {

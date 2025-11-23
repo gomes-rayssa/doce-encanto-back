@@ -37,21 +37,21 @@ function handle_image_upload($file_key)
 {
     if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] === UPLOAD_ERR_OK) {
         $upload_dir = __DIR__ . '/assets/produtos/';
-        
+
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0777, true);
         }
-        
+
         $file_extension = strtolower(pathinfo($_FILES[$file_key]['name'], PATHINFO_EXTENSION));
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-        
+
         if (!in_array($file_extension, $allowed_extensions)) {
             throw new Exception('Formato de imagem não permitido. Use: JPG, PNG, GIF ou WEBP.');
         }
-        
+
         $filename = uniqid('produto_', true) . '.' . $file_extension;
         $target_path = $upload_dir . $filename;
-        
+
         if (move_uploaded_file($_FILES[$file_key]['tmp_name'], $target_path)) {
             return 'assets/produtos/' . $filename;
         } else {
@@ -119,12 +119,10 @@ try {
             $preco = (float) ($data['preco'] ?? 0);
             $categoria = trim($data['categoria'] ?? '');
             $estoque = (int) ($data['estoque'] ?? 0);
-            
-            // Tentar fazer upload da imagem
+
             try {
                 $imagem_url = handle_image_upload('imagem');
             } catch (Exception $e) {
-                // Se não houver imagem, usar placeholder
                 $imagem_url = 'assets/produtos/placeholder.png';
             }
 
@@ -183,7 +181,7 @@ try {
                     $stmt->close();
                 }
             }
-            
+
             echo json_encode(['success' => true, 'message' => 'Produto atualizado com sucesso!']);
             break;
 

@@ -2,7 +2,6 @@
 session_start();
 include 'db_config.php';
 
-// Buscar todos os clientes (não admins)
 $sql = "SELECT u.id, u.nome, u.email, u.celular, u.data_cadastro,
         (SELECT SUM(valor_total) FROM pedidos WHERE usuario_id = u.id AND status != 'Cancelado') as total_compras
         FROM usuarios u
@@ -95,11 +94,11 @@ $conn->close();
             for (let i = 0; i < tr.length; i++) {
                 const tdNome = tr[i].getElementsByTagName('td')[1];
                 const tdEmail = tr[i].getElementsByTagName('td')[2];
-                
+
                 if (tdNome || tdEmail) {
                     const txtNome = tdNome ? tdNome.textContent || tdNome.innerText : '';
                     const txtEmail = tdEmail ? tdEmail.textContent || tdEmail.innerText : '';
-                    
+
                     if (txtNome.toUpperCase().indexOf(filter) > -1 || txtEmail.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = '';
                     } else {

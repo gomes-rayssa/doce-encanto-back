@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   console.log("=== CADASTRO.JS CARREGADO ===");
-  
+
   const form = document.getElementById("registration-form");
   const step1 = document.getElementById("step1");
   const step2 = document.getElementById("step2");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     step2: !!step2,
     nextBtn: !!nextBtn,
     prevBtn: !!prevBtn,
-    submitBtn: !!submitBtn
+    submitBtn: !!submitBtn,
   });
 
   const campos = {
@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let etapaAtual = 1;
 
-  // Funções de validação
   function validarEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -79,17 +78,20 @@ document.addEventListener("DOMContentLoaded", function () {
   function aplicarMascaraCelular(valor) {
     const digitos = valor.replace(/\D/g, "");
     if (digitos.length <= 10) {
-      return digitos.replace(/^(\d{0,2})(\d{0,4})(\d{0,4}).*/, (m, d1, d2, d3) =>
-        !d1 ? "" : `(${d1}${d2 ? ") " + d2 : ""}${d3 ? "-" + d3 : ""}`
+      return digitos.replace(
+        /^(\d{0,2})(\d{0,4})(\d{0,4}).*/,
+        (m, d1, d2, d3) =>
+          !d1 ? "" : `(${d1}${d2 ? ") " + d2 : ""}${d3 ? "-" + d3 : ""}`
       );
     } else {
-      return digitos.replace(/^(\d{0,2})(\d{0,5})(\d{0,4}).*/, (m, d1, d2, d3) =>
-        !d1 ? "" : `(${d1}${d2 ? ") " + d2 : ""}${d3 ? "-" + d3 : ""}`
+      return digitos.replace(
+        /^(\d{0,2})(\d{0,5})(\d{0,4}).*/,
+        (m, d1, d2, d3) =>
+          !d1 ? "" : `(${d1}${d2 ? ") " + d2 : ""}${d3 ? "-" + d3 : ""}`
       );
     }
   }
 
-  // Aplicar máscara de celular
   if (campos.celular) {
     campos.celular.addEventListener("input", (e) => {
       e.target.value = aplicarMascaraCelular(e.target.value);
@@ -258,10 +260,18 @@ document.addEventListener("DOMContentLoaded", function () {
   function validarEtapa(etapa) {
     console.log(`=== Validando Etapa ${etapa} ===`);
     let valido = true;
-    
-    const camposEtapa = etapa === 1
-      ? ["nome", "email", "celular", "dataNascimento", "senha", "confirmarSenha"]
-      : ["cep", "rua", "numero", "bairro", "cidade", "estado"];
+
+    const camposEtapa =
+      etapa === 1
+        ? [
+            "nome",
+            "email",
+            "celular",
+            "dataNascimento",
+            "senha",
+            "confirmarSenha",
+          ]
+        : ["cep", "rua", "numero", "bairro", "cidade", "estado"];
 
     camposEtapa.forEach((nomeCampo) => {
       const campo = campos[nomeCampo];
@@ -269,13 +279,13 @@ document.addEventListener("DOMContentLoaded", function () {
         console.warn(`Campo ${nomeCampo} não encontrado`);
         return;
       }
-      
+
       const valor = campo.value;
       console.log(`Validando ${nomeCampo}:`, valor);
-      
+
       const resultado = validarCampo(nomeCampo, valor);
       console.log(`${nomeCampo} válido:`, resultado);
-      
+
       if (!resultado) {
         valido = false;
       }
@@ -287,12 +297,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function proximaEtapa() {
     console.log("=== BOTÃO PRÓXIMO CLICADO ===");
-    
+
     if (!validarEtapa(1)) {
       console.log("Validação falhou - não avançando");
-      
-      // Focar no primeiro campo com erro
-      const camposEtapa1 = ["nome", "email", "celular", "dataNascimento", "senha", "confirmarSenha"];
+
+      const camposEtapa1 = [
+        "nome",
+        "email",
+        "celular",
+        "dataNascimento",
+        "senha",
+        "confirmarSenha",
+      ];
       for (const nomeCampo of camposEtapa1) {
         const campo = campos[nomeCampo];
         if (campo) {
@@ -307,9 +323,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     console.log("Validação passou - avançando para etapa 2");
-    
+
     etapaAtual = 2;
-    
+
     if (step1) step1.classList.remove("active");
     if (step2) step2.classList.add("active");
     if (step1Indicator) {
@@ -323,9 +339,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function etapaAnterior() {
     console.log("=== BOTÃO VOLTAR CLICADO ===");
-    
+
     etapaAtual = 1;
-    
+
     if (step2) step2.classList.remove("active");
     if (step1) step1.classList.add("active");
     if (step2Indicator) step2Indicator.classList.remove("active");
@@ -344,7 +360,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       campos.cep.classList.add("loading");
 
-      const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+      const response = await fetch(
+        `https://viacep.com.br/ws/${cepLimpo}/json/`
+      );
       const data = await response.json();
 
       if (!data.erro) {
@@ -365,7 +383,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Máscara e busca de CEP
   if (campos.cep) {
     campos.cep.addEventListener("input", function (e) {
       let valor = e.target.value.replace(/\D/g, "");
@@ -380,10 +397,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Event Listeners dos botões
   if (nextBtn) {
     console.log("Adicionando listener ao botão PRÓXIMO");
-    nextBtn.addEventListener("click", function(e) {
+    nextBtn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
       console.log("Evento de clique capturado");
@@ -394,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (prevBtn) {
-    prevBtn.addEventListener("click", function(e) {
+    prevBtn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
       etapaAnterior();
@@ -487,7 +503,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 2500);
   }
 
-  // Toggle senha
   const togglePasswordButtons = document.querySelectorAll(".toggle-password");
   togglePasswordButtons.forEach((button) => {
     button.addEventListener("click", function (e) {

@@ -11,7 +11,6 @@ $usuario = $_SESSION['usuario_data'] ?? [];
 $usuario_id = $usuario['id'] ?? 0;
 $endereco = $usuario['endereco'] ?? [];
 
-// Buscar estatísticas reais do usuário
 $sql_stats = "SELECT 
     COUNT(*) as total_pedidos,
     SUM(valor_total) as total_compras
@@ -29,7 +28,6 @@ $total_pedidos = $stats['total_pedidos'] ?? 0;
 $total_compras = $stats['total_compras'] ?? 0;
 $ticket_medio = $total_pedidos > 0 ? $total_compras / $total_pedidos : 0;
 
-// Buscar histórico de pedidos
 $sql_historico = "SELECT id, data_pedido, valor_total, status
     FROM pedidos
     WHERE usuario_id = ?
@@ -222,7 +220,8 @@ $conn->close();
                             <div class="stat-card" style="padding: 1rem; border: none; box-shadow: none;">
                                 <div class="stat-info">
                                     <h3>Total em Compras</h3>
-                                    <p class="stat-value">R$ <?php echo number_format($total_compras, 2, ',', '.'); ?></p>
+                                    <p class="stat-value">R$ <?php echo number_format($total_compras, 2, ',', '.'); ?>
+                                    </p>
                                 </div>
                             </div>
                             <div class="stat-card" style="padding: 1rem; border: none; box-shadow: none;">
@@ -256,8 +255,8 @@ $conn->close();
                                                 <td>#<?php echo htmlspecialchars($pedido['id']); ?></td>
                                                 <td>R$ <?php echo number_format($pedido['valor_total'], 2, ',', '.'); ?></td>
                                                 <td><span class="badge <?php echo htmlspecialchars($pedido['badge']); ?>">
-                                                    <?php echo htmlspecialchars($pedido['status']); ?>
-                                                </span></td>
+                                                        <?php echo htmlspecialchars($pedido['status']); ?>
+                                                    </span></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>

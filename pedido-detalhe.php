@@ -14,7 +14,6 @@ if ($pedidoId <= 0) {
     exit;
 }
 
-// Buscar dados do pedido incluindo método de pagamento
 $sql_pedido = "SELECT p.*, u.nome as cliente_nome, u.email as cliente_email, u.celular as cliente_celular,
                e.nome as entregador_nome, e.veiculo_tipo, e.placa
                FROM pedidos p
@@ -34,7 +33,6 @@ if (!$pedido) {
     exit;
 }
 
-// Buscar itens do pedido
 $sql_itens = "SELECT ip.*, pr.nome as produto_nome
               FROM itens_pedido ip
               LEFT JOIN produtos pr ON ip.produto_id = pr.id
@@ -50,7 +48,6 @@ while ($row = $result_itens->fetch_assoc()) {
 }
 $stmt_itens->close();
 
-// Buscar endereço de entrega
 $sql_endereco = "SELECT * FROM enderecos WHERE usuario_id = ? LIMIT 1";
 $stmt_end = $conn->prepare($sql_endereco);
 $stmt_end->bind_param("i", $pedido['usuario_id']);
@@ -59,7 +56,6 @@ $result_end = $stmt_end->get_result();
 $endereco = $result_end->fetch_assoc();
 $stmt_end->close();
 
-// Buscar entregadores disponíveis
 $sql_entregadores = "SELECT id, nome, veiculo_tipo, placa FROM equipe WHERE tipo = 'entregador' ORDER BY nome";
 $result_entregadores = $conn->query($sql_entregadores);
 $entregadores = [];

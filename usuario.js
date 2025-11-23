@@ -19,14 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Informações Pessoais
   const editBtn = document.getElementById("edit-btn");
   const saveBtn = document.getElementById("save-btn");
   const cancelBtn = document.getElementById("cancel-btn");
   const editActions = document.getElementById("edit-actions");
   const logoutBtn = document.getElementById("logout-btn");
 
-  // Endereço
   const editAddressBtn = document.getElementById("edit-address-btn");
   const addressEditActions = document.getElementById("address-edit-actions");
   const saveAddressBtn = document.getElementById("save-address-btn");
@@ -34,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const deleteBtn = document.getElementById("delete-btn");
 
-  // Pop-up e Notificação
   const customPopup = document.getElementById("custom-popup");
   const popupMessage = document.getElementById("popup-message");
   const notification = document.getElementById("notification");
@@ -110,7 +107,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (editBtn) {
     editBtn.addEventListener("click", () => {
-      const personalFields = [campos.nome, campos.celular, campos.dataNascimento];
+      const personalFields = [
+        campos.nome,
+        campos.celular,
+        campos.dataNascimento,
+      ];
       setReadonly(personalFields, false);
       editActions.classList.remove("hidden");
       editBtn.classList.add("hidden");
@@ -122,7 +123,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (cancelBtn) {
     cancelBtn.addEventListener("click", () => {
-      const personalFields = [campos.nome, campos.celular, campos.dataNascimento];
+      const personalFields = [
+        campos.nome,
+        campos.celular,
+        campos.dataNascimento,
+      ];
       restaurarValores();
       setReadonly(personalFields, true);
       editActions.classList.add("hidden");
@@ -134,7 +139,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (saveBtn) {
     saveBtn.addEventListener("click", async () => {
-      const personalFields = [campos.nome, campos.celular, campos.dataNascimento];
+      const personalFields = [
+        campos.nome,
+        campos.celular,
+        campos.dataNascimento,
+      ];
 
       const data = {
         action: "save_personal",
@@ -297,7 +306,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Preenchimento automático de CEP
   if (campos.cep) {
     campos.cep.addEventListener("input", async function (e) {
       let valor = e.target.value.replace(/\D/g, "");
